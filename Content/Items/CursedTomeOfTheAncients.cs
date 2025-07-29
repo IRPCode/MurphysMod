@@ -41,7 +41,7 @@ namespace MurphysMod.Content.Items
 				Main.NewText("ReturnedTrue");
 				bookUsed.isPlayerCursed = true;
 
-				ModContent.GetInstance<DisplayLargeText>().message("You have been cursed.", 600, Color.IndianRed, default, default, true);
+				ModContent.GetInstance<DisplayLargeText>().message("You have been cursed", 600, Color.IndianRed, default, default, true);
 
 				//Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
 				return true;
@@ -170,7 +170,7 @@ namespace MurphysMod.Content.Items
 					Main.windSpeedTarget = 0f;
 					Main.raining = false;
 					Main.NewText("You have deeply upset the gods. You have been cursed.", new Color(255, 80, 80));
-					ModContent.GetInstance<DisplayLargeText>().message("You have been cursed.", 600, Color.IndianRed, default, default, default);
+					ModContent.GetInstance<DisplayLargeText>().message("You have been cursed", 600, new Color(255, 80, 80), default, default, true);
 				}
 
 			}

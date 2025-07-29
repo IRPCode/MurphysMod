@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.UI.Chat;
 
 namespace MurphysMod.Systems
 {
@@ -21,7 +22,7 @@ namespace MurphysMod.Systems
         public bool textFade;
         public int alpha = 255;
 
-        public void message(string text, int timeAmount, Color color, Vector2 location, float scale, bool fade)
+        public void message(string text, int timeAmount, Color color, Vector2 location, float scale, bool fade) //TODO: This only works on 2560 x 1600
         {
             if (text == default)
             {
@@ -45,7 +46,7 @@ namespace MurphysMod.Systems
 
             if (scale == default)
             {
-                scale = 1.25f;
+                scale = 1f;
             }
 
             if (fade == default)
@@ -67,16 +68,16 @@ namespace MurphysMod.Systems
             if (largeText != null && timer > 0)
             {
 
-                if (textFade == true && (timerOriginal / 5) <= timer)
+                if (textFade == true && (timerOriginal / 5) >= timer)
                 {
                     alpha = alpha - (255 / (timerOriginal / 5));
                     alpha = Utils.Clamp(alpha, 0, 255);
                     textColor = new Color(textColor.R, textColor.G, textColor.B, alpha);
                 }
 
-                Vector2 displayedSize = FontAssets.DeathText.Value.MeasureString(largeText) * textScale;
+                Vector2 getSize = ChatManager.GetStringSize(FontAssets.DeathText.Value, largeText, Vector2.One);
 
-                Vector2 drawnPosition = new Vector2(textLocation.X - displayedSize.X * 1.5f, textLocation.Y);
+                Vector2 drawnPosition = new Vector2(textLocation.X - getSize.X * 1.5f, textLocation.Y);
 
                 Utils.DrawBorderStringBig(spriteBatch, largeText, drawnPosition, textColor, textScale, 0f, 0f);
 
