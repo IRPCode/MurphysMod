@@ -1,0 +1,4 @@
+displayName = Murphy's Mod
+author = Two Fools :)
+version = 0.1
+modReferences = StructureHelper, Luminance

@@ -1,0 +1,134 @@
+# This file will automatically update with entries for new content after a build and reload.
+
+Items: {
+	TestSword: {
+		DisplayName: Test Sword
+		Tooltip:
+			'''
+			Template of an item
+			Replacing this tooltip is duty 
+			It's snowing on Mt.Fuji
+			'''
+	}
+
+	CursedBar: {
+		DisplayName: Cursed Bar
+		Tooltip: ""
+	}
+
+	CursedOre: {
+		DisplayName: Cursed Ore
+		Tooltip: ""
+	}
+
+	CursedPickaxe: {
+		DisplayName: Cursed Pickaxe
+		Tooltip: ""
+	}
+
+	CursedAxe: {
+		DisplayName: Cursed Axe
+		Tooltip: ""
+	}
+
+	CursedHammer: {
+		DisplayName: Cursed Hammer
+		Tooltip: ""
+	}
+
+	MagmaStone: {
+		DisplayName: Magma Stone
+		Tooltip: ""
+	}
+
+	MagmaGem: {
+		DisplayName: Magma Gem
+		Tooltip: ""
+	}
+
+	FrigidTome: {
+		DisplayName: Frigid Tome
+		Tooltip: ""
+	}
+
+	MagmaKnife: {
+		DisplayName: Magma Knife
+		Tooltip: ""
+	}
+
+	CursedTomeOfTheAncients: {
+		DisplayName: Cursed Tome Of The Ancients
+		Tooltip: ""
+	}
+}
+
+Buffs: {
+	Blighted: {
+		DisplayName: Blighted
+		Description: Mods.MurphysMod.Buffs.Blighted.Description
+	}
+
+	Doomed: {
+		DisplayName: Doomed
+		Description: Mods.MurphysMod.Buffs.Doomed.Description
+	}
+
+	IllFated: {
+		DisplayName: Ill Fated
+		Description: Mods.MurphysMod.Buffs.IllFated.Description
+	}
+
+	Jinxed: {
+		DisplayName: Jinxed
+		Description: Mods.MurphysMod.Buffs.Jinxed.Description
+	}
+
+	Augury: {
+		DisplayName: Augury
+		Description: Mods.MurphysMod.Buffs.Augury.Description
+	}
+
+	BadOmen: {
+		DisplayName: Bad Omen
+		Description: Mods.MurphysMod.Buffs.BadOmen.Description
+	}
+
+	Portent: {
+		DisplayName: Portent
+		Description: Mods.MurphysMod.Buffs.Portent.Description
+	}
+
+	CursedMouse: {
+		DisplayName: Cursed Mouse
+		Description: Mods.MurphysMod.Buffs.CursedMouse.Description
+	}
+}
+
+Projectiles: {
+	projectileHostile.DisplayName: projectile Hostile
+	gelProjectile.DisplayName: gel Projectile
+	slimeCoinProjectile.DisplayName: slime Coin Projectile
+	copperCoin.DisplayName: copper Coin
+	goldCoin.DisplayName: gold Coin
+	silverCoin.DisplayName: silver Coin
+	Arrow.DisplayName: Arrow
+	CopperCoin.DisplayName: Copper Coin
+	GoldCoin.DisplayName: Gold Coin
+	SilverCoin.DisplayName: Silver Coin
+	SlimeGel.DisplayName: Slime Gel
+	Shuriken.DisplayName: Shuriken
+	SlimyBoulder.DisplayName: Slimy Boulder
+	WormSpit.DisplayName: Worm Spit
+	ToxicJungleSpore.DisplayName: Toxic Jungle Spore
+	FrigidBolt.DisplayName: Frigid Bolt
+	MagmaKnife.DisplayName: Magma Knife
+	MagmaKnifeProjectile.DisplayName: Magma Knife Projectile
+	CursedTomeOfTheAncientsProjectile.DisplayName: Cursed Tome Of The Ancients Projectile
+}
+
+Tiles: {
+	CursedBar.MapEntry: Cursed Bar
+	CursedOre.MapEntry: Cursed Ore
+	MagmaStone.MapEntry: Magma Stone
+	MagmaGem.MapEntry: Magma Gem
+}

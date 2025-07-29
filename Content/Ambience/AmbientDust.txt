@@ -1,0 +1,324 @@
+using Terraria;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.ID;
+using MurphysMod.Content.Ambience.Dusts;
+using MurphysMod.Content.Ambience;
+using System;
+
+
+namespace MurphysMod
+{
+
+    public class AmbientDust : ModPlayer //Instead of scanning blocks, do a random check, and then offset the block from the player's location (player.center.x + Main.rand.next(0,100) or whatever)
+    {
+        public static int dustAmountMultiplier = 2; //have this value editable in the config, give players the ability to disable dust alltogether by encasing the following 
+        //method in an if statement that checks if the config has ambient dust enabled
+        public override void PostUpdate()
+        {
+            int tickCheck = Tick.globalTick;
+
+            if (Main.myPlayer == Player.whoAmI && !Main.dedServ && tickCheck % 2 == 0) //local only
+            {
+                int X1 = (int)((Player.position.X / 16f) + 80);
+                int Y1 = (int)((Player.position.Y / 16f) + 80);
+                int X2 = (int)((Player.position.X / 16f) - 80);
+                int Y2 = (int)((Player.position.Y / 16f) - 80);
+                int rand;
+
+                for (int x = X2; x < X1; x = x + 2)
+                {
+                    for (int y = Y2; y < Y1; y = y + 2)
+                    {
+                        Tile tile = Framing.GetTileSafely(x, y);
+
+                        if ((tile.TileType == TileID.Grass || tile.TileType == TileID.Mud || tile.TileType == TileID.HallowedGrass) && !Main.dayTime) //fireflies
+                        {
+                            if (Player.ZoneForest || Player.ZoneJungle || Player.ZoneHallow)
+                            {
+                                if (Player.ZoneHallow)
+                                {
+                                    rand = Main.rand.Next(0, 1500 / dustAmountMultiplier);
+                                }
+                                else
+                                {
+                                    rand = Main.rand.Next(0, 1000 / dustAmountMultiplier);
+                                }
+
+                                int randomFlyLocation = Main.rand.Next(10, 26);
+                                Tile airCheck = Framing.GetTileSafely(x, y - randomFlyLocation);
+
+                                if (rand == 0 && (!airCheck.HasTile && tile.WallType == WallID.None) && !Player.ZoneHallow)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2((x * 16), (y - randomFlyLocation) * 16), 16, 16, DustID.Firefly, 0, 0, 100, default, 1f); //keep fireflydust for now
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand == 0 && (!airCheck.HasTile && tile.WallType == WallID.None))
+                                {
+                                    int color = Main.rand.Next(0, 2);
+
+                                    var dustType = ModContent.DustType<PinkHallowFireflyDust>();
+
+                                    if (color % 2 == 0)
+                                    {
+                                        dustType = ModContent.DustType<BlueHallowFireflyDust>();
+                                    }
+                                    int dustLocation = Dust.NewDust(new Vector2((x * 16), (y - randomFlyLocation) * 16), 16, 16, dustType, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+                        }
+
+                        if (!tile.HasTile)
+                        {
+                            if (tile.WallType == 3 || (Player.ZoneCorrupt && Player.position.Y / 16 >= Main.rockLayer)) //corruption
+                            {
+                                rand = Main.rand.Next(0, 100000 / dustAmountMultiplier);
+
+                                if (rand <= 7)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.Corruption, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand <= 12)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand <= 16)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.Demonite, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (tile.WallType == 83 || (Player.ZoneCrimson && Player.position.Y / 16 >= Main.rockLayer)) //crimson
+                            {
+                                rand = Main.rand.Next(0, 100000 / dustAmountMultiplier);
+
+                                if (rand <= 7)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.Crimson, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand <= 12)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand <= 16)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.Crimstone, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (((tile.WallType > 99 && tile.WallType < 104) || tile.WallType == 28) || (Player.ZoneHallow && Player.position.Y / 16 >= Main.rockLayer)) //Hallow
+                            {
+                                rand = Main.rand.Next(0, 100000 / dustAmountMultiplier);
+
+                                if (rand <= 10)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand == 11)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.PurpleCrystalShard, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+
+                                else if (rand == 16)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.PinkCrystalShard, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand == 13)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BlueCrystalShard, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneDungeon && ((tile.WallType >= 7 && tile.WallType <= 9) || (tile.WallType >= 94 && tile.WallType <= 99))) //dungeon
+                            {
+                                rand = Main.rand.Next(0, 100000 / dustAmountMultiplier);
+
+                                if (rand <= 10)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand == 11)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<DungeonWaterDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneNormalUnderground || Player.ZoneNormalCaverns) //caves
+                            {
+                                rand = Main.rand.Next(0, 50000 / dustAmountMultiplier);
+                                if (rand <= 5)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
+
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == LiquidID.Shimmer && tileAirCheck.LiquidAmount == 0) //shimmer liquid
+                            {
+                                rand = Main.rand.Next(0, 75 / dustAmountMultiplier);
+                                Dust dust;
+
+                                if (rand == 0)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.ShimmerSpark, 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == LiquidID.Lava) //lava embers
+                            {
+                                rand = Main.rand.Next(0, 3250 / dustAmountMultiplier);
+                                Dust dust;
+
+                                if (rand == 0 && Player.ZoneUnderworldHeight) //fewer particles for underworld 
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<EmberDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                }
+                                else if (rand <= 1)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<EmberDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                }
+                                else if (rand == 2)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+
+                                }
+                            }
+
+                            if (tile.LiquidAmount == 255 && tile.LiquidType == LiquidID.Water && tileAirCheck.LiquidAmount != 0)
+                            { //water bubbles
+                                rand = Main.rand.Next(0, 5000 / dustAmountMultiplier);
+                                Dust dust;
+                                if (rand <= 1)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BreatheBubble, 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneUnderworldHeight) //hell
+                            { //change this logic to only spawn particles off screen
+                                rand = Main.rand.Next(0, 40000 / dustAmountMultiplier);
+                                Dust dust;
+
+                                if (Math.Abs(Player.velocity.X) >= 8f)
+                                {
+                                    rand = Main.rand.Next(0, 6500 / dustAmountMultiplier);
+                                }
+                                else if (Math.Abs(Player.velocity.X) >= 12f)
+                                {
+                                    rand = Main.rand.Next(0, 4500 / dustAmountMultiplier);
+                                }
+                                else if (Math.Abs(Player.velocity.X) >= 14f)
+                                {
+                                    rand = Main.rand.Next(0, 3500 / dustAmountMultiplier);
+                                }
+                                else if (Math.Abs(Player.velocity.X) >= 18f)
+                                {
+                                    rand = Main.rand.Next(0, 1500 / dustAmountMultiplier);
+                                }
+
+                                if (rand == 0)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<EmberDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, Main.rand.Next(-10, 10) / 25);
+                                }
+                                else if (rand == 1)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneUndergroundDesert) //desert
+                            {
+                                var sandType = DustID.Sand;
+                                rand = Main.rand.Next(0, 40000 / dustAmountMultiplier);
+
+                                if (rand <= 5)
+                                {
+                                    if (Player.ZoneCrimson)
+                                    {
+                                        sandType = DustID.Crimson;
+                                    }
+                                    else if (Player.ZoneCorrupt)
+                                    {
+                                        sandType = DustID.Corruption;
+                                    }
+                                    else if (Player.ZoneHallow)
+                                    {
+                                        sandType = DustID.Pearlsand;
+                                    }
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, sandType, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand <= 10)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneGlowshroom) //mushroom biome
+                            {
+                                rand = Main.rand.Next(0, 40000 / dustAmountMultiplier);
+                                if (rand <= 3)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand == 4)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<BlueMushroomDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+
+                            if (Player.ZoneJungle && Player.position.Y / 16 >= Main.rockLayer) //jungle
+                            {
+                                rand = Main.rand.Next(0, 75000 / dustAmountMultiplier);
+                                if (rand <= 9)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                                else if (rand == 10)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.JungleSpore, 0, 0, 100, default, 1f);
+                                    Dust dust = Main.dust[dustLocation];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
