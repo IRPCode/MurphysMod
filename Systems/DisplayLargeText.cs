@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,10 +20,12 @@ namespace MurphysMod.Systems
         public Color textColor;
         public float textScale;
 
-        public bool textFade;
-        public int alpha = 255;
+        public bool animatedText;
+        public Byte alpha = 255;
 
-        public void message(string text, int timeAmount, Color color, Vector2 location, float scale, bool fade) //TODO: This only works on 2560 x 1600
+        public float movement = .05f;
+
+        public void message(string text, int timeAmount, Color color, Vector2 location, float scale, bool animated)
         {
             if (text == default)
             {
@@ -49,9 +52,9 @@ namespace MurphysMod.Systems
                 scale = 1f;
             }
 
-            if (fade == default)
+            if (animated == default)
             {
-                fade = false;
+                animated = true;
             }
 
             largeText = text;
@@ -60,19 +63,22 @@ namespace MurphysMod.Systems
             textColor = color;
             textLocation = location;
             textScale = scale;
-            textFade = fade;
+            animatedText = animated;
         }
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
             if (largeText != null && timer > 0)
             {
-
-                if (textFade == true && (timerOriginal / 5) >= timer)
+                if (animatedText == true && (timer <= timerOriginal / 5))
                 {
-                    alpha = alpha - (255 / (timerOriginal / 5));
-                    alpha = Utils.Clamp(alpha, 0, 255);
-                    textColor = new Color(textColor.R, textColor.G, textColor.B, alpha);
+                    movement *= 1.05f;
+                    textLocation.Y += movement;
+
+                    if (timer == 1)
+                    {
+                        movement = .05f;
+                    }
                 }
 
                 Vector2 getSize = ChatManager.GetStringSize(FontAssets.DeathText.Value, largeText, Vector2.One);
