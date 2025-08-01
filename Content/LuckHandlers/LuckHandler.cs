@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.DataStructures;
 using MurphysMod.Content.Buffs;
+using MurphysMod.Systems;
 
 namespace MurphysMod.Content.LuckHandlers
 {
@@ -18,107 +19,112 @@ namespace MurphysMod.Content.LuckHandlers
         {
             float luckValue = 0.0f;
 
-            //bad luck biomes
-
-            if (!Main.dayTime)
+            BookUsed bookUsed = ModContent.GetInstance<BookUsed>(); //prevents naturally occuring bad luck
+            if (bookUsed.isPlayerCursed)
             {
-                luckValue += .25f;
-            }
 
-            if (Player.ZoneCorrupt || Player.ZoneCrimson)
-            {
-                luckValue += .25f;
-            }
+                //bad luck biomes
 
-            if (Player.ZoneUndergroundDesert || Player.ZoneJungle || Player.ZoneGraveyard || Player.ZoneDungeon)
-            {
-                luckValue += .15f;
-            }
+                if (!Main.dayTime)
+                {
+                    luckValue += .30f;
+                }
 
-            if (Player.ZoneNormalUnderground)
-            {
-                luckValue += .1f;
-            }
+                if (Player.ZoneCorrupt || Player.ZoneCrimson)
+                {
+                    luckValue += .25f;
+                }
 
-            if (Player.ZoneUnderworldHeight)
-            {
-                luckValue += .35f;
-            }
+                if (Player.ZoneUndergroundDesert || Player.ZoneJungle || Player.ZoneGraveyard || Player.ZoneDungeon)
+                {
+                    luckValue += .15f;
+                }
 
-            if (Player.ZoneGraveyard)
-            {
-                luckValue += .25f;
-            }
+                if (Player.ZoneNormalUnderground)
+                {
+                    luckValue += .1f;
+                }
 
-            if (Player.ZoneWaterCandle)
-            {
-                luckValue += .25f;
-            }
+                if (Player.ZoneUnderworldHeight)
+                {
+                    luckValue += .35f;
+                }
 
-            if (Player.ZoneShadowCandle)
-            {
-                luckValue += .35f;
-            }
+                if (Player.ZoneGraveyard)
+                {
+                    luckValue += .25f;
+                }
 
-            if (Player.ZoneLihzhardTemple)
-            {
-                luckValue += .25f;
-            }
+                if (Player.ZoneWaterCandle)
+                {
+                    luckValue += .25f;
+                }
 
-            if (Player.ZoneRain || Player.ZoneSandstorm)
-            {
-                luckValue += .15f;
-            }
+                if (Player.ZoneShadowCandle)
+                {
+                    luckValue += .35f;
+                }
 
-            if (Player.ZoneTowerNebula || Player.ZoneTowerSolar || Player.ZoneTowerVortex || Player.ZoneTowerStardust)
-            {
-                luckValue += .4f;
-            }
+                if (Player.ZoneLihzhardTemple)
+                {
+                    luckValue += .25f;
+                }
 
-            //good luck biomes
+                if (Player.ZoneRain || Player.ZoneSandstorm)
+                {
+                    luckValue += .15f;
+                }
 
-            if (Player.ZoneGemCave || Player.ZoneGlowshroom || Player.ZoneGranite || Player.ZoneMarble)
-            {
-                luckValue -= .25f;
-            }
+                if (Player.ZoneTowerNebula || Player.ZoneTowerSolar || Player.ZoneTowerVortex || Player.ZoneTowerStardust)
+                {
+                    luckValue += .4f;
+                }
 
-            if (Player.ZoneShimmer || Player.ZoneHallow)
-            {
-                luckValue -= .1f;
-            }
+                //good luck biomes
 
-            //bad luck events
+                if (Player.ZoneGemCave || Player.ZoneGlowshroom || Player.ZoneGranite || Player.ZoneMarble)
+                {
+                    luckValue -= .25f;
+                }
 
-            if (Main.bloodMoon || (Main.invasionType > 5))
-            {
-                luckValue += .25f;
-            }
+                if (Player.ZoneShimmer || Player.ZoneHallow)
+                {
+                    luckValue -= .1f;
+                }
 
-            if (Main.eclipse)
-            {
-                luckValue += .35f;
-            }
+                //bad luck events
 
-            if ((Main.invasionType > 0 && Main.invasionType < 4) || Main.invasionType == 5)
-            {
-                luckValue += .15f;
-            }
+                if (Main.bloodMoon || (Main.invasionType > 5))
+                {
+                    luckValue += .25f;
+                }
 
-            //luck debuffs
+                if (Main.eclipse)
+                {
+                    luckValue += .35f;
+                }
 
-            if (Player.HasBuff<Augury>())
-            {
-                luckValue += .15f;
-            }
+                if ((Main.invasionType > 0 && Main.invasionType < 4) || Main.invasionType == 5)
+                {
+                    luckValue += .15f;
+                }
 
-            if (Player.HasBuff<BadOmen>())
-            {
-                luckValue += .25f;
-            }
+                //luck debuffs
 
-            if (Player.HasBuff<Portent>())
-            {
-                luckValue += .5f;
+                if (Player.HasBuff<Augury>())
+                {
+                    luckValue += .15f;
+                }
+
+                if (Player.HasBuff<BadOmen>())
+                {
+                    luckValue += .25f;
+                }
+
+                if (Player.HasBuff<Portent>())
+                {
+                    luckValue += .5f;
+                }
             }
 
             luckDebuffHandler(luckValue);

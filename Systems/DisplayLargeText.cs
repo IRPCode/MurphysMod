@@ -1,12 +1,9 @@
 using System;
-using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Terraria.UI.Chat;
 
 namespace MurphysMod.Systems

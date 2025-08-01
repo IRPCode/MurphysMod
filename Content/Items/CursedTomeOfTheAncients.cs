@@ -37,9 +37,9 @@ namespace MurphysMod.Content.Items
 
 			//if (!bookUsed.isPlayerCursed)
 			//{
-				bookUsed.isPlayerCursed = true;
-				Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
-				return true;
+			bookUsed.isPlayerCursed = true;
+			Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
+			return true;
 			//}
 			//else
 			//{
@@ -82,9 +82,6 @@ namespace MurphysMod.Content.Items
 
 				if (Projectile.ai[0] == 0)
 				{
-					//musicVolume = Main.musicVolume;
-
-
 
 					SoundEngine.PlaySound(book, Projectile.Center);
 
@@ -142,7 +139,7 @@ namespace MurphysMod.Content.Items
 						Vector2 direction = Projectile.Center - dustLocation;
 						direction.Normalize();
 
-						int bookDust = Dust.NewDust(dustLocation, 16, 16, DustID.SteampunkSteam, default); //try DustID.Wraith
+						int bookDust = Dust.NewDust(dustLocation, 16, 16, DustID.SteampunkSteam, default);
 
 						Main.dust[bookDust].velocity = direction * (8f + Projectile.ai[0] * .005f);
 						Main.dust[bookDust].noGravity = true;
@@ -228,44 +225,31 @@ namespace MurphysMod.Content.Items
 				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp,
 				DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
 
-				Main.spriteBatch.Draw
-				(
-					texture,
-					Projectile.Center - Main.screenPosition + new Vector2(0f, 1f), //smallest star
-					new Rectangle(0, 0, texture.Width, texture.Height),
-					color * .75f,
-					Projectile.rotation + (rotation / 2f),
-					texture.Size() * 0.5f,
-					size * 0.25f,
-					SpriteEffects.None,
-					0f
-				);
+				float rotationSpeed = 2f;
+				float spriteSize = .25f;
 
-				Main.spriteBatch.Draw
-				(
-					texture,
-					Projectile.Center - Main.screenPosition + new Vector2(0f, 1f), //medium star
-					new Rectangle(0, 0, texture.Width, texture.Height),
-					color,
-					Projectile.rotation + (-rotation / 3f),
-					texture.Size() * 0.5f,
-					size * 0.5f,
-					SpriteEffects.None,
-					0f
-				);
+				for (int i = 1; i <= 3; i++)
+				{
+					if (i == 2) rotationSpeed *= -1; //inverse
 
-				Main.spriteBatch.Draw
-				(
-					texture,
-					Projectile.Center - Main.screenPosition + new Vector2(0f, 1f), //largest star
-					new Rectangle(0, 0, texture.Width, texture.Height),
-					color * 2,
-					Projectile.rotation + (rotation / 4f),
-					texture.Size() * 0.5f,
-					size,
-					SpriteEffects.None,
-					0f
-				);
+					Main.spriteBatch.Draw
+					(
+						texture,
+						Projectile.Center - Main.screenPosition + new Vector2(0f, 1f), //smallest star
+						new Rectangle(0, 0, texture.Width, texture.Height),
+						color * (i * .75f),
+						Projectile.rotation + (rotation / rotationSpeed),
+						texture.Size() * 0.5f,
+						size * spriteSize,
+						SpriteEffects.None,
+						0f
+					);
+
+					if(i == 2) rotationSpeed *= -1; //undo
+					rotationSpeed++;
+					if (i == 3) rotationSpeed++; //keep i == 1 speed and i == 3 speed stylistically nice
+					spriteSize *= 2f;
+				}
 
 				Main.spriteBatch.End();
 
