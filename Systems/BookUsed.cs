@@ -13,6 +13,18 @@ namespace MurphysMod.Systems
             isPlayerCursed = false;
         }
 
+        //redundancy to prevent luck system bugs
+
+        public override void OnWorldUnload()
+        {
+            isPlayerCursed = false;
+        }
+
+        public override void OnModLoad()
+        {
+            isPlayerCursed = false;
+        }
+
         public override void SaveWorldData(TagCompound tag)
         {
             if (isPlayerCursed)

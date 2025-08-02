@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,9 +21,12 @@ namespace MurphysMod.Content.Items
 			Item.height = 28;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.consumable = false; //TODO: make this true
+
 			Item.useTime = 24;
 			Item.useAnimation = 24;
+
 			Item.shootSpeed = .2f;
+			Item.rare = ItemRarityID.Master;
 		}
 
 		public override bool? UseItem(Player player)
@@ -31,13 +35,30 @@ namespace MurphysMod.Content.Items
 
 			if (!bookUsed.isPlayerCursed)
 			{
-			bookUsed.isPlayerCursed = true;
-			Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
-			return true;
+				bookUsed.isPlayerCursed = true;
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
+				return true;
 			}
 			else
 			{
 				return false;
+			}
+		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			BookUsed bookUsed = ModContent.GetInstance<BookUsed>();
+			if (!bookUsed.isPlayerCursed)
+			{
+				TooltipLine tip = new TooltipLine(Mod, "toolTip1", "It feels... Powerful.");
+				tooltips.Add(tip);
+				TooltipLine tip2 = new TooltipLine(Mod, "toolTip2", "This cannot be undone.") {OverrideColor = Color.DarkRed};
+				tooltips.Add(tip2);
+			}
+			else
+			{
+				TooltipLine tip = new TooltipLine(Mod, "toolTip1", "It lies dormant; waiting.") { OverrideColor = Color.DimGray};
+				tooltips.Add(tip);
 			}
 		}
 
@@ -97,14 +118,14 @@ namespace MurphysMod.Content.Items
 				if (Projectile.ai[0] == 1)
 				{
 					Projectile.velocity.Y = -1f;
-					Main.rainTime = 1794;
+					Main.rainTime = 1793;
 					Main.raining = true;
 				}
 
 				if (Projectile.ai[0] % 175 == 0)
 				{
-					Main.windSpeedTarget += .1f;
-					Main.maxRaining += .1f;
+					Main.windSpeedTarget = MathHelper.Clamp(Main.windSpeedTarget + .1f, -1f, 1f);
+					Main.maxRaining = MathHelper.Clamp(Main.maxRaining + .1f, -1f, 1f);
 				}
 
 				else if (Projectile.ai[0] <= 300)
@@ -263,7 +284,7 @@ namespace MurphysMod.Content.Items
 			private int sourceProjectile;
 			public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
 			{
-				if (Main.projectile[sourceProjectile].active && Main.projectile[sourceProjectile].type == ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>())
+				if (Main.projectile[sourceProjectile].active && Main.projectile[sourceProjectile].type == ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>() && sourceProjectile >= 0 && sourceProjectile <= Main.maxProjectiles)
 				{
 					float randX = Main.rand.Next((int)-shakeStrength, (int)shakeStrength);
 					float randY = Main.rand.Next((int)-shakeStrength, (int)shakeStrength);
