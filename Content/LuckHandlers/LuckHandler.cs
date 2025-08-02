@@ -22,7 +22,6 @@ namespace MurphysMod.Content.LuckHandlers
             BookUsed bookUsed = ModContent.GetInstance<BookUsed>(); //prevents naturally occuring bad luck
             if (bookUsed.isPlayerCursed)
             {
-
                 //bad luck biomes
 
                 if (!Main.dayTime)

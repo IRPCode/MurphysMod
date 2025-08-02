@@ -1,3 +1,4 @@
+using System.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Systems;
@@ -12,9 +13,6 @@ namespace MurphysMod.Content.Items
 {
 	public class CursedTomeOfTheAncients : ModItem
 	{
-
-		//TODO: This file messes up the camera when the player teleports.
-
 		// The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.MurphysMod.hjson' file.
 		public override void SetDefaults()
 		{
@@ -22,12 +20,8 @@ namespace MurphysMod.Content.Items
 			Item.height = 28;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.consumable = false; //TODO: make this true
-
 			Item.useTime = 24;
 			Item.useAnimation = 24;
-
-			//Item.UseSound = book;
-
 			Item.shootSpeed = .2f;
 		}
 
@@ -35,17 +29,16 @@ namespace MurphysMod.Content.Items
 		{
 			BookUsed bookUsed = ModContent.GetInstance<BookUsed>();
 
-			//if (!bookUsed.isPlayerCursed)
-			//{
+			if (!bookUsed.isPlayerCursed)
+			{
 			bookUsed.isPlayerCursed = true;
 			Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
 			return true;
-			//}
-			//else
-			//{
-			//	return false;
-			//}
-
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		public class CursedTomeOfTheAncientsProjectile : ModProjectile
@@ -79,10 +72,8 @@ namespace MurphysMod.Content.Items
 
 			public override void AI()
 			{
-
 				if (Projectile.ai[0] == 0)
 				{
-
 					SoundEngine.PlaySound(book, Projectile.Center);
 
 					//reset to prevent crashes
@@ -217,7 +208,6 @@ namespace MurphysMod.Content.Items
 					size = Projectile.scale * alphaAmount / 750f;
 				}
 
-
 				rotation += .001f;
 
 				Main.spriteBatch.End();
@@ -245,7 +235,7 @@ namespace MurphysMod.Content.Items
 						0f
 					);
 
-					if(i == 2) rotationSpeed *= -1; //undo
+					if (i == 2) rotationSpeed *= -1; //undo
 					rotationSpeed++;
 					if (i == 3) rotationSpeed++; //keep i == 1 speed and i == 3 speed stylistically nice
 					spriteSize *= 2f;
@@ -282,7 +272,7 @@ namespace MurphysMod.Content.Items
 
 					Vector2 displaceScreen = new Vector2(randX, randY) * multiplyStrength;
 
-					Main.screenPosition += (displaceScreen);
+					Main.screenPosition += displaceScreen;
 
 					if (Main.gameMenu)
 					{
@@ -303,16 +293,21 @@ namespace MurphysMod.Content.Items
 			}
 		}
 
-		/*public class disableMusic : ModSceneEffect //TODO: Make music turn off, forums.terraria.org/index.php?threads/boss-music-mod-help.60120/
+		public class disableMusic : ModSceneEffect
 		{
-			public override void UpdateMusic(ref int music, ref MusicPriority priority)
+			public override int Music => 0;
+			public override SceneEffectPriority Priority => SceneEffectPriority.BossHigh;
+			public override bool IsSceneEffectActive(Player player)
 			{
-				if (NPC.AnyNPCs(ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>()))
+				for (int i = 0; i < Main.maxProjectiles; i++)
 				{
+					if (Main.projectile[i].type == ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>() && Main.projectile[i].active)
+					{
+						return true;
+					}
 				}
+				return false;
 			}
-
-			public override int Music => -1;
-		}*/
+		}
 	}
 }
