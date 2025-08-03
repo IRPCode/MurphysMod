@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
-using MurphysMod.Content.Buffs;
 using MurphysMod.Content.Enemies;
 using MurphysMod.Content.Items.Placeables;
 using MurphysMod.Content.LuckHandlers;
-using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

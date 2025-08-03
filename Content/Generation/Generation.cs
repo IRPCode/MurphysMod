@@ -3,15 +3,13 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.WorldBuilding;
 using Terraria.GameContent.Generation;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.IO;
 using Terraria.IO;
-using System;
-using rail;
 using StructureHelper.API;
-using Terraria.DataStructures; //add structures :)
+using Terraria.DataStructures;
+using System.Diagnostics;
+using System.Drawing;
+using System.Security.AccessControl; //add structures :)
 
 namespace MurphysMod.Content.Generation
 {
@@ -39,7 +37,68 @@ namespace MurphysMod.Content.Generation
             if (structureIndex != -1)
             {
                 tasks.Insert(structureIndex + 1, new PassLegacy("Spawning a home", GenerateHouse));
+                tasks.Insert(structureIndex + 1, new PassLegacy("Something Karl would be interested in.", GenerateMinerShacks));
             }
+        }
+
+        private void GenerateMinerShacks(GenerationProgress progress, GameConfiguration configuration) //TODO: Shacks spawn all on the same position on the Y-Axis
+        {
+            progress.Message = "Can I get a rock and stone?";
+
+            string structure = "Structures/MiningShack";
+
+            for (int i = (int)(Main.maxTilesX / 3.5f); i < (Main.maxTilesX - (int)(Main.maxTilesX / 3.5f)); i++)
+            {
+                int x = WorldGen.genRand.Next(Main.maxTilesX / 5, Main.maxTilesX - (Main.maxTilesX / 5));
+                int y = WorldGen.genRand.Next((int)(Main.maxTilesY / 4f), (int)(Main.maxTilesY / 1.2f));
+
+                int rand = Main.rand.Next(1, 4);
+
+                switch (rand) //get miningshack type
+                {
+                    case 1:
+                        structure += "1";
+                        break;
+                    case 2:
+                        structure += "2";
+                        break;
+                    case 3:
+                        structure += "3";
+                        break;
+                }
+
+                if (WorldGen.SolidTile(i, y) && WorldGen.TileType(i, y) == TileID.Stone)
+                {
+                    x = i;
+                }
+
+                if (Generator.IsInBounds(structure, Mod, new Point16(x, y)) && Main.rand.Next(0, 250) == 0 && miningShackShouldSpawn(x, y))
+                {
+                    Generator.GenerateStructure(structure, new Point16(x, y), Mod);
+                }
+
+                structure = "Structures/MiningShack"; //reset
+            }
+        }
+
+        private bool miningShackShouldSpawn(int x, int y)
+        {
+            for (int i1 = x; i1 < x + 15; i1++)
+            {
+                for (int i2 = y; i2 < y + 15; i2++)
+                {
+                    int tile = WorldGen.TileType(i1, i2);
+
+                    if (tile == TileID.JungleGrass || tile == TileID.Mud || tile == TileID.LihzahrdBrick ||
+                        tile == TileID.Ash || tile == TileID.IceBlock || tile == TileID.SnowBlock ||
+                        tile == TileID.Sand || tile == TileID.Sandstone || tile == TileID.HardenedSand ||
+                        tile == TileID.BlueDungeonBrick || tile == TileID.PinkDungeonBrick || tile == TileID.GreenDungeonBrick) //prevents bad spawning
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private void GenerateHouse(GenerationProgress progress, GameConfiguration configuration) //find something on github that isn't garbage
@@ -49,7 +108,7 @@ namespace MurphysMod.Content.Generation
             int x = Main.maxTilesX / 2 + 50;
             int y = 0;
 
-            string structure = "Structures/AbandonedHouse";
+            string structure = "Structures/AbandonedHome";
 
             for (int i = (int)Main.worldSurface - 300; i < (int)Main.worldSurface + 200; i++) //REMINDER: The structure's coordinates is from top down. 
             {                                                                                 //Make sure you account for this when the structure generates.

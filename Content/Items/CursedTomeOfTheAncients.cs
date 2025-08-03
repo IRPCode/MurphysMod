@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Configuration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Systems;
