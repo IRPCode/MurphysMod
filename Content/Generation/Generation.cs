@@ -7,9 +7,6 @@ using System.Collections.Generic;
 using Terraria.IO;
 using StructureHelper.API;
 using Terraria.DataStructures;
-using System.Diagnostics;
-using System.Drawing;
-using System.Security.AccessControl; //add structures :)
 
 namespace MurphysMod.Content.Generation
 {
@@ -41,16 +38,19 @@ namespace MurphysMod.Content.Generation
             }
         }
 
-        private void GenerateMinerShacks(GenerationProgress progress, GameConfiguration configuration) //TODO: Shacks spawn all on the same position on the Y-Axis
+        private void GenerateMinerShacks(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = "Can I get a rock and stone?";
 
             string structure = "Structures/MiningShack";
 
+            int x = 0;
+            int y = 0;
+
             for (int i = (int)(Main.maxTilesX / 3.5f); i < (Main.maxTilesX - (int)(Main.maxTilesX / 3.5f)); i++)
             {
-                int x = WorldGen.genRand.Next(Main.maxTilesX / 5, Main.maxTilesX - (Main.maxTilesX / 5));
-                int y = WorldGen.genRand.Next((int)(Main.maxTilesY / 4f), (int)(Main.maxTilesY / 1.2f));
+                x = WorldGen.genRand.Next(Main.maxTilesX / 5, Main.maxTilesX - (Main.maxTilesX / 5));
+                y = WorldGen.genRand.Next((int)(Main.maxTilesY / 2), (int)(Main.maxTilesY - (Main.maxTilesY / 5)));
 
                 int rand = Main.rand.Next(1, 4);
 
@@ -70,27 +70,34 @@ namespace MurphysMod.Content.Generation
                 if (WorldGen.SolidTile(i, y) && WorldGen.TileType(i, y) == TileID.Stone)
                 {
                     x = i;
-                }
 
-                if (Generator.IsInBounds(structure, Mod, new Point16(x, y)) && Main.rand.Next(0, 250) == 0 && miningShackShouldSpawn(x, y))
-                {
-                    Generator.GenerateStructure(structure, new Point16(x, y), Mod);
+                    for (int j = y; i < (Main.maxTilesY - (Main.maxTilesY / 5)); j++)
+                    {
+                        if (WorldGen.SolidTile(i, j) && WorldGen.TileType(i, j) == TileID.Stone)
+                        {
+                            y = i;
+                            continue;
+                        }
+                    }
+                    if (Generator.IsInBounds(structure, Mod, new Point16(x, y)) && Main.rand.Next(0, 60) == 1 && miningShackShouldSpawn(x, y))
+                    {
+                        Generator.GenerateStructure(structure, new Point16(x, y), Mod);
+                    }
                 }
-
                 structure = "Structures/MiningShack"; //reset
             }
         }
 
         private bool miningShackShouldSpawn(int x, int y)
         {
-            for (int i1 = x; i1 < x + 15; i1++)
+            for (int i1 = x; i1 < x + 15; i1++) //15x15 cube to not have bad blocks to ensure good spawning
             {
                 for (int i2 = y; i2 < y + 15; i2++)
                 {
                     int tile = WorldGen.TileType(i1, i2);
 
                     if (tile == TileID.JungleGrass || tile == TileID.Mud || tile == TileID.LihzahrdBrick ||
-                        tile == TileID.Ash || tile == TileID.IceBlock || tile == TileID.SnowBlock ||
+                        tile == TileID.Ash || tile == TileID.IceBlock || tile == TileID.SnowBlock || tile == TileID.WoodBlock ||
                         tile == TileID.Sand || tile == TileID.Sandstone || tile == TileID.HardenedSand ||
                         tile == TileID.BlueDungeonBrick || tile == TileID.PinkDungeonBrick || tile == TileID.GreenDungeonBrick) //prevents bad spawning
                     {
