@@ -60,6 +60,11 @@ Items: {
 		DisplayName: Cursed Tome Of The Ancients
 		Tooltip: ""
 	}
+
+	TorchGodsBrazier: {
+		DisplayName: Torch Gods Brazier
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -124,6 +129,7 @@ Projectiles: {
 	MagmaKnife.DisplayName: Magma Knife
 	MagmaKnifeProjectile.DisplayName: Magma Knife Projectile
 	CursedTomeOfTheAncientsProjectile.DisplayName: Cursed Tome Of The Ancients Projectile
+	MagicBolt.DisplayName: Magic Bolt
 }
 
 Tiles: {
@@ -131,4 +137,5 @@ Tiles: {
 	CursedOre.MapEntry: Cursed Ore
 	MagmaStone.MapEntry: Magma Stone
 	MagmaGem.MapEntry: Magma Gem
+	TorchGodsBrazier.MapEntry: Torch Gods Brazier
 }

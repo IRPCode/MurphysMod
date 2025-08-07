@@ -7,7 +7,7 @@ using MurphysMod.Content.Ambience;
 using System;
 
 
-namespace MurphysMod
+namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 {
 
     public class AmbientDust : ModPlayer

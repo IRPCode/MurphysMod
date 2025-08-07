@@ -26,6 +26,7 @@ namespace MurphysMod.Content.Items
 			Item.rare = ItemRarityID.Blue;
 			Item.UseSound = SoundID.Item1;
 			Item.autoReuse = true;
+			Item.shoot = ModContent.ProjectileType<MagicBolt>();
 		}
 
 		public override void AddRecipes()
@@ -37,7 +38,7 @@ namespace MurphysMod.Content.Items
 		}
 		public override bool? UseItem(Player player)
 		{
-			var projectile = ModContent.ProjectileType<FrigidBolt>();
+			/*var projectile = ModContent.ProjectileType<FrigidBolt>();
 
 			Projectile.NewProjectile(
 				player.GetSource_ItemUse(Item),
@@ -47,7 +48,7 @@ namespace MurphysMod.Content.Items
 				100, // damage
 				10f, // knockback
 				player.whoAmI
-			);
+			);*/
 
 			//Mathhelper.lerp(Main.Mouseworld - player.Center,npc.center,1f)
 

@@ -19,7 +19,7 @@ namespace MurphysMod.Content.Items
 			Item.width = 28;
 			Item.height = 28;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.consumable = false; //TODO: make this true
+			Item.consumable = false;
 
 			Item.useTime = 24;
 			Item.useAnimation = 24;
@@ -64,7 +64,6 @@ namespace MurphysMod.Content.Items
 		public class CursedTomeOfTheAncientsProjectile : ModProjectile
 		{
 			public override string Texture => "MurphysMod/Content/Items/CursedTomeOfTheAncients";
-			float musicVolume;
 
 			public int alphaAmount = 0;
 			public int amount = 10;

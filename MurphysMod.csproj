@@ -16,5 +16,8 @@
 		<Reference Include="Luminance"> 
 			<HintPath>..\ModAssemblies\Luminance_v1.0.12.dll</HintPath>
 	    </Reference>
+		<Reference Include="ModLiquidLib">
+		<HintPath>..\ModAssemblies\ModLiquidLib_v0.1.0.0.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 </Project>

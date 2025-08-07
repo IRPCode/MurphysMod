@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FcDocyxICUQ=",
+  "dgSpecHash": "t5y/Jfa6VOQ=",
   "success": true,
   "projectFilePath": "C:\\Users\\lastp\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\MurphysMod\\MurphysMod.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\lastp\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
