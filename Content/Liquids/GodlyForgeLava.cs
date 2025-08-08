@@ -9,27 +9,34 @@ using Terraria.ModLoader;
 //Since the LiquidLib is planned to be merged into tModLoader, remove these in the future.
 using ModLiquidLib.ModLoader;
 using ModLiquidLib.Utils.Structs;
+using MurphysMod.Content.Ambience.Dusts;
 
 namespace MurphysMod.Content.Liquids
 {
     public class GodlyForgeLava : ModLiquid
     {
+        public static readonly SoundStyle sound = new("MurphysMod/Content/Audio/ForgeLavaSplash")
+        {
+            Volume = 1f,
+            Pitch = 0f,
+            PitchVariance = .2f
+        };
+
         public override void SetStaticDefaults()
         {
-            VisualViscosity = 175;
+            VisualViscosity = 0;
             LiquidFallLength = 30;
-            DefaultOpacity = 0.95f;
+            DefaultOpacity = 0.9f;
             SlopeOpacity = 1f;
-            WaterRippleMultiplier = 0.4f;
-            SplashDustType = DustID.Astra; //TODO: Change this to a custom dust
-            SplashSound = SoundID.SplashWeak; //change the sound
-
+            WaterRippleMultiplier = 10000f;
+            SplashDustType = DustID.SpelunkerGlowstickSparkle; 
+            SplashSound = sound;
             ChecksForDrowning = false;
             PlayersEmitBreathBubbles = false;
 
             FishingPoolSizeMultiplier = 1.5f;
 
-            AddMapEntry(new Color(200, 200, 200), CreateMapEntryName()); //change the color too
+            AddMapEntry(new Color(255, 249, 207), CreateMapEntryName()); //change the color too
         }
 
         public override int LiquidMerge(int i, int j, int otherLiquid)
@@ -73,8 +80,8 @@ namespace MurphysMod.Content.Liquids
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
             r = 1f;
-            g = 1f;
-            b = 1f;
+            g = .97f;
+            b = .81f;
         }
 
         public override LightMaskMode LiquidLightMaskMode(int i, int j)

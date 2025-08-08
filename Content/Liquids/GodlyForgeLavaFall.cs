@@ -19,7 +19,7 @@ namespace MurphysMod.Content.Liquids
 
 		public override void AddLight(int i, int j)
 		{
-			Lighting.AddLight(i, j, 1f, 1f, 1f);
+			Lighting.AddLight(i, j, 1f, .97f, .81f);
 		}
 	}
 }

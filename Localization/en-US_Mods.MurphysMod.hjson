@@ -65,6 +65,11 @@ Items: {
 		DisplayName: Torch Gods Brazier
 		Tooltip: ""
 	}
+
+	GodlyForgeLavaBucket: {
+		DisplayName: Godly Forge Lava Bucket
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -139,3 +144,5 @@ Tiles: {
 	MagmaGem.MapEntry: Magma Gem
 	TorchGodsBrazier.MapEntry: Torch Gods Brazier
 }
+
+Liquids.GodlyForgeLava.MapEntry: Godly Forge Lava

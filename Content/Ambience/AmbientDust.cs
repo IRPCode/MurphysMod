@@ -5,6 +5,11 @@ using Terraria.ID;
 using MurphysMod.Content.Ambience.Dusts;
 using MurphysMod.Content.Ambience;
 using System;
+using MurphysMod.Content.Liquids;
+
+using ModLiquidLib.ModLoader;
+using ModLiquidLib.Utils.Structs;
+using System.Linq.Expressions;
 
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
@@ -199,27 +204,70 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                                 dust = Main.dust[dustLocation];
                                 dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
                             }
-                            else if (rand == 5)
+                            /*else if (rand == 5)
                             {
                                 int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
                                 dust = Main.dust[dustLocation];
                                 dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
 
-                            }
+                            }*/
                         }
+
+                        //int forgeLavaType = ModContent.Find<ModLiquid>("MurphysMod", "GodlyForgeLava").Type;
+                        try {
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "GodlyForgeLava").Type)
+                            {
+                                rand = Main.rand.Next(0, 10 / dustAmountMultiplier);
+                                Dust dust;
+
+                                if (rand <= 5)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDust>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                }
+                                else if (rand == 6)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustBlue>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                }
+                                else if (rand == 7)
+                                {
+                                    int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustOrange>(), 0, 0, 100, default, 1f);
+                                    dust = Main.dust[dustLocation];
+                                    dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                }
+
+                                /*for (int j = 0; j < 50; j++)
+                                {
+                                    x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
+                                    y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                                    tile = Framing.GetTileSafely(x, y);
+                                    Tile shimmerTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
+
+                                    if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "GodlyForgeLava").Type && shimmerTileAirCheck.LiquidAmount == 0) //forge liquid
+                                    {
+                                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.SandstormInABottle, 0, 0, 100, default, 1f);
+                                    }
+                                } */
+                            }
+                        } catch (Exception){
+                            Main.NewText("Error parsing ModLiquid GodlyForgeLava from MurphysMod.");
+                    }
+                    } 
+
+
+                    Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
+                    if (tile.LiquidAmount == 255 && tile.LiquidType == LiquidID.Water && tileAirCheck.LiquidAmount != 0)
+                    { //water bubbles
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BreatheBubble, 0, 0, 100, default, 1f);
                     }
 
 
-                        Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
-                        if (tile.LiquidAmount == 255 && tile.LiquidType == LiquidID.Water && tileAirCheck.LiquidAmount != 0)
-                        { //water bubbles
-                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BreatheBubble, 0, 0, 100, default, 1f);
-                        }
-                    
-
                     if (Player.ZoneUnderworldHeight) //hell
                     { //change this logic to only spawn particles off screen
-                    //also make embers fade in
+                      //also make embers fade in
                         rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
                         Dust dust;
 

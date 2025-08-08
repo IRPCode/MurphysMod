@@ -1,4 +1,4 @@
-﻿using ModLiquidExampleMod.Content.Liquids;
+﻿using MurphysMod.Content.Liquids;
 using ModLiquidLib.ID;
 using ModLiquidLib.ModLoader;
 using Terraria;
@@ -16,7 +16,6 @@ namespace MurphysMod.Content.Items
 		{
 			ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
 			ItemID.Sets.AlsoABuildingItem[Type] = true; 
-			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExampleBottomlessBucket>();
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 			LiquidID_TLmod.Sets.CreateLiquidBucketItem[LiquidLoader.LiquidType<GodlyForgeLava>()] = Type;
 
@@ -96,7 +95,7 @@ namespace MurphysMod.Content.Items
 				}
 
 				SoundEngine.PlaySound(SoundID.SplashWeak, player.position); 
-				tile.LiquidType = LiquidLoader.LiquidType<ExampleLiquid>();
+				tile.LiquidType = LiquidLoader.LiquidType<GodlyForgeLava>();
 				tile.LiquidAmount = byte.MaxValue; 
 				WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY);
 				Item.stack--; 
