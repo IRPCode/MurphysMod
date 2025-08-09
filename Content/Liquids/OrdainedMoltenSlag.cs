@@ -13,9 +13,9 @@ using MurphysMod.Content.Ambience.Dusts;
 
 namespace MurphysMod.Content.Liquids
 {
-    public class GodlyForgeLava : ModLiquid
+    public class OrdainedMoltenSlag : ModLiquid
     {
-        public static readonly SoundStyle sound = new("MurphysMod/Content/Audio/ForgeLavaSplash")
+        public static readonly SoundStyle sound = new("MurphysMod/Content/Audio/OrdainedMoltenSlagSplash")
         {
             Volume = 1f,
             Pitch = 0f,
@@ -27,8 +27,8 @@ namespace MurphysMod.Content.Liquids
             VisualViscosity = 0;
             LiquidFallLength = 30;
             DefaultOpacity = 0.9f;
-            SlopeOpacity = 1f;
-            WaterRippleMultiplier = 10000f;
+            SlopeOpacity = 0.9f;
+            WaterRippleMultiplier = 100f;
             SplashDustType = DustID.SpelunkerGlowstickSparkle; 
             SplashSound = sound;
             ChecksForDrowning = false;
@@ -74,7 +74,7 @@ namespace MurphysMod.Content.Liquids
 
         public override int ChooseWaterfallStyle(int i, int j)
         {
-            return ModContent.GetInstance<GodlyForgeLavaFall>().Slot;
+            return ModContent.GetInstance<OrdainedMoltenSlagFall>().Slot;
         }
 
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

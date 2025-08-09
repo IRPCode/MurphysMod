@@ -5,7 +5,7 @@ using Terraria;
 namespace MurphysMod.Content.Liquids
 {
     //An example of the ModLiquidFall class (although pretty empty here, a proper example will be made soon)
-	public class GodlyForgeLavaFall : ModLiquidFall
+	public class OrdainedMoltenSlagFall : ModLiquidFall
 	{
 		public override bool PlayWaterfallSounds()
 		{

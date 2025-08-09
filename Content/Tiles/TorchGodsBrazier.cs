@@ -24,7 +24,7 @@ namespace MurphysMod.Content.Tiles
             TileObjectData.newTile.CoordinateHeights = new[] {16, 16, 16, 16, 16};
 
             TileObjectData.newTile.CoordinatePadding = 0;
-            TileObjectData.newTile.CoordinatePaddingFix = new Terraria.DataStructures.Point16(0, 0);
+            TileObjectData.newTile.CoordinatePaddingFix = new Terraria.DataStructures.Point16(0, 2);
             TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile, TileObjectData.newTile.Width, 0);
 
             TileObjectData.addTile(Type);

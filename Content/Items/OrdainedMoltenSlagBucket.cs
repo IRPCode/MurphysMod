@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace MurphysMod.Content.Items
 {
-	public class GodlyForgeLavaBucket : ModItem
+	public class OrdainedMoltenSlagBucket : ModItem
 	{
 
 		public override void SetStaticDefaults()
@@ -17,7 +17,7 @@ namespace MurphysMod.Content.Items
 			ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
 			ItemID.Sets.AlsoABuildingItem[Type] = true; 
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
-			LiquidID_TLmod.Sets.CreateLiquidBucketItem[LiquidLoader.LiquidType<GodlyForgeLava>()] = Type;
+			LiquidID_TLmod.Sets.CreateLiquidBucketItem[LiquidLoader.LiquidType<OrdainedMoltenSlag>()] = Type;
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
 		}
@@ -88,14 +88,14 @@ namespace MurphysMod.Content.Items
 
 				if (tile.LiquidAmount != 0)
 				{
-					if (tile.LiquidType != LiquidLoader.LiquidType<GodlyForgeLava>())
+					if (tile.LiquidType != LiquidLoader.LiquidType<OrdainedMoltenSlag>())
 					{
 						return;
 					}
 				}
 
 				SoundEngine.PlaySound(SoundID.SplashWeak, player.position); 
-				tile.LiquidType = LiquidLoader.LiquidType<GodlyForgeLava>();
+				tile.LiquidType = LiquidLoader.LiquidType<OrdainedMoltenSlag>();
 				tile.LiquidAmount = byte.MaxValue; 
 				WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY);
 				Item.stack--; 

@@ -70,6 +70,11 @@ Items: {
 		DisplayName: Godly Forge Lava Bucket
 		Tooltip: ""
 	}
+
+	OrdainedMoltenSlagBucket: {
+		DisplayName: Ordained Molten Slag Bucket
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -145,4 +150,7 @@ Tiles: {
 	TorchGodsBrazier.MapEntry: Torch Gods Brazier
 }
 
-Liquids.GodlyForgeLava.MapEntry: Godly Forge Lava
+Liquids: {
+	GodlyForgeLava.MapEntry: Godly Forge Lava
+	OrdainedMoltenSlag.MapEntry: Ordained Molten Slag
+}
