@@ -7,6 +7,7 @@ using Terraria.GameContent.Events;
 using MurphysMod.Content.Ambience.Dusts;
 using Microsoft.Xna.Framework;
 using System;
+using MurphysMod.Content.Buffs;
 
 public class OrdainedMoltenSlagPlayerHandler : ModPlayer
 {
@@ -26,7 +27,7 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                 if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                 {
 
-                    if (Player.unlockedBiomeTorches)
+                    if (!Player.unlockedBiomeTorches)
                     {
                         Player.slowFall = true;
                         Player.velocity.Y = -15f;
@@ -34,9 +35,9 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                     }
                     else
                     {
-                        // Player.AddBuff(ModContent.BuffType<>(), 300);
-                        //TODO: Add a new debuff called "Ordained Burning" that kills your character far faster than other debuffs.
-                        //Also kill all gravestone/headstone projectiles
+                        Player.AddBuff(ModContent.BuffType<OrdainedFlames>(), 300);
+                        Player.velocity.Y = 5f;
+                        //Also all gravestone/headstone projectiles
                     }
                 }
 
