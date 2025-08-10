@@ -225,19 +225,31 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                                     int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDust>(), 0, 0, 100, default, 1f);
                                     dust = Main.dust[dustLocation];
                                     dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                    Main.dust[dustLocation].noLight = false;
+                                    Main.dust[dustLocation].noLightEmittence = true;
+                                    dust.color = Color.White;
+
                                 }
                                 else if (rand == 6)
                                 {
                                     int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustBlue>(), 0, 0, 100, default, 1f);
                                     dust = Main.dust[dustLocation];
                                     dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                    Main.dust[dustLocation].noLight = false;
+                                    Main.dust[dustLocation].noLightEmittence = true;
+                                    dust.color = Color.White;
                                 }
                                 else if (rand == 7)
                                 {
                                     int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustOrange>(), 0, 0, 100, default, 1f);
                                     dust = Main.dust[dustLocation];
                                     dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, -.5f);
+                                    Main.dust[dustLocation].noLight = false;
+                                    Main.dust[dustLocation].noLightEmittence = true;
+                                    dust.color = Color.White;
                                 }
+
+                                
 
                                 /*for (int j = 0; j < 50; j++)
                                 {
