@@ -1,11 +1,7 @@
-using System.Numerics;
 using ModLiquidLib.ModLoader;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Events;
-using MurphysMod.Content.Ambience.Dusts;
-using Microsoft.Xna.Framework;
 using System;
 using MurphysMod.Content.Buffs;
 
