@@ -13,6 +13,7 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
 {
 
     public bool liquidVelCheck = false;
+    public bool velocityType;
     public override void PostUpdate()
     {
         try
@@ -27,16 +28,15 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                 if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                 {
 
-                    if (!Player.unlockedBiomeTorches)
+                    if (Player.unlockedBiomeTorches)
                     {
                         Player.slowFall = true;
                         Player.velocity.Y = -15f;
-
                     }
                     else
                     {
-                        Player.AddBuff(ModContent.BuffType<OrdainedFlames>(), 300);
-                        Player.velocity.Y = 5f;
+                        Player.AddBuff(ModContent.BuffType<OrdainedFlames>(), 15);
+                        Player.velocity.Y = -10f;
                         //Also all gravestone/headstone projectiles
                     }
                 }

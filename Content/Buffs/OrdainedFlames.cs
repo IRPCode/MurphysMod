@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Mono.CompilerServices.SymbolWriter;
 using MurphysMod.Content.Ambience;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace MurphysMod.Content.Buffs
 {
@@ -23,13 +24,30 @@ namespace MurphysMod.Content.Buffs
 			tip = "You are melting away!";
 		}
 
-        public override void Update(Player player, ref int buffIndex)
-        {
-			if (player.statLife >= 15)
+		public override void Update(Player player, ref int buffIndex)
+		{
+			Dust.NewDust(new Vector2(player.position.X, player.position.Y), 16, 16, DustID.SpelunkerGlowstickSparkle, 0, 0, 100, default, 1f);
+			player.GetModPlayer<OrdainedFlamesPlayer>().OrdainedFlames = true;
+        }
+	}
+
+	public class OrdainedFlamesPlayer : ModPlayer{
+		public bool OrdainedFlames;
+		public override void ResetEffects()
+		{
+			OrdainedFlames = false;
+		}
+        public override void UpdateBadLifeRegen()
+		{
+			if (OrdainedFlames)
 			{
-				player.lifeRegen -= 15;
-				Dust.NewDust(new Vector2(player.position.X, player.position.Y), 16, 16,  DustID.SpelunkerGlowstickSparkle, 0, 0, 100, default, 1f);
+				if (Player.lifeRegen > 0)
+				{
+					Player.lifeRegen = 0;
+					Player.lifeRegenTime = 0;
+				}
+				Player.lifeRegen -= (int)(Player.statLifeMax / 5);
 			}
-        }   
+		}   
 	}
 }
