@@ -217,7 +217,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         try {
                             if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                             {
-                                rand = Main.rand.Next(0, 10 / dustAmountMultiplier);
+                                rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
                                 Dust dust;
 
                                 if (rand <= 5)

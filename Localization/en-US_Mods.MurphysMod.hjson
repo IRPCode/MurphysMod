@@ -159,3 +159,10 @@ Liquids: {
 	GodlyForgeLava.MapEntry: Godly Forge Lava
 	OrdainedMoltenSlag.MapEntry: Ordained Molten Slag
 }
+
+Biomes: {
+	OrdainedForgeBiome: {
+		DisplayName: Ordained Forge Biome
+		TownNPCDialogueName: the Ordained Forge Biome
+	}
+}

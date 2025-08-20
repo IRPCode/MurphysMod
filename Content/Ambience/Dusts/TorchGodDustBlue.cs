@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using MurphysMod.Content.Ambience;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace MurphysMod.Content.Ambience.Dusts
 {
@@ -13,7 +14,7 @@ namespace MurphysMod.Content.Ambience.Dusts
 
         public override void OnSpawn(Dust dust)
         {
-            dust.velocity = new Vector2(Main.rand.Next(-10,10) / 9, Main.rand.Next(2, 8) / 5);
+            dust.velocity = new Vector2(Main.rand.Next(-10, 10) / 9, Main.rand.Next(2, 8) / 5);
             dust.noGravity = false;
             dust.scale = 1.5f;
             //dust.fadeIn = 2.5f;
@@ -22,10 +23,19 @@ namespace MurphysMod.Content.Ambience.Dusts
 
         public override bool Update(Dust dust)
         {
-            dust.scale *= .998f;
+
+            if (dust.scale <= .3f) //prevents graphic shimmering
+            {
+                dust.scale *= .92f;
+            }
+            else
+            {
+                dust.scale *= .998f;
+            }
             
+
             int x = Tick.globalTick;
-            dust.position -= dust.velocity * new Vector2(1,1.3f);
+            dust.position -= dust.velocity * new Vector2(1, 1.3f);
 
 
             if (dust.velocity.X != 0)
@@ -37,7 +47,7 @@ namespace MurphysMod.Content.Ambience.Dusts
                 dust.rotation += .02f;
             }
 
-            
+
 
             if (x % 100 == 0)
             {
@@ -48,6 +58,26 @@ namespace MurphysMod.Content.Ambience.Dusts
                 return false;
             }
 
+
+        }
+
+        public override bool PreDraw(Dust dust)
+        {
+            Vector2 pos = dust.position - Main.screenPosition;
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Content/Ambience/Dusts/GlowMasks/TorchGodDustBlueGlowMask");
+
+            Main.spriteBatch.Draw(
+                texture,
+                pos,
+                null,
+                Color.White,
+                dust.rotation,
+                texture.Size() / 2,
+                dust.scale,
+                SpriteEffects.None,
+                0f
+            );
+            return false;
 
         }
     }
