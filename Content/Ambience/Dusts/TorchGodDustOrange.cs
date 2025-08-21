@@ -23,9 +23,9 @@ namespace MurphysMod.Content.Ambience.Dusts
 
         public override bool Update(Dust dust)
         {
-             if (dust.scale <= .3f) //prevents graphic shimmering
+             if (dust.scale <= .4f) //prevents graphic shimmering
             {
-                dust.scale *= .92f;
+                dust.scale *= .7f;
             }
             else
             {

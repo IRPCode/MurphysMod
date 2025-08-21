@@ -7,6 +7,7 @@ using Mono.CompilerServices.SymbolWriter;
 using MurphysMod.Content.Ambience;
 using Microsoft.Xna.Framework;
 using System;
+using Mono.Cecil;
 
 namespace MurphysMod.Content.Buffs
 {
@@ -28,6 +29,12 @@ namespace MurphysMod.Content.Buffs
 		{
 			Dust.NewDust(new Vector2(player.position.X, player.position.Y), 16, 16, DustID.SpelunkerGlowstickSparkle, 0, 0, 100, default, 1f);
 			player.GetModPlayer<OrdainedFlamesPlayer>().OrdainedFlames = true;
+
+		}
+
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+			npc.lifeRegen -= 15;
         }
 	}
 

@@ -31,7 +31,18 @@ namespace MurphysMod.Content.Biomes
             {
                 return false;
             }
-            //return ModContent.GetInstance<ForgeTileCounter>().forgeBlockCount >= 1;
+        }
+    }
+
+    public class spawnRatesForForge : GlobalNPC
+    {
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if (player.InModBiome<OrdainedForgeBiome>())
+            {
+                spawnRate = int.MinValue;
+                maxSpawns = 0;
+            }
         }
     }
 }

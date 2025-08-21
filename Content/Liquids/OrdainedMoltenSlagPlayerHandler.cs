@@ -70,7 +70,7 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                     {
                         if (itemLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                         {
-                            item.velocity.Y = Math.Abs(item.velocity.Y) * -1.5f;
+                            item.velocity.Y = Math.Abs(item.velocity.Y) * -1f;
 
                             if (Math.Abs(item.velocity.Y) < 1f)
                             {
