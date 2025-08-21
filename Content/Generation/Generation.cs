@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 
 namespace MurphysMod.Content.Generation
 {
-    public class Generation : ModSystem
+    public class Generation : ModSystem //531 -- 265
     {
         int randX = Main.rand.Next(1, 50);
         int randY = Main.rand.Next(50, 150);
@@ -35,7 +35,41 @@ namespace MurphysMod.Content.Generation
             {
                 tasks.Insert(structureIndex + 1, new PassLegacy("Spawning a home", GenerateHouse));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Something Karl would be interested in.", GenerateMinerShacks));
+                tasks.Insert(structureIndex + 1, new PassLegacy("Filling a forge with Ordained Slag", generateForge));
             }
+        }
+
+        private void generateForge(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Filling a forge with Ordained Slag";
+
+            string structure = "Structures/OrdainedForge";
+
+            int x = 0;
+            int y = 0;
+
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                for (int j = 0; j < Main.maxTilesY; j++)
+                {
+                    if (j == (Main.maxTilesY / 2f))
+                    {
+                        y = j;
+                        break;
+                    }
+                }
+
+                if (i == (Main.maxTilesX / 2f))
+                {
+                    x = i;
+                    break;
+                }
+            }
+
+            if (Generator.IsInBounds(structure, Mod, new Point16(x, y)))
+                {
+                    Generator.GenerateStructure(structure, new Point16(x - 266, y - 100), Mod); //substract the structure's height plus some
+                }
         }
 
         private void GenerateMinerShacks(GenerationProgress progress, GameConfiguration configuration)

@@ -70,7 +70,7 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                     {
                         if (itemLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                         {
-                            item.velocity.Y = Math.Abs(item.velocity.Y) * -3;
+                            item.velocity.Y = Math.Abs(item.velocity.Y) * -1.5f;
 
                             if (Math.Abs(item.velocity.Y) < 1f)
                             {
@@ -88,7 +88,8 @@ public class OrdainedMoltenSlagPlayerHandler : ModPlayer
                     {
                         if (npcLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type) //prevents boss deaths
                         {
-                            npc.velocity.Y = Math.Abs(npc.velocity.Y) * -1;
+                            npc.velocity.Y = -15f;
+                            npc.AddBuff(ModContent.BuffType<OrdainedFlames>(), 300);
                         }
                     }
                 }

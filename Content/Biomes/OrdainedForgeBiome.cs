@@ -23,7 +23,15 @@ namespace MurphysMod.Content.Biomes
 
         public override bool IsBiomeActive(Player player)
         {
-            return ModContent.GetInstance<ForgeTileCounter>().forgeBlockCount >= 1;
+            if (player.Center.Y / 16f <= (Main.maxTilesY / 2) + 100 && player.Center.Y / 16f >= (Main.maxTilesY / 2) - 100 && player.Center.X / 16f <= (Main.maxTilesX / 2) + 203 && player.Center.X / 16f >= (Main.maxTilesX / 2) - 203)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            //return ModContent.GetInstance<ForgeTileCounter>().forgeBlockCount >= 1;
         }
     }
 }
