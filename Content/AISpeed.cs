@@ -185,7 +185,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
 
                 else
                 {
-                    npc.velocity = default;
+                    npc.velocity *= 1.001f;
                 }
 
                 npc.netUpdate = true;

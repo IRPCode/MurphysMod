@@ -211,7 +211,7 @@ namespace MurphysMod.Content.Items
 
 			public override bool PreDraw(ref Color lightColor)
 			{
-				Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("Assets/Textures/MagicFlare.png");
+				Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/MagicFlare");
 
 				float alpha = alphaAmount / 255f;
 
