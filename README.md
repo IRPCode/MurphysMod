@@ -2,7 +2,7 @@
 
 Murphy's Mod is a terraria mod for the TModloader client. This <i>work in progress</i> mod has a few standout features, being:
 
-- Dynamic Bad Luck System
+- Dynamic Bad Luck System based off of in-game events (Time of day, what biome the player is in, if candles certian tiles (like water/shadow candles) are around them)
   - Dynamically scales select weapons
   - Dynamically scales enemy AI for almost all enemies and game difficulty
   - Dynamically scales select accessories and armors (planned)
