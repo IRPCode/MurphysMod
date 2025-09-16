@@ -10,7 +10,7 @@ namespace MurphysMod.Content.Ambience.Dusts
 
     public class TorchGodDust : ModDust
     {
-        public override string Texture => "MurphysMod/Content/Ambience/Dusts/TorchGodDust";
+        public override string Texture => "MurphysMod/Assets/Textures/Dusts/TorchGodDust";
 
         public override void OnSpawn(Dust dust)
         {
@@ -63,7 +63,7 @@ namespace MurphysMod.Content.Ambience.Dusts
         public override bool PreDraw(Dust dust)
         {
             Vector2 pos = dust.position - Main.screenPosition;
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Content/Ambience/Dusts/GlowMasks/TorchGodDustGlowMask");
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MMurphysMod/Assets/Textures/Dusts/GlowMasks/TorchGodDustGlowMask");
 
             Main.spriteBatch.Draw(
                 texture,

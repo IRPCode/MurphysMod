@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Ambience.Dusts
 
     public class UndergroundDust : ModDust
     {
-        public override string Texture => "MurphysMod/Content/Ambience/Dusts/UndergroundDust";
+        public override string Texture => "MurphysMod/Assets/Textures/Dusts/UndergroundDust";
 
         public override void OnSpawn(Dust dust)
         {

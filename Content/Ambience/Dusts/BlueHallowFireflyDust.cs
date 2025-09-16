@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Ambience.Dusts
 
     public class BlueHallowFireflyDust : ModDust
     {
-        public override string Texture => "MurphysMod/Content/Ambience/Dusts/BlueHallowFireflyDust";
+        public override string Texture => "MurphysMod/Assets/Textures/Dusts/BlueHallowFireflyDust";
 
         public static bool trigger = false;
         public override void OnSpawn(Dust dust)
