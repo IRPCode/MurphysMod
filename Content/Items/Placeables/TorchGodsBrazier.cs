@@ -1,10 +1,12 @@
 using Terraria.ModLoader;
 using Terraria.ID;
+using System;
 
 namespace MurphysMod.Content.Items.Placeables
 {
     internal class TorchGodsBrazier : ModItem
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Tiles/TorchGodsBrazier";
 
         public override void SetDefaults()
         {

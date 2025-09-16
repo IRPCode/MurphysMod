@@ -75,6 +75,11 @@ Items: {
 		DisplayName: Ordained Molten Slag Bucket
 		Tooltip: ""
 	}
+
+	CaveSightPotion: {
+		DisplayName: Cave Sight Potion
+		Tooltip: ""
+	}
 }
 
 Buffs: {

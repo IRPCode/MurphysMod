@@ -5,11 +5,13 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using Mono.CompilerServices.SymbolWriter;
 using MurphysMod.Content.Ambience;
+using System;
 
 namespace MurphysMod.Content.Buffs
 {
 	public class CursedMouse : ModBuff
 	{
+		public override String Texture => "MurphysMod/Assets/Textures/BuffIcons/CursedMouse";
 		public override void SetStaticDefaults()
 		{
 			Main.debuff[Type] = true;

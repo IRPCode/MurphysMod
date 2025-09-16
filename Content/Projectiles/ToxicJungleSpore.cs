@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class ToxicJungleSpore : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/ToxicJungleSpore";
+        public override String Texture => "MurphysMod/Assets/Textures/Projectiles/ToxicJungleSpore";
 
         public int x = 0;
         public override void SetDefaults()

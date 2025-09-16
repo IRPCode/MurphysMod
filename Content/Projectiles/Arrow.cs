@@ -8,7 +8,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class Arrow : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/Arrow";
+        public override String Texture => "Terraria/Images/Projectile_1";
         public override void SetDefaults() 
         {
             Projectile.width = 10;

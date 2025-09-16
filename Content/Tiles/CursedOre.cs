@@ -2,11 +2,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
+using System;
 
-namespace MurphysMod.Content.Tiles //TODO: https://www.youtube.com/watch?v=vjrIH2v90WM spawn ores on gen
+namespace MurphysMod.Content.Tiles
 {
     internal class CursedOre : ModTile
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Tiles/CursedOre";
         public override void SetStaticDefaults()
         {
             TileID.Sets.Ore[Type] = true;

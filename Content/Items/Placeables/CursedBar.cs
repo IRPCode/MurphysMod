@@ -2,11 +2,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
+using System;
 
 namespace MurphysMod.Content.Items.Placeables
 {
     internal class CursedBar : ModItem
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Items/Placeables/CursedBar";
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;

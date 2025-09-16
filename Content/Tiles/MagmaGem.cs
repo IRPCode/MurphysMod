@@ -4,11 +4,13 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
 
-namespace MurphysMod.Content.Tiles //TODO: https://www.youtube.com/watch?v=vjrIH2v90WM spawn ores on gen
+namespace MurphysMod.Content.Tiles
 {
     internal class MagmaGem : ModTile
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Tiles/MagmaGem";
         public override void SetStaticDefaults()
         {
             TileID.Sets.Ore[Type] = true;
@@ -28,7 +30,6 @@ namespace MurphysMod.Content.Tiles //TODO: https://www.youtube.com/watch?v=vjrIH
 
             MineResist = 2f;
             MinPick = 55; //60% strength needed
-
         }
 
         public override void PostDraw(int x, int y, SpriteBatch spriteBatch)
@@ -40,7 +41,7 @@ namespace MurphysMod.Content.Tiles //TODO: https://www.youtube.com/watch?v=vjrIH
                 zero = Vector2.Zero;
             }
             int height = tile.TileFrameY == 36 ? 18 : 16;
-            spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Content/Tiles/MagmaGemGlow", AssetRequestMode.ImmediateLoad).Value,
+            spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/MagmaGemGlow", AssetRequestMode.ImmediateLoad).Value,
             new Vector2(x * 16 - (int)Main.screenPosition.X, y * 16 - (int)Main.screenPosition.Y) + zero,
             new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, height),
             new Color(200, 200, 200),

@@ -3,17 +3,15 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using System;
 using Terraria.Audio;
-using MurphysMod.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.Net;
 using MurphysMod.Content.LuckHandlers;
 
 namespace MurphysMod.Content.Enemies
 {
     public class MagmaKnifeProjectile : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Items/MagmaKnife";
+        public override String Texture => "MurphysMod/Assets/Textures/Items/Weapons/MagmaKnife";
         int dustAmount = 10;
         int dustType = DustID.OrangeTorch;
         public override void SetDefaults()
@@ -79,7 +77,7 @@ namespace MurphysMod.Content.Enemies
 
         public override void PostDraw(Color lightColor)
         {
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Content/Items/MagmaKnifeGlowMask");
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Items/Weapons/MagmaKnifeGlowMask");
             Main.spriteBatch.Draw
             (
                 texture,

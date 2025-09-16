@@ -1,13 +1,13 @@
 ﻿using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.DataStructures;
+using System;
 
 namespace MurphysMod.Content.Buffs
 {
 	public class Portent : ModBuff
 	{
+		public override String Texture => "MurphysMod/Assets/Textures/BuffIcons/Portent";
 		public override void SetStaticDefaults()
 		{
 			Main.debuff[Type] = true;

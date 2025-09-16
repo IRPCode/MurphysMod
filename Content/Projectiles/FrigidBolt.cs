@@ -4,13 +4,12 @@ using Terraria.ID;
 using System;
 using Terraria.Audio;
 using Microsoft.Xna.Framework;
-using Microsoft.Build.Evaluation;
 
 namespace MurphysMod.Content.Enemies
 {
     public class FrigidBolt : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/FrigidBolt";
+        public override String Texture => "Terraria/Images/Projectile_118";
         public ref float DelayTimer => ref Projectile.ai[1];
 
         public override void SetStaticDefaults()

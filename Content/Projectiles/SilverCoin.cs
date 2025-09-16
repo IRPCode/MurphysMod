@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class SilverCoin : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/SilverCoin";
+        public override String Texture => "Terraria/Images/Item_72";
         public override void SetDefaults()
         {
             Projectile.width = 10;

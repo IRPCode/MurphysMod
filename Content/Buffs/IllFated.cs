@@ -3,11 +3,13 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.DataStructures;
+using System;
 
 namespace MurphysMod.Content.Buffs
 {
 	public class IllFated : ModBuff
 	{
+		public override String Texture => "MurphysMod/Assets/Textures/BuffIcons/IllFated";
 		public override void SetStaticDefaults()
 		{
 			Main.debuff[Type] = true;

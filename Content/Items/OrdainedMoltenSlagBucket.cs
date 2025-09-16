@@ -6,16 +6,18 @@ using Terraria.Audio;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System;
 
 namespace MurphysMod.Content.Items
 {
 	public class OrdainedMoltenSlagBucket : ModItem
 	{
+		public override String Texture => "MurphysMod/Assets/Textures/Items/OrdainedMoltenSlagBucket";
 
 		public override void SetStaticDefaults()
 		{
 			ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
-			ItemID.Sets.AlsoABuildingItem[Type] = true; 
+			ItemID.Sets.AlsoABuildingItem[Type] = true;
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 			LiquidID_TLmod.Sets.CreateLiquidBucketItem[LiquidLoader.LiquidType<OrdainedMoltenSlag>()] = Type;
 

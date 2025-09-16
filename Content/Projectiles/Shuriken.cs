@@ -8,7 +8,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class Shuriken : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/Shuriken";
+        public override String Texture => "Terraria/Images/Item_42";
         public override void SetDefaults() 
         {
             Projectile.width = 10;

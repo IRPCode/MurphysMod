@@ -2,12 +2,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria.Enums;
+using System;
 
 namespace MurphysMod.Content.Items.Placeables
 {
     internal class CursedOre : ModItem
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Items/Placeables/CursedOre";
 
         public override void SetStaticDefaults()
         {

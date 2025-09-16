@@ -1,10 +1,11 @@
+using System;
 using Microsoft.Xna.Framework;
 using MurphysMod.Content.Enemies;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace MurphysMod.Content.Items
+namespace MurphysMod.Content.Items.Weapons
 {
 	// This is a basic item template.
 	// Please see tModLoader's ExampleMod for every other example:
@@ -12,6 +13,7 @@ namespace MurphysMod.Content.Items
 	public class FrigidTome : ModItem
 	{
 		// The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.MurphysMod.hjson' file.
+		public override String Texture => "MurphysMod/Assets/Textures/Items/Weapons/FrigidTome";
 		public override void SetDefaults()
 		{
 			Item.width = 28;

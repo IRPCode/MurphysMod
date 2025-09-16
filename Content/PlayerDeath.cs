@@ -12,41 +12,41 @@ namespace MurphysMod.Content //TODO: if in water, have a weapon that does a sona
     public class PlayerDeath : ModPlayer
     {
         public bool onFire = false;
-        public static readonly SoundStyle deathSound1 = new("MurphysMod/Content/Audio/noscream")
+        public static readonly SoundStyle deathSound1 = new("MurphysMod/Assets/Audio/noscream")
         {
             Volume = 1f,
             Pitch = 0f,
             PitchVariance = .2f
         };
 
-        public static readonly SoundStyle deathSound2 = new("MurphysMod/Content/Audio/laugh")
+        public static readonly SoundStyle deathSound2 = new("MurphysMod/Assets/Audio/laugh")
         {
             Volume = 5f,
             Pitch = 0f,
             PitchVariance = .2f
         };
 
-        public static readonly SoundStyle deathSound3 = new("MurphysMod/Content/Audio/scream")
+        public static readonly SoundStyle deathSound3 = new("MurphysMod/Assets/Audio/scream")
         {
             Volume = 1f,
             Pitch = 0f,
             PitchVariance = .2f
         };
-        public static readonly SoundStyle deathSound4 = new("MurphysMod/Content/Audio/shotgun")
+        public static readonly SoundStyle deathSound4 = new("MurphysMod/Assets/Audio/shotgun")
         {
             Volume = .65f,
             Pitch = 0f,
             PitchVariance = .2f
         };
 
-          public static readonly SoundStyle deathSound5 = new("MurphysMod/Content/Audio/laughslow")
+          public static readonly SoundStyle deathSound5 = new("MurphysMod/Assets/Audio/laughslow")
         {
             Volume = 1f,
             Pitch = 0f,
             PitchVariance = .2f
         };
 
-        public static readonly SoundStyle fireSound = new("MurphysMod/Content/Audio/OnFireYell") //case all messed up because my IDE refuses to let it be all lowercase >:(
+        public static readonly SoundStyle fireSound = new("MurphysMod/Assets/Audio/OnFireYell") //case all messed up because my IDE refuses to let it be all lowercase >:(
         {
             Volume = 1f,
             Pitch = 0f

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +15,7 @@ namespace MurphysMod.Content.Items
 	public class CursedTomeOfTheAncients : ModItem
 	{
 		// The Display Name and Tooltip of this item can be edited in the 'Localization/en-US_Mods.MurphysMod.hjson' file.
+		public override String Texture => "MurphysMod/Assets/Textures/Items/CursedTomeOfTheAncients";
 		public override void SetDefaults()
 		{
 			Item.width = 28;
@@ -63,13 +65,13 @@ namespace MurphysMod.Content.Items
 
 		public class CursedTomeOfTheAncientsProjectile : ModProjectile
 		{
-			public override string Texture => "MurphysMod/Content/Items/CursedTomeOfTheAncients";
+			public override string Texture => "MurphysMod/Assets/Textures/Items/CursedTomeOfTheAncients";
 
 			public int alphaAmount = 0;
 			public int amount = 10;
 
 
-			public static readonly SoundStyle book = new("MurphysMod/Content/Audio/CursedBookClosingRift")
+			public static readonly SoundStyle book = new("MurphysMod/Assets/Audio/CursedBookClosingRift")
 			{
 				Volume = 1f,
 				Pitch = 0f,
@@ -185,7 +187,7 @@ namespace MurphysMod.Content.Items
 
 			public override void PostDraw(Color lightColor)
 			{
-				Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Content/Items/CursedTomeOfTheAncientsGlowMask");
+				Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Items/CursedTomeOfTheAncientsGlowMask");
 
 				float normalizedAlpha = Utils.Clamp(alphaAmount / 255f, 0f, 1f);
 

@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class CopperCoin : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/CopperCoin";
+        public override String Texture => "Terraria/Images/Item_71";
         public override void SetDefaults() //for slime garbage projectiles
         {
             Projectile.width = 10;

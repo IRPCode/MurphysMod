@@ -10,6 +10,9 @@ using MurphysMod.Content.Liquids;
 using ModLiquidLib.ModLoader;
 using ModLiquidLib.Utils.Structs;
 using System.Linq.Expressions;
+using MurphysMod.Content.Items.Placeables;
+using MurphysMod.Content.Tiles;
+using ModLiquidLib.Utils;
 
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
@@ -31,6 +34,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                 int rand;
 
                 Tile tile = Framing.GetTileSafely(x, y);
+
+                #region biome ambience / liquid
 
                 if ((tile.TileType == TileID.Grass || tile.TileType == TileID.Mud || tile.TileType == TileID.HallowedGrass) && !Main.dayTime) //fireflies
                 {
@@ -214,7 +219,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         }
 
                         //int forgeLavaType = ModContent.Find<ModLiquid>("MurphysMod", "GodlyForgeLava").Type;
-                        try {
+                        try
+                        {
                             if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "OrdainedMoltenSlag").Type)
                             {
                                 rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
@@ -249,7 +255,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                                     dust.color = Color.White;
                                 }
 
-                                
+
 
                                 /*for (int j = 0; j < 50; j++)
                                 {
@@ -264,10 +270,12 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                                     }
                                 } */
                             }
-                        } catch (Exception){
+                        }
+                        catch (Exception)
+                        {
                             Main.NewText("Error parsing ModLiquid GodlyForgeLava from MurphysMod.");
+                        }
                     }
-                    } 
 
 
                     Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
@@ -368,6 +376,6 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
             }
         }
 
-
+        #endregion
     }
 }

@@ -9,7 +9,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class SlimyBoulder : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/SlimyBoulder";
+        public override String Texture => "MurphysMod/Assets/Textures/Projectiles/SlimyBoulder";
         public override void SetDefaults() 
         {
             Projectile.width = 10;

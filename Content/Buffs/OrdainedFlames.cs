@@ -1,18 +1,14 @@
 ﻿using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ID;
-using Terraria.DataStructures;
-using Mono.CompilerServices.SymbolWriter;
-using MurphysMod.Content.Ambience;
 using Microsoft.Xna.Framework;
 using System;
-using Mono.Cecil;
 
 namespace MurphysMod.Content.Buffs
 {
 	public class OrdainedFlames : ModBuff
 	{
+		public override String Texture => "MurphysMod/Assets/Textures/BuffIcons/OrdainedFlames";
 		public override void SetStaticDefaults() //TODO: make this debuff actually take health away
 		{
 			Main.debuff[Type] = true;

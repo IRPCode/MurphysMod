@@ -11,7 +11,7 @@ namespace MurphysMod.Content.Enemies
 {
     public class MagicBolt : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/FrigidBolt";
+        public override String Texture => "Terraria/Images/Projectile_126";
         public ref float DelayTimer => ref Projectile.ai[1];
 
         public override void SetStaticDefaults()

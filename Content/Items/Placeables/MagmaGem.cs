@@ -2,16 +2,16 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
-using Terraria.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using ReLogic.Content;
+using System;
 
 namespace MurphysMod.Content.Items.Placeables
 {
     internal class MagmaGem : ModItem
     {
-
+public override String Texture => "MurphysMod/Assets/Textures/Items/Placeables/MagmaGem";
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
@@ -37,7 +37,7 @@ namespace MurphysMod.Content.Items.Placeables
 
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("MurphysMod/Content/Items/Placeables/MagmaGemGlow", AssetRequestMode.ImmediateLoad).Value;
+            Texture2D texture = ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Items/Placeables/MagmaGemGlow", AssetRequestMode.ImmediateLoad).Value;
 
             Vector2 position = Main.item[whoAmI].position - Main.screenPosition + new Vector2(Main.item[whoAmI].width / 2, Main.item[whoAmI].height - texture.Height / 2f);
 

@@ -10,7 +10,7 @@ namespace MurphysMod.Content.Projectiles
 {
     public class SlimeGel : ModProjectile
     {
-        public override String Texture => "MurphysMod/Content/Projectiles/SlimeGel";
+        public override String Texture => "Terraria/Images/Item_23";
         public override void SetDefaults() //for slime gel projectiles
         {
             Projectile.width = 10;

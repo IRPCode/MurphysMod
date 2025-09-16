@@ -1,3 +1,4 @@
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -9,6 +10,7 @@ namespace MurphysMod.Content.Tiles
 {
     internal class TorchGodsBrazier : ModTile
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Tiles/TorchGodsBrazier";
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -21,7 +23,7 @@ namespace MurphysMod.Content.Tiles
             TileObjectData.newTile.Width = 7;
             TileObjectData.newTile.Height = 5;
             TileObjectData.newTile.Origin = new Point16(3, 4);
-            TileObjectData.newTile.CoordinateHeights = new[] {16, 16, 16, 16, 16};
+            TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16, 16, 16 };
 
             TileObjectData.newTile.CoordinatePadding = 0;
             TileObjectData.newTile.CoordinatePaddingFix = new Terraria.DataStructures.Point16(0, 2);
@@ -43,5 +45,7 @@ namespace MurphysMod.Content.Tiles
                  ModContent.ItemType<Items.Placeables.TorchGodsBrazier>()
             );
         }
+
+        
     }
 }

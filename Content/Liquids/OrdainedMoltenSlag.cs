@@ -32,7 +32,7 @@ namespace MurphysMod.Content.Liquids
             SplashDustType = DustID.SpelunkerGlowstickSparkle; 
             SplashSound = sound;
             ChecksForDrowning = false;
-            PlayersEmitBreathBubbles = false;
+            //PlayersEmitBreathBubbles = false;
 
             FishingPoolSizeMultiplier = 1.5f;
 
