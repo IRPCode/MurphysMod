@@ -124,6 +124,18 @@ namespace MurphysMod.Content.LuckHandlers
                 {
                     luckValue += .5f;
                 }
+
+                if (Player.HasBuff<Sanctified>()) //ensure this is the final check to prevent luckvalue abuse
+                {
+                    if (luckValue >= .25f)
+                    {
+                        luckValue -= .25f;
+                    }
+                    else
+                    {
+                        luckValue = 0f;
+                    }
+                }
             }
 
             luckDebuffHandler(luckValue);

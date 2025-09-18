@@ -10,13 +10,12 @@ using Terraria.ModLoader;
 using ModLiquidLib.ModLoader;
 using ModLiquidLib.Utils.Structs;
 using MurphysMod.Content.Ambience.Dusts;
-using System;
 
 namespace MurphysMod.Content.Liquids
 {
-    public class OrdainedMoltenSlag : ModLiquid
+    public class BlessedWater : ModLiquid
     { //Textures are kept inside of the liquids folder for the sake simplicity, as Tmodloader and LiquidLib handles this automatically 
-        public static readonly SoundStyle sound = new("MurphysMod/Assets/Audio/OrdainedMoltenSlagSplash")
+        public static readonly SoundStyle sound = new("MurphysMod/Assets/Audio/BlessedWaterSplash")
         {
             Volume = 1f,
             Pitch = 0f,
@@ -25,64 +24,63 @@ namespace MurphysMod.Content.Liquids
 
         public override void SetStaticDefaults()
         {
-            VisualViscosity = 0;
-            LiquidFallLength = 30;
-            DefaultOpacity = 0.9f;
-            SlopeOpacity = 0.9f;
-            WaterRippleMultiplier = 100f;
-            SplashDustType = DustID.SpelunkerGlowstickSparkle; 
+            VisualViscosity = 50;
+            LiquidFallLength = 45;
+            DefaultOpacity = 0.8f;
+            SlopeOpacity = 0.8f;
+            WaterRippleMultiplier = 2f;
+            SplashDustType = ModContent.DustType<BlessedWaterDust>(); 
             SplashSound = sound;
-            ChecksForDrowning = false;
-            //PlayersEmitBreathBubbles = false;
-
+            ChecksForDrowning = true;
+            
             FishingPoolSizeMultiplier = 1.5f;
 
-            AddMapEntry(new Color(255, 249, 207), CreateMapEntryName()); //change the color too
+            AddMapEntry(new Color(153, 224, 246), CreateMapEntryName()); //change the color too
         }
 
         public override int LiquidMerge(int i, int j, int otherLiquid)
         {
             if (otherLiquid == LiquidID.Water)
             {
-                return TileID.Obsidian;
+                return TileID.BreakableIce;
             }
 
             else if (otherLiquid == LiquidID.Lava)
             {
-                return TileID.Obsidian;
+                return TileID.BreakableIce;
             }
 
             else if (otherLiquid == LiquidID.Honey)
             {
-                return TileID.Obsidian;
+                return TileID.BreakableIce;
             }
 
             else if (otherLiquid == LiquidID.Shimmer)
             {
-                return TileID.Obsidian;
+                return TileID.BreakableIce;
             }
             else
             {
-                return TileID.Obsidian;
+                return TileID.BreakableIce;
             }
         }
 
         public override void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound)
         {
-            collisionSound = SoundID.Splash;
+            collisionSound = SoundID.LiquidsHoneyLava;
             //if(otherLiquid == LiquidID.Water){colisionSound = SoundXYZ}
         }
 
         public override int ChooseWaterfallStyle(int i, int j)
         {
-            return ModContent.GetInstance<OrdainedMoltenSlagFall>().Slot;
+            return ModContent.GetInstance<BlessedWaterFall>().Slot;
         }
 
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
         {
-            r = 1f;
-            g = .97f;
-            b = .81f;
+            r = .6f;
+            g = .88f;
+            b = .96f;
         }
 
         public override LightMaskMode LiquidLightMaskMode(int i, int j)
@@ -92,7 +90,7 @@ namespace MurphysMod.Content.Liquids
 
         public override bool EvaporatesInHell(int i, int j)
         {
-            return false;
+            return true;
         }
 
         public override void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality)

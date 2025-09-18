@@ -80,6 +80,11 @@ Items: {
 		DisplayName: Cave Sight Potion
 		Tooltip: ""
 	}
+
+	BlessedWaterBucket: {
+		DisplayName: Blessed Water Bucket
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -127,6 +132,11 @@ Buffs: {
 		DisplayName: Ordained Flames
 		Description: Mods.MurphysMod.Buffs.OrdainedFlames.Description
 	}
+
+	Sanctified: {
+		DisplayName: Sanctified
+		Description: Mods.MurphysMod.Buffs.Sanctified.Description
+	}
 }
 
 Projectiles: {
@@ -163,6 +173,7 @@ Tiles: {
 Liquids: {
 	GodlyForgeLava.MapEntry: Godly Forge Lava
 	OrdainedMoltenSlag.MapEntry: Ordained Molten Slag
+	BlessedWater.MapEntry: Blessed Water
 }
 
 Biomes: {

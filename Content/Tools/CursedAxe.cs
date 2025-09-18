@@ -2,11 +2,14 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using MurphysMod.Content.Items.Placeables;
+using System;
 
 namespace MurphysMod.Content.Tools
 {
     public class CursedAxe : ModItem
+
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Items/Tools/CursedAxe";
         public override void SetDefaults()
         {
             Item.width = 32;

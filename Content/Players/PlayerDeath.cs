@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace MurphysMod.Content //TODO: if in water, have a weapon that does a sonar ping that blows up everything, including yourself, 9999 damage to non boss enemies
+namespace MurphysMod.Content.Players //TODO: if in water, have a weapon that does a sonar ping that blows up everything, including yourself, 9999 damage to non boss enemies
 {
     public class PlayerDeath : ModPlayer
     {

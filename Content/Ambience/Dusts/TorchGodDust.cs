@@ -63,7 +63,7 @@ namespace MurphysMod.Content.Ambience.Dusts
         public override bool PreDraw(Dust dust)
         {
             Vector2 pos = dust.position - Main.screenPosition;
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MMurphysMod/Assets/Textures/Dusts/GlowMasks/TorchGodDustGlowMask");
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Dusts/GlowMasks/TorchGodDustGlowMask");
 
             Main.spriteBatch.Draw(
                 texture,

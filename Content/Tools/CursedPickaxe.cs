@@ -2,11 +2,13 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using MurphysMod.Content.Items.Placeables;
+using System;
 
 namespace MurphysMod.Content.Tools
 {
     public class CursedPickaxe : ModItem
     {
+        public override String Texture => "MurphysMod/Assets/Textures/Items/Tools/CursedPickaxe";
         public override void SetDefaults()
         {
             Item.width = 32;

@@ -3,16 +3,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using MurphysMod.Content.Ambience.Dusts;
-using MurphysMod.Content.Ambience;
 using System;
-using MurphysMod.Content.Liquids;
-
 using ModLiquidLib.ModLoader;
-using ModLiquidLib.Utils.Structs;
-using System.Linq.Expressions;
-using MurphysMod.Content.Items.Placeables;
-using MurphysMod.Content.Tiles;
-using ModLiquidLib.Utils;
 
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
@@ -254,21 +246,6 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                                     Main.dust[dustLocation].noLightEmittence = true;
                                     dust.color = Color.White;
                                 }
-
-
-
-                                /*for (int j = 0; j < 50; j++)
-                                {
-                                    x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                                    y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
-                                    tile = Framing.GetTileSafely(x, y);
-                                    Tile shimmerTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
-
-                                    if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "GodlyForgeLava").Type && shimmerTileAirCheck.LiquidAmount == 0) //forge liquid
-                                    {
-                                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.SandstormInABottle, 0, 0, 100, default, 1f);
-                                    }
-                                } */
                             }
                         }
                         catch (Exception)
@@ -278,104 +255,125 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                     }
 
 
-                    Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
-                    if (tile.LiquidAmount == 255 && tile.LiquidType == LiquidID.Water && tileAirCheck.LiquidAmount != 0)
-                    { //water bubbles
-                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BreatheBubble, 0, 0, 100, default, 1f);
-                    }
-
-
-                    if (Player.ZoneUnderworldHeight) //hell
-                    { //change this logic to only spawn particles off screen
-                      //also make embers fade in
-                        rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
-                        Dust dust;
-
-                        if (Math.Abs(Player.velocity.X) >= 8f)
-                        {
-                            rand = Main.rand.Next(0, 15 / dustAmountMultiplier);
-                        }
-                        else if (Math.Abs(Player.velocity.X) >= 12f)
-                        {
-                            rand = Main.rand.Next(0, 10 / dustAmountMultiplier);
-                        }
-                        else if (Math.Abs(Player.velocity.X) >= 14f)
-                        {
-                            rand = Main.rand.Next(0, 5 / dustAmountMultiplier);
-                        }
-                        else if (Math.Abs(Player.velocity.X) >= 18f)
-                        {
-                            rand = Main.rand.Next(0, 2 / dustAmountMultiplier);
-                        }
-
-                        if (rand == 0)
-                        {
-                            int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<EmberDust>(), 0, 0, 100, default, 1f);
-                            dust = Main.dust[dustLocation];
-                            dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, Main.rand.Next(-10, 10) / 25);
-                        }
-                        else if (rand == 1)
-                        {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
-                        }
-                    }
-
-                    if (Player.ZoneUndergroundDesert) //desert
+                    try
                     {
-                        var sandType = DustID.Sand;
-                        rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
+                        for (int i = 0; i < 25; i++)
+                        {
+                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
+                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                            tile = Framing.GetTileSafely(x, y);
+                            Tile blessedWaterTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
 
-                        if (rand <= 10)
-                        {
-                            if (Player.ZoneCrimson)
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type && blessedWaterTileAirCheck.LiquidAmount == 0) //shimmer liquid
                             {
-                                sandType = DustID.Crimson;
+                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<BlessedWaterDust>(), 0, 0, 100, default, 1f);
                             }
-                            else if (Player.ZoneCorrupt)
-                            {
-                                sandType = DustID.Corruption;
-                            }
-                            else if (Player.ZoneHallow)
-                            {
-                                sandType = DustID.Pearlsand;
-                            }
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, sandType, 0, 0, 100, default, 1f);
-                        }
-                        else if (rand <= 20)
-                        {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
                         }
                     }
-
-                    if (Player.ZoneGlowshroom) //mushroom biome
+                    catch (Exception)
                     {
-                        rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
-                        if (rand <= 3)
-                        {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
-                        }
-                        else if (rand == 4)
-                        {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<BlueMushroomDust>(), 0, 0, 100, default, 1f);
-                        }
+                        Main.NewText("Error parsing ModLiquid GodlyForgeLava from MurphysMod.");
+                    }
+                }
+
+
+                Tile tileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
+                if (tile.LiquidAmount == 255 && tile.LiquidType == LiquidID.Water && tileAirCheck.LiquidAmount != 0)
+                { //water bubbles
+                    Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.BreatheBubble, 0, 0, 100, default, 1f);
+                }
+
+
+                if (Player.ZoneUnderworldHeight) //hell
+                { //change this logic to only spawn particles off screen
+                  //also make embers fade in
+                    rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
+                    Dust dust;
+
+                    if (Math.Abs(Player.velocity.X) >= 8f)
+                    {
+                        rand = Main.rand.Next(0, 15 / dustAmountMultiplier);
+                    }
+                    else if (Math.Abs(Player.velocity.X) >= 12f)
+                    {
+                        rand = Main.rand.Next(0, 10 / dustAmountMultiplier);
+                    }
+                    else if (Math.Abs(Player.velocity.X) >= 14f)
+                    {
+                        rand = Main.rand.Next(0, 5 / dustAmountMultiplier);
+                    }
+                    else if (Math.Abs(Player.velocity.X) >= 18f)
+                    {
+                        rand = Main.rand.Next(0, 2 / dustAmountMultiplier);
                     }
 
-                    if (Player.ZoneJungle && Player.position.Y / 16 >= Main.rockLayer) //jungle
+                    if (rand == 0)
                     {
-                        rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
-                        if (rand <= 10)
+                        int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<EmberDust>(), 0, 0, 100, default, 1f);
+                        dust = Main.dust[dustLocation];
+                        dust.position += dust.velocity * new Vector2(Main.rand.Next(-10, 10) / 50, Main.rand.Next(-10, 10) / 25);
+                    }
+                    else if (rand == 1)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                    }
+                }
+
+                if (Player.ZoneUndergroundDesert) //desert
+                {
+                    var sandType = DustID.Sand;
+                    rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
+
+                    if (rand <= 10)
+                    {
+                        if (Player.ZoneCrimson)
                         {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                            sandType = DustID.Crimson;
                         }
-                        else if (rand == 11)
+                        else if (Player.ZoneCorrupt)
                         {
-                            Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.JungleSpore, 0, 0, 100, default, 1f);
+                            sandType = DustID.Corruption;
                         }
+                        else if (Player.ZoneHallow)
+                        {
+                            sandType = DustID.Pearlsand;
+                        }
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, sandType, 0, 0, 100, default, 1f);
+                    }
+                    else if (rand <= 20)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                    }
+                }
+
+                if (Player.ZoneGlowshroom) //mushroom biome
+                {
+                    rand = Main.rand.Next(0, 20 / dustAmountMultiplier);
+                    if (rand <= 3)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                    }
+                    else if (rand == 4)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<BlueMushroomDust>(), 0, 0, 100, default, 1f);
+                    }
+                }
+
+                if (Player.ZoneJungle && Player.position.Y / 16 >= Main.rockLayer) //jungle
+                {
+                    rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
+                    if (rand <= 10)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
+                    }
+                    else if (rand == 11)
+                    {
+                        Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.JungleSpore, 0, 0, 100, default, 1f);
                     }
                 }
             }
         }
-
-        #endregion
     }
+
+    #endregion
 }
