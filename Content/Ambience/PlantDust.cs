@@ -5,11 +5,15 @@ using Terraria.ID;
 using System.Net.PeerToPeer.Collaboration;
 using ModLiquidLib.Utils;
 using System.Linq;
+using MurphysMod.Content.Ambience.Dusts;
+using System;
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 {
     public class PlantDust : ModPlayer
     {
+
+        public static int[] acceptedPlantSources = { TileID.Plants, TileID.Plants2, TileID.Vines, TileID.VineFlowers}; //add other biomes
         public override void PostUpdate()
         {
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only
@@ -97,10 +101,29 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                     #endregion
 
-                    #region grass
-                    
-                    #endregion
+
                 }
+
+                #region windyDay
+
+                if (Math.Abs(Main.windSpeedCurrent) >= .25f)
+                {
+                    for (int i = 0; i < (int)(5 * (Math.Abs(Main.windSpeedCurrent) + 1)); i++)
+                    {
+                        int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60); //adjust these values based off of velocity (xvel = 60 * player.velocity.x, negxvel = xvel * -1)
+                        int y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36); //also adjust this based off of screen size
+
+                        if (acceptedPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x,y).WallType != 0)
+                        {
+                            int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<PlantParticleDust>(), 0f, 0f, default);
+                            Dust dust = Main.dust[dustIndex];
+                            dust.noGravity = false;
+                        }
+
+                    }
+                }
+
+                #endregion
             }
         }
 

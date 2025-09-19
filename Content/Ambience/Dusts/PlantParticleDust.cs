@@ -1,0 +1,70 @@
+using Terraria;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Terraria.ID;
+using MurphysMod.Content.Ambience;
+
+namespace MurphysMod.Content.Ambience.Dusts
+{
+
+    public class PlantParticleDust : ModDust
+    {
+        public override string Texture => "MurphysMod/Assets/Textures/Dusts/PlantParticleDust"; //TODO: Change this texture to be B/W, and make it so the color changes based on the biome it is in
+                                                                                                //Ex. Use Color.Green for purity, Color.Purple for corruption, Color.Blue for mushroom. etc.
+                                                                                                //Make sure you add new plants to the accepted plant list
+        
+        public static bool trigger = false;
+
+        public override void OnSpawn(Dust dust)
+        {
+            float windDirection = Main.windSpeedCurrent;
+
+
+            dust.velocity = new Vector2((Main.windSpeedCurrent * 3) * (1 + (Main.rand.Next(1, 100) / 100)), Main.rand.Next(1, 100) / 150);
+            dust.noGravity = false;
+            dust.scale = 1f;
+            //dust.fadeIn = 2.5f;
+            dust.alpha = 0;
+        }
+
+        public override bool Update(Dust dust)
+        {
+            int x = Tick.globalTick;
+
+            Vector2 dustTileLocation = new Vector2(dust.position.X, dust.position.Y);
+
+            int tileX = (int)(dustTileLocation.X / 16);
+            int tileY = (int)(dustTileLocation.Y / 16);
+
+            if (trigger == true)
+            {
+                dust.alpha += 2;
+            }
+
+            if ((Framing.GetTileSafely(tileX, tileY).HasTile && Main.tileSolid[Framing.GetTileSafely(tileX, tileY).TileType])) //stops particle
+            {
+                dust.velocity = new Vector2(0, 0);
+                trigger = true;
+            }
+
+            dust.position += dust.velocity * new Vector2(1, 3f);
+            dust.rotation += dust.velocity.X / 15f;
+
+            if (x % 50 == 0)
+            {
+                return true;
+            }
+            else if (x % 50 == 0 && trigger == false)
+            {
+                trigger = true; //solution makes brain happy :o
+                return false;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+    }
+}
