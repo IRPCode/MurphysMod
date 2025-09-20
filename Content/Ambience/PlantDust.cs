@@ -38,7 +38,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                     #region GemTrees
 
-                    /*if (branchOrTop && rand <= 5)
+                    if (branchOrTop && rand <= 5)
                     {
                         if (tile.TileType == TileID.TreeTopaz)
                         {
@@ -97,7 +97,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.Silver, 0f, 0f, default);
                         Dust dust = Main.dust[dustIndex];
                         dust.noGravity = true;
-                    } */
+                    }
 
                     #endregion
 

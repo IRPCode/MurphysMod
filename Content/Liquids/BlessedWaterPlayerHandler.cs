@@ -24,7 +24,7 @@ public class BlessedWaterPlayerHandler : ModPlayer
 
                 if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type)
                 {
-                    Player.AddBuff(ModContent.BuffType<Sanctified>(), 900);
+                    Player.AddBuff(ModContent.BuffType<Sanctified>(), 1800);
                 }
 
                 for (int i = 0; i < Main.maxNPCs; i++)
@@ -35,7 +35,7 @@ public class BlessedWaterPlayerHandler : ModPlayer
                     {
                         if (npcLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type) //prevents boss deaths
                         {
-                            npc.AddBuff(ModContent.BuffType<Sanctified>(), 300);
+                            npc.AddBuff(ModContent.BuffType<Sanctified>(), 900);
                         }
                     }
                 }
