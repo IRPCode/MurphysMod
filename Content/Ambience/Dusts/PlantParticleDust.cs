@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using MurphysMod.Content.Ambience;
+using System;
 
 namespace MurphysMod.Content.Ambience.Dusts
 {
@@ -12,6 +13,8 @@ namespace MurphysMod.Content.Ambience.Dusts
         public override string Texture => "MurphysMod/Assets/Textures/Dusts/PlantParticleDust"; //TODO: Change this texture to be B/W, and make it so the color changes based on the biome it is in
                                                                                                 //Ex. Use Color.Green for purity, Color.Purple for corruption, Color.Blue for mushroom. etc.
                                                                                                 //Make sure you add new plants to the accepted plant list
+
+                                                                                                //Make glowing mosses produce dust
         
         public static bool trigger = false;
 
@@ -20,7 +23,13 @@ namespace MurphysMod.Content.Ambience.Dusts
             float windDirection = Main.windSpeedCurrent;
 
 
-            dust.velocity = new Vector2((Main.windSpeedCurrent * 3) * (1 + (Main.rand.Next(1, 100) / 100)), Main.rand.Next(1, 100) / 150);
+            dust.velocity = new Vector2((Main.windSpeedCurrent * 3) * (1 + (Main.rand.Next(1, 100) / 100)), (100 - Math.Abs(Main.windSpeedCurrent) * 100) / 100);
+
+
+
+
+
+
             dust.noGravity = false;
             dust.scale = 1f;
             //dust.fadeIn = 2.5f;

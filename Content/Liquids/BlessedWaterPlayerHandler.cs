@@ -24,7 +24,7 @@ public class BlessedWaterPlayerHandler : ModPlayer
 
                 if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type)
                 {
-                    Player.AddBuff(ModContent.BuffType<Sanctified>(), 300);
+                    Player.AddBuff(ModContent.BuffType<Sanctified>(), 900);
                 }
 
                 for (int i = 0; i < Main.maxNPCs; i++)
