@@ -8,26 +8,17 @@ using System;
 namespace MurphysMod.Content.Ambience.Dusts
 {
 
-    public class PlantParticleDust : ModDust
+    public class HallowPlantParticleDust : ModDust
     {
-        public override string Texture => "MurphysMod/Assets/Textures/Dusts/PlantParticleDust";
+        public override string Texture => "MurphysMod/Assets/Textures/Dusts/HallowPlantParticleDust"; 
         public static bool trigger = false;
 
         public override void OnSpawn(Dust dust)
         {
-            float windDirection = Main.windSpeedCurrent;
-
-
             dust.velocity = new Vector2((Main.windSpeedCurrent * 3) * (1 + (Main.rand.Next(1, 100) / 100)), (100 - Math.Abs(Main.windSpeedCurrent) * 100) / 100);
-
-
-
-
-
 
             dust.noGravity = false;
             dust.scale = 1f;
-            //dust.fadeIn = 2.5f;
             dust.alpha = 0;
         }
 

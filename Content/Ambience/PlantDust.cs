@@ -13,7 +13,14 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
     public class PlantDust : ModPlayer
     {
 
-        public static int[] acceptedPlantSources = { TileID.Plants, TileID.Plants2, TileID.Vines, TileID.VineFlowers}; //add other biomes
+        public static int[] purityPlantSources = {TileID.Plants, TileID.Plants2, TileID.Vines, TileID.VineFlowers}; //add other biomes
+        public static int[] corruptPlantSources = {TileID.CorruptPlants, TileID.CorruptVines};
+
+        public static int[] crimsonPlantSources = {TileID.CrimsonPlants, TileID.CrimsonVines};
+
+        public static int[] hallowPlantSources = {TileID.HallowedPlants, TileID.HallowedPlants2, TileID.HallowedVines};
+
+        public static int[] junglePlantSources = {TileID.JunglePlants, TileID.JunglePlants2, TileID.JungleVines};
         public override void PostUpdate()
         {
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only
@@ -37,6 +44,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
 
                     #region GemTrees
+                    //TODO: make this more compact using iteration
 
                     if (branchOrTop && rand <= 5)
                     {
@@ -106,23 +114,60 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                 #region windyDay
 
-                if (Math.Abs(Main.windSpeedCurrent) >= .25f)
+                //purity
+
+                if (Math.Abs(Main.windSpeedCurrent) >= .25f) //seperate particle files so game can recognize seperate particle instances across tile sources
                 {
                     for (int i = 0; i < (int)(5 * (Math.Abs(Main.windSpeedCurrent) + 1)); i++)
                     {
-                        int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60); //adjust these values based off of velocity (xvel = 60 * player.velocity.x, negxvel = xvel * -1)
-                        int y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36); //also adjust this based off of screen size
+                        int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
+                        int y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
 
-                        if (acceptedPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x,y).WallType != 0)
+                        //purity
+
+                        if (purityPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x, y).WallType == 0 && Framing.GetTileSafely(x,y).LiquidAmount == 0)
                         {
                             int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<PlantParticleDust>(), 0f, 0f, default);
                             Dust dust = Main.dust[dustIndex];
                             dust.noGravity = false;
                         }
 
+                        //evils
+
+                        else if (corruptPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x, y).WallType == 0 && Framing.GetTileSafely(x,y).LiquidAmount == 0)
+                        {
+                            int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<CorruptPlantParticleDust>(), 0f, 0f, default);
+                            Dust dust = Main.dust[dustIndex];
+                            dust.noGravity = false;
+                        }
+
+                        else if (crimsonPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x, y).WallType == 0 && Framing.GetTileSafely(x,y).LiquidAmount == 0)
+                        {
+                            int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<CrimsonPlantParticleDust>(), 0f, 0f, default);
+                            Dust dust = Main.dust[dustIndex];
+                            dust.noGravity = false;
+                        }
+
+                        //hallow
+
+                        else if (hallowPlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x, y).WallType == 0 && Framing.GetTileSafely(x,y).LiquidAmount == 0)
+                        {
+                            int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<HallowPlantParticleDust>(), 0f, 0f, default);
+                            Dust dust = Main.dust[dustIndex];
+                            dust.noGravity = false;
+                        }
+
+                        //jungle
+
+                        else if (junglePlantSources.Contains(Framing.GetTileSafely(x, y).TileType) && Framing.GetTileSafely(x, y).WallType == 0 && Framing.GetTileSafely(x,y).LiquidAmount == 0)
+                        {
+                            int dustIndex = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<JunglePlantParticleDust>(), 0f, 0f, default);
+                            Dust dust = Main.dust[dustIndex];
+                            dust.noGravity = false;
+                        }
+
                     }
                 }
-
                 #endregion
             }
         }
