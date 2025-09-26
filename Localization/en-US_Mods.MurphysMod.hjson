@@ -160,6 +160,7 @@ Projectiles: {
 	MagmaKnifeProjectile.DisplayName: Magma Knife Projectile
 	CursedTomeOfTheAncientsProjectile.DisplayName: Cursed Tome Of The Ancients Projectile
 	MagicBolt.DisplayName: Magic Bolt
+	RustySwordProjectile.DisplayName: Rusty Sword Projectile
 }
 
 Tiles: {

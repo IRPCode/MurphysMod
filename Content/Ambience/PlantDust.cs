@@ -117,6 +117,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                 //purity
 
                 if (Math.Abs(Main.windSpeedCurrent) >= .25f) //seperate particle files so game can recognize seperate particle instances across tile sources
+                
                 {
                     for (int i = 0; i < (int)(5 * (Math.Abs(Main.windSpeedCurrent) + 1)); i++)
                     {
