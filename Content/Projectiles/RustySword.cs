@@ -10,7 +10,7 @@ using rail;
 
 namespace MurphysMod.Content.Enemies
 {
-    public class RustySwordProjectile : ModProjectile
+    public class RustySwordProjectile : ModProjectile //Idea canned due to complexity
     {
         public override String Texture => "MurphysMod/Assets/Textures/Projectiles/BoneSword";
         public override void SetDefaults()
@@ -60,17 +60,17 @@ namespace MurphysMod.Content.Enemies
                     //Vector2 offset = new Vector2(-50f, 1000f);
                     //offset = offset.RotatedBy(Projectile.rotation);
                     //Projectile.Center = (npc.Center + offset) * npc.direction;
-                    Projectile.position = npc.Center + new Vector2(15, -12);
+                    Projectile.position = npc.Center + new Vector2(8 * npc.direction, -12);
 
                     if (NPCDirection)
                         Projectile.rotation += .1f;
                     else
                         Projectile.rotation -= .1f;
 
-                    Projectile.spriteDirection = Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt();
+                    Projectile.spriteDirection = Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt() * -1; //... * -1 ???
                     //Projectile.rotation = Projectile.velocity.ToRotation() + (Projectile.spriteDirection == 1 ? 0f : MathHelper.Pi);
 
-                    if (Projectile.spriteDirection == 1)
+                    if (npc.direction == 0)
                     {
                         DrawOriginOffsetX = -27;
                         DrawOriginOffsetY = -40;
@@ -81,15 +81,18 @@ namespace MurphysMod.Content.Enemies
                         DrawOriginOffsetX = -27;
                         DrawOriginOffsetY = -40;
                         Projectile.spriteDirection = 1; //modify all instances of spriteDirection to fix the sword's blade alignment 
+                        //you may need to inverse the sword's direction.
                     }
+
+                    Main.NewText(Projectile.spriteDirection + ", " + Projectile.rotation);
 
                 }
 
-                if (Projectile.rotation < 1.57f == false && Projectile.spriteDirection == 1)
+                if (Projectile.rotation < 1.57f == false)
                 {
                     Projectile.Kill();
                 }
-                else if (Projectile.rotation < 4.71f == false && Projectile.spriteDirection == 0) //TODO: fix the sword not properly dying on left swings, reposition the sword on left swings,
+                else if (Projectile.rotation < -2.79f == true ) //TODO: fix the sword not properly dying on left swings, reposition the sword on left swings,
                 //and mirror the projectile's sprite properly.
                 {
                     Projectile.Kill();

@@ -1,0 +1,59 @@
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.ID;
+using System;
+using Terraria.Audio;
+using Microsoft.Xna.Framework;
+
+namespace MurphysMod.Content.Enemies
+{
+    public class BoneSplinter : ModProjectile
+    {
+        public override String Texture => "MurphysMod/Assets/Textures/Projectiles/BoneFragment1";
+        public override void SetDefaults() //for slime garbage projectiles
+        {
+            Projectile.width = 8;
+            Projectile.height = 6;
+            Projectile.hostile = true;
+            Projectile.penetrate = 1;
+            Projectile.tileCollide = true;
+            Projectile.timeLeft = Main.rand.Next(100, 300);
+            Projectile.aiStyle = 14;
+            Projectile.alpha = default;
+            AIType = 3;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+        }
+        public override bool CanHitPlayer(Player target)
+        {
+            return true;
+        }
+
+        public override void AI()
+        {
+            Projectile.rotation += .05f * Projectile.spriteDirection;
+        }
+
+#pragma warning disable CS0672 // Member overrides obsolete member
+        public override void OnKill(int timeLeft)
+#pragma warning restore CS0672 // Member overrides obsolete member
+        {
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
+
+
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Bone, Projectile.velocity.X * .2f, Projectile.velocity.Y * .2f, 100, default, 1f);
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            Projectile.Kill();
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.Kill();
+            return false;
+        }
+    }
+
+}

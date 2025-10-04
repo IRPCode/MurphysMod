@@ -20,11 +20,6 @@ namespace MurphysMod.Content.Ambience.Dusts
 
             dust.velocity = new Vector2((Main.windSpeedCurrent * 3) * (1 + (Main.rand.Next(1, 100) / 100)), (100 - Math.Abs(Main.windSpeedCurrent) * 100) / 100);
 
-
-
-
-
-
             dust.noGravity = false;
             dust.scale = 1f;
             //dust.fadeIn = 2.5f;

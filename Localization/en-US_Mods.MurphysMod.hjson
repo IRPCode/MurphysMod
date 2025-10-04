@@ -161,6 +161,10 @@ Projectiles: {
 	CursedTomeOfTheAncientsProjectile.DisplayName: Cursed Tome Of The Ancients Projectile
 	MagicBolt.DisplayName: Magic Bolt
 	RustySwordProjectile.DisplayName: Rusty Sword Projectile
+	BoneFragment1.DisplayName: Bone Fragment1
+	BoneFragment2.DisplayName: Bone Fragment2
+	BoneChunk.DisplayName: Bone Chunk
+	BoneSplinter.DisplayName: Bone Splinter
 }
 
 Tiles: {

@@ -20,8 +20,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
     public class BrazierFireHandler : ModPlayer
     {
-        
-        public override void PostUpdate()
+        public override void PreUpdate()
         {
             if (Player.unlockedBiomeTorches)
             {
@@ -41,19 +40,19 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         if (tile.TileType == ModContent.TileType<Content.Tiles.TorchGodsBrazier>() && checkBrazier.TileType != ModContent.TileType<Content.Tiles.TorchGodsBrazier>())
                         {
 
-                            rand = Main.rand.Next(0, 3);
+                            rand = Main.rand.Next(0, 15);
 
                             if (rand == 0)
                             {
-                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.InfernoFork, 0, 0, 100, default, 1f);
+                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDust>(), 0, 0, 100, default, 1f);
                             }
                             else if (rand == 1)
                             {
-                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.IceTorch, 0, 0, 100, default, 1f);
+                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustOrange>(), 0, 0, 100, default, 1f);
                             }
-                            else
+                            else if (rand == 2)
                             {
-                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.YellowTorch, 0, 0, 100, default, 1f);
+                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<TorchGodDustBlue>(), 0, 0, 100, default, 1f);
                             }
                         }
                     }
