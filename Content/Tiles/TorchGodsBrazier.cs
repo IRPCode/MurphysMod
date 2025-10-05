@@ -15,7 +15,7 @@ namespace MurphysMod.Content.Tiles
     {
         public override String Texture => "MurphysMod/Assets/Textures/Tiles/TorchGodsBrazier";
 
-        public static int offsetY;
+        public static float offsetY;
         public static bool flag;
         public override void SetStaticDefaults()
         {
@@ -73,10 +73,10 @@ namespace MurphysMod.Content.Tiles
                 {
                     zero = Vector2.Zero;
                 }
-                y -= 2;
-                for (int i = 0; i < 5; i++)
+                //y -= 2;
+                for (int i = 0; i < 3; i++)
                 {
-                    y -= 3;
+                    y -= 5;
                     spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/Torch_God's_Brazier_Flame_Top", AssetRequestMode.ImmediateLoad).Value,
                 new Vector2(x * 16 - (int)Main.screenPosition.X, y * 16 - (int)Main.screenPosition.Y) + zero,
                 new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16),
@@ -85,10 +85,43 @@ namespace MurphysMod.Content.Tiles
                 Vector2.Zero,
                 1f,
                 SpriteEffects.None,
-                0f);
+                1f);
                 }
+                //reset Y
+                //y += 15;
 
                 //forge clover
+
+                //flame base
+
+
+                if (offsetY <= 1f)
+                {
+                    flag = true;
+                    offsetY = 1f;
+                }
+                else if (offsetY >= 32f)
+                    flag = false;
+
+
+                if (flag)
+                    offsetY *= 1.1f;
+                else
+                    offsetY *= .9f;
+
+                if (Main.drawToScreen) //TODO: fix this from jumping from jittering, and make sure it always draws above the beam as it currently clips
+                {
+                    zero = Vector2.Zero;
+                }
+                spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/ForgeClover_1", AssetRequestMode.ImmediateLoad).Value,
+                new Vector2(x * 16 - (int)Main.screenPosition.X, ((y + 6) * 16 - ((float)(Main.screenPosition.Y - offsetY)))) + zero,
+                new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16),
+                new Color(255, 255, 255),
+                0f,
+                Vector2.Zero,
+                1f,
+                SpriteEffects.None,
+                0f);
 
 
 
@@ -121,36 +154,10 @@ namespace MurphysMod.Content.Tiles
                 SpriteEffects.None,
                 0f);
 
-                //flame base
-
-                 if (offsetY <= 0)
-                    flag = true;
-                else if (offsetY >= 32000)
-                    flag = false;
 
 
-                if (flag)
-                        offsetY++;
-                    else
-                        offsetY--;
 
 
-                if (Main.drawToScreen) //TODO: fix this from jumping from tile to tile, and make sure it always draws above the beam as it currently clips
-                {
-                    zero = Vector2.Zero;
-                }
-                spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/ForgeClover_1", AssetRequestMode.ImmediateLoad).Value,
-                new Vector2(x * 16 - (int)Main.screenPosition.X, (float)(y - (offsetY / 1000)) * 16 - (int)Main.screenPosition.Y) + zero,
-                new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16),
-                new Color(255, 255, 255),
-                0f,
-                Vector2.Zero,
-                1f,
-                SpriteEffects.None,
-                0f);
-
-
-               
             }
         }
     }
