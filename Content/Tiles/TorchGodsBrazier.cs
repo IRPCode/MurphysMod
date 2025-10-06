@@ -57,16 +57,8 @@ namespace MurphysMod.Content.Tiles
             if (Main.LocalPlayer.unlockedBiomeTorches)
             {
 
-
-
-
-
-
                 Tile tile = Main.tile[x, y];
                 Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
-
-
 
 
                 if (Main.drawToScreen)
@@ -85,45 +77,8 @@ namespace MurphysMod.Content.Tiles
                 Vector2.Zero,
                 1f,
                 SpriteEffects.None,
-                1f);
-                }
-                //reset Y
-                //y += 15;
-
-                //forge clover
-
-                //flame base
-
-
-                if (offsetY <= 1f)
-                {
-                    flag = true;
-                    offsetY = 1f;
-                }
-                else if (offsetY >= 32f)
-                    flag = false;
-
-
-                if (flag)
-                    offsetY *= 1.1f;
-                else
-                    offsetY *= .9f;
-
-                if (Main.drawToScreen) //TODO: fix this from jumping from jittering, and make sure it always draws above the beam as it currently clips
-                {
-                    zero = Vector2.Zero;
-                }
-                spriteBatch.Draw(ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/ForgeClover_1", AssetRequestMode.ImmediateLoad).Value,
-                new Vector2(x * 16 - (int)Main.screenPosition.X, ((y + 6) * 16 - ((float)(Main.screenPosition.Y - offsetY)))) + zero,
-                new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16),
-                new Color(255, 255, 255),
-                0f,
-                Vector2.Zero,
-                1f,
-                SpriteEffects.None,
                 0f);
-
-
+                }
 
 
 
@@ -131,12 +86,38 @@ namespace MurphysMod.Content.Tiles
             return true;
         }
 
+        public override void SpecialDraw(int x, int y, SpriteBatch spriteBatch)
+        {
+            if (Main.LocalPlayer.unlockedBiomeTorches)
+            {
+                Tile tile = Main.tile[x, y];
+                Texture2D cloverTex = ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/ForgeClover_1", AssetRequestMode.ImmediateLoad).Value;
+                Vector2 positionInWorld = new Vector2((x + 12) * 16, (y + 8) * 16);
+
+                Vector2 spritePos = positionInWorld - Main.screenPosition - new Vector2(0, (offsetY));
+
+                if (tile.TileFrameX == 0 && tile.TileFrameY == 0)
+                {
+                spriteBatch.Draw(
+                   cloverTex,
+                   spritePos,
+                   null,
+                   Color.White,
+                   0f,
+                   Vector2.Zero,
+                   1f,
+                   SpriteEffects.None,
+                   .9f);
+                }
+            }
+        }
+
         public override void PostDraw(int x, int y, SpriteBatch spriteBatch) //flame base
         {
             if (Main.LocalPlayer.unlockedBiomeTorches)
             {
-
                 Tile tile = Main.tile[x, y];
+
                 Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
 
                 if (Main.drawToScreen)
@@ -155,9 +136,26 @@ namespace MurphysMod.Content.Tiles
                 0f);
 
 
+                if (offsetY <= 1f)
+                {
+                    flag = true;
+                    offsetY = 1f;
+                }
+                else if (offsetY >= 16f)
+                    flag = false;
 
+                if (flag)
+                    offsetY *= 1.001f;
 
+                else
+                    offsetY *= .999f;
 
+                Math.Round(offsetY, 2);
+
+                if (Main.netMode != NetmodeID.Server)
+                {
+                    Main.instance.TilesRenderer.AddSpecialLegacyPoint(x, y);
+                }
             }
         }
     }
