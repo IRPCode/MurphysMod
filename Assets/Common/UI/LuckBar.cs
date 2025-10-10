@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Numerics;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 using MurphysMod.Content.Ambience;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace MurphysMod.Common.UI
 {
@@ -24,7 +25,7 @@ namespace MurphysMod.Common.UI
         private UIImage barFrame;
         private UIImage barBack;
         private float timer;
-        private int newSteps;
+        private double finalSteps;
 
         public override void OnInitialize()
         {
@@ -70,61 +71,41 @@ namespace MurphysMod.Common.UI
             return Color.Lerp(color1, color2, lerpAmount);
         }
 
-        public float smoothBar(float current, float old)
-        {
-            if (old < current)
-            {
-                old++;
-                return old;
-            }
-            else if (old > current)
-            {
-                old--;
-                return old;
-            }
-            else
-                return current;
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
-            Player player = Main.LocalPlayer;
-            LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-            double luckVal = luckHandler.luckValue();
-
-            luckVal = Math.Round((Utils.Clamp(luckVal, 0f, 1f)), 2);
-
-            Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
-            hitbox.X += 25;
-            hitbox.Width -= 30;
-            hitbox.Y += 6;
-            hitbox.Height -= 14;
-
-            int left = hitbox.Left;
-            int right = hitbox.Right;
-            int steps = (int)((right - left) * luckVal);
-            int finalSteps = steps;
-
-            if (Tick.globalTick % 60 == 0) //TODO: figure out how to lerp these
+            if (Main.LocalPlayer.unlockedBiomeTorches)
             {
-                newSteps = steps;
+                base.Draw(spriteBatch);
+
+                Player player = Main.LocalPlayer;
+                LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
+                double luckVal = luckHandler.luckValue();
+
+                luckVal = Math.Round((Utils.Clamp(luckVal, 0f, 1f)), 2);
+
+                Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
+                hitbox.X += 25;
+                hitbox.Width -= 30;
+                hitbox.Y += 6;
+                hitbox.Height -= 14;
+
+                int left = hitbox.Left;
+                int right = hitbox.Right;
+
+                int steps = (int)((right - left) * luckVal);
+
+                text.SetText("Luck Level: " + (luckVal) * 100 + "%");
+
+                finalSteps = Math.Round(Utils.Clamp(MathHelper.Lerp((float)finalSteps, steps, .01f), 0, 108), 2);
+
+                for (int i = 0; i < finalSteps; i += 1)
+                {
+                    float percent = (float)i / (right - left);
+
+                    spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
+                }
             }
 
-            finalSteps = (int)smoothBar(newSteps, steps);
-
-            Main.NewText(finalSteps);
-
-            text.SetText("Luck Level: " + (luckVal) * 100 + "%");
-            colorOsciliator();
-
-            for (int i = 0; i < finalSteps; i += 1)
-            {
-                float percent = (float)i / (right - left);
-
-                spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
-            }
         }
 
         [Autoload(Side = ModSide.Client)]
