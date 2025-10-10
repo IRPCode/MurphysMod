@@ -6,7 +6,7 @@ namespace MurphysMod.Systems
 {
     public class BookUsed : ModSystem
     {
-        public bool isPlayerCursed;
+        public static bool isPlayerCursed;
 
         public override void OnWorldLoad()
         {

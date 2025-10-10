@@ -1,4 +1,4 @@
-<h1 align="center">Murphy's Mod</h1>
+<h1 align="center"><img width="100" height="100" alt="icon" src="https://github.com/user-attachments/assets/a37ff312-550a-4d09-b97d-eb49f5a15fd7"align="center"> Murphy's Mod <img width="100" height="100" alt="icon" src="https://github.com/user-attachments/assets/a37ff312-550a-4d09-b97d-eb49f5a15fd7"align="center"> </h1>
 
 Murphy's Mod is a terraria mod for the TModloader client. This <i>work in progress</i> mod has a few standout features, being:
 

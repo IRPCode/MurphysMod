@@ -14,7 +14,8 @@ namespace MurphysMod.Content.Ambience.Dusts
 
         public override void OnSpawn(Dust dust)
         {
-            dust.velocity = new Vector2(0, Main.rand.Next(5, 10) / 5);
+            dust.velocity = new Vector2(Main.rand.Next(-10,10) / 9, Main.rand.Next(6, 10) / 5);
+
             dust.noGravity = false;
             dust.scale = 1.5f;
             //dust.fadeIn = 2.5f;

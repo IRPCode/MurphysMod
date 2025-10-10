@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MurphysMod.Systems;
 using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
@@ -17,6 +18,7 @@ namespace MurphysMod.Content.Tiles
 
         public static float offsetY;
         public static bool flag;
+        public static int timer;
         public override void SetStaticDefaults()
         {
             Main.tileFrameImportant[Type] = true;
@@ -54,18 +56,15 @@ namespace MurphysMod.Content.Tiles
 
         public override bool PreDraw(int x, int y, SpriteBatch spriteBatch) //flame beam
         {
-            if (Main.LocalPlayer.unlockedBiomeTorches)
+            if (Main.LocalPlayer.unlockedBiomeTorches && BookUsed.isPlayerCursed)
             {
-
                 Tile tile = Main.tile[x, y];
                 Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-
 
                 if (Main.drawToScreen)
                 {
                     zero = Vector2.Zero;
                 }
-                //y -= 2;
                 for (int i = 0; i < 3; i++)
                 {
                     y -= 5;
@@ -79,20 +78,17 @@ namespace MurphysMod.Content.Tiles
                 SpriteEffects.None,
                 0f);
                 }
-
-
-
             }
             return true;
         }
 
         public override void SpecialDraw(int x, int y, SpriteBatch spriteBatch)
         {
-            if (Main.LocalPlayer.unlockedBiomeTorches)
+            if (Main.LocalPlayer.unlockedBiomeTorches && BookUsed.isPlayerCursed)
             {
                 Tile tile = Main.tile[x, y];
                 Texture2D cloverTex = ModContent.Request<Texture2D>("MurphysMod/Assets/Textures/Tiles/ForgeClover_1", AssetRequestMode.ImmediateLoad).Value;
-                Vector2 positionInWorld = new Vector2((x + 12) * 16, (y + 8) * 16);
+                Vector2 positionInWorld = new Vector2((x + 12) * 16, (y + 9) * 16);
 
                 Vector2 spritePos = positionInWorld - Main.screenPosition - new Vector2(0, (offsetY));
 
@@ -114,11 +110,12 @@ namespace MurphysMod.Content.Tiles
 
         public override void PostDraw(int x, int y, SpriteBatch spriteBatch) //flame base
         {
-            if (Main.LocalPlayer.unlockedBiomeTorches)
+            if (Main.LocalPlayer.unlockedBiomeTorches && BookUsed.isPlayerCursed)
             {
                 Tile tile = Main.tile[x, y];
 
                 Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
+                Lighting.AddLight(new Vector2(x * 16,y * 16), new Color(255, 249, 181).ToVector3());
 
                 if (Main.drawToScreen)
                 {
@@ -135,22 +132,9 @@ namespace MurphysMod.Content.Tiles
                 SpriteEffects.None,
                 0f);
 
-
-                if (offsetY <= 1f)
-                {
-                    flag = true;
-                    offsetY = 1f;
-                }
-                else if (offsetY >= 16f)
-                    flag = false;
-
-                if (flag)
-                    offsetY *= 1.001f;
-
-                else
-                    offsetY *= .999f;
-
-                Math.Round(offsetY, 2);
+                //clover movement
+                offsetY = (float)Math.Sin(timer * (Math.PI / (180 * 30))) * 24f;
+                timer++;               
 
                 if (Main.netMode != NetmodeID.Server)
                 {

@@ -2,4 +2,4 @@ Murphy's mod is a mod that overhauls Terraria's luck system.
 
 Different events in the game modify the amount of bad luck that your character has. Depending on how bad your luck is, it can modify how different mechanics in the game functions, primarily dynamically scaling the difficulty depending on what is happening on screen. This can be adding new mechanics to enemies, to simply making minor tweaks. 
 
-This mod also slightly changes the vanilla to give it a more ambient feel.
+This mod also slightly changes the vanilla dust system to give it a more ambient feel.

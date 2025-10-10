@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Content.Enemies;
 using MurphysMod.Content.Items.Placeables;
 using MurphysMod.Content.LuckHandlers;
+using MurphysMod.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,19 +41,17 @@ namespace MurphysMod.Content.Items.Weapons
 
 		public override void AddRecipes()
 		{
-			Recipe recipe = CreateRecipe(100);
-			recipe.AddIngredient(ItemID.ThrowingKnife, 100);
-			recipe.AddIngredient(ModContent.ItemType<MagmaGem>());
-			recipe.AddTile(TileID.WorkBenches);
-			recipe.Register();
+			CreateRecipe()
+			.AddIngredient(ItemID.ThrowingKnife, 100)
+			.AddIngredient(ModContent.ItemType<MagmaGem>())
+			.AddTile<Tiles.TorchGodsBrazier>()
+			.AddCondition(new Condition("Favor used", () => Main.LocalPlayer.unlockedBiomeTorches))
+			.AddCondition(new Condition("Cursed", () => BookUsed.isPlayerCursed))
+			.Register();
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			Player player = Main.LocalPlayer;
-			LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-			float luckVal = luckHandler.luckValue();
-
 			float[] itemStats = modifyKnifeStats();
 
 			//modifies based off of luck

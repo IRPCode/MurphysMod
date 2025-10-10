@@ -19,8 +19,7 @@ namespace MurphysMod.Content.LuckHandlers
         {
             float luckValue = 0.0f;
 
-            BookUsed bookUsed = ModContent.GetInstance<BookUsed>(); //prevents naturally occuring bad luck
-            if (bookUsed.isPlayerCursed)
+            if (BookUsed.isPlayerCursed)
             {
                 //bad luck biomes
 

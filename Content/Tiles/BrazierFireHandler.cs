@@ -42,7 +42,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         if (tile.TileType == ModContent.TileType<Content.Tiles.TorchGodsBrazier>() && checkBrazier.TileType != ModContent.TileType<Content.Tiles.TorchGodsBrazier>())
                         {
 
-                            rand = Main.rand.Next(0, 15);
+                            rand = Main.rand.Next(0, 100);
 
                             if (rand == 0)
                             {

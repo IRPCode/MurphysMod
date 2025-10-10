@@ -32,11 +32,11 @@ namespace MurphysMod.Content.Items
 
 		public override bool? UseItem(Player player)
 		{
-			BookUsed bookUsed = ModContent.GetInstance<BookUsed>();
+			//BookUsed bookUsed = ModContent.GetInstance<BookUsed>();
 
-			if (!bookUsed.isPlayerCursed)
+			if (!BookUsed.isPlayerCursed)
 			{
-				bookUsed.isPlayerCursed = true;
+				BookUsed.isPlayerCursed = true;
 				Projectile.NewProjectile(player.GetSource_ItemUse(Item), new Vector2(player.position.X, player.position.Y), Vector2.Zero, ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>(), 0, 0f, player.whoAmI);
 				return true;
 			}
@@ -48,18 +48,23 @@ namespace MurphysMod.Content.Items
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips)
 		{
-			BookUsed bookUsed = ModContent.GetInstance<BookUsed>();
-			if (!bookUsed.isPlayerCursed)
+			if (!BookUsed.isPlayerCursed)
 			{
 				TooltipLine tip = new TooltipLine(Mod, "toolTip1", "It feels... Powerful.");
 				tooltips.Add(tip);
-				TooltipLine tip2 = new TooltipLine(Mod, "toolTip2", "This cannot be undone.") {OverrideColor = Color.DarkRed};
+				TooltipLine tip2 = new TooltipLine(Mod, "toolTip2", "This cannot be undone.") { OverrideColor = Color.DarkRed };
 				tooltips.Add(tip2);
 			}
 			else
 			{
-				TooltipLine tip = new TooltipLine(Mod, "toolTip1", "It lies dormant; waiting.") { OverrideColor = Color.DimGray};
+				TooltipLine tip = new TooltipLine(Mod, "toolTip1", "It lies dormant; waiting.") { OverrideColor = Color.DimGray };
 				tooltips.Add(tip);
+
+				if (!Main.LocalPlayer.unlockedBiomeTorches)
+				{
+					TooltipLine tip2 = new TooltipLine(Mod, "toolTip2", "The first page reads: Enter the forge. Find the favor.") { OverrideColor = new Color(255, 249, 181) };
+					tooltips.Add(tip2);
+				}
 			}
 		}
 
