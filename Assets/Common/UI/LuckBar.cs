@@ -62,13 +62,9 @@ namespace MurphysMod.Common.UI
 
         public Color colorOsciliator()
         {
-            Color color1 = new Color(47, 163, 255);
-            Color color2 = new Color(254, 121, 2);
-
             timer++;
             float lerpAmount = (float)Math.Sin(timer * (Math.PI / (180 * 300)));
-
-            return Color.Lerp(color1, color2, lerpAmount);
+            return Color.Lerp(new Color(47, 163, 255), new Color(254, 121, 2), lerpAmount);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -102,10 +98,10 @@ namespace MurphysMod.Common.UI
                 {
                     float percent = (float)i / (right - left);
 
+                    if(finalSteps > 1)
                     spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
                 }
             }
-
         }
 
         [Autoload(Side = ModSide.Client)]
