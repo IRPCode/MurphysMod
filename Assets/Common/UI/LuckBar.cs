@@ -99,7 +99,7 @@ namespace MurphysMod.Common.UI
                     float percent = (float)i / (right - left);
 
                     if(finalSteps > 1)
-                    spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
+                        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
                 }
             }
         }

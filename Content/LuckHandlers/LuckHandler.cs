@@ -137,6 +137,13 @@ namespace MurphysMod.Content.LuckHandlers
                 }
             }
 
+            //ladybug deaths
+
+            luckValue += (float)EnemyLuck.amount;
+
+            if (EnemyLuck.length == 0)
+                EnemyLuck.amount = 0;
+
             luckDebuffHandler(luckValue);
             return luckValue;
         }
