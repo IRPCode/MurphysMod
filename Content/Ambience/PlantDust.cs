@@ -13,14 +13,14 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
     public class PlantDust : ModPlayer
     {
 
-        public static int[] purityPlantSources = {TileID.Plants, TileID.Plants2, TileID.Vines, TileID.VineFlowers}; //add other biomes
+        public static int[] purityPlantSources = {TileID.Plants, TileID.Plants2, TileID.Vines, TileID.VineFlowers, TileID.LeafBlock}; //add other biomes
         public static int[] corruptPlantSources = {TileID.CorruptPlants, TileID.CorruptVines};
 
         public static int[] crimsonPlantSources = {TileID.CrimsonPlants, TileID.CrimsonVines};
 
         public static int[] hallowPlantSources = {TileID.HallowedPlants, TileID.HallowedPlants2, TileID.HallowedVines};
 
-        public static int[] junglePlantSources = {TileID.JunglePlants, TileID.JunglePlants2, TileID.JungleVines};
+        public static int[] junglePlantSources = {TileID.JunglePlants, TileID.JunglePlants2, TileID.JungleVines, TileID.LivingMahoganyLeaves};
         public override void PostUpdate()
         {
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only

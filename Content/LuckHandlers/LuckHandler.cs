@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using MurphysMod.Content.Buffs;
 using MurphysMod.Systems;
+using System;
 
 namespace MurphysMod.Content.LuckHandlers
 {
@@ -143,6 +144,9 @@ namespace MurphysMod.Content.LuckHandlers
 
             if (EnemyLuck.length == 0)
                 EnemyLuck.amount = 0;
+
+            luckValue -= (float)EnemyLuck.proximityAmount;
+            Utils.Clamp(luckValue, 0, float.MaxValue);
 
             luckDebuffHandler(luckValue);
             return luckValue;
