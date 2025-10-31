@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
+using MurphysMod.Content.Ambience;
 using Steamworks;
 using Terraria;
 using Terraria.ID;
@@ -10,7 +11,6 @@ namespace MurphysMod.Content.LuckHandlers
     public class EnemyLuck : GlobalNPC
     {
         public static double amount;
-        public static double proximityAmount;
         public static int length;
         public static float inverseAmount;
         public static int[] goldCritterList = {NPCID.GoldBird, NPCID.GoldBunny, NPCID.GoldButterfly, NPCID.GoldDragonfly, NPCID.GoldFrog,
@@ -43,33 +43,6 @@ namespace MurphysMod.Content.LuckHandlers
                 length += 90 * 20;
             }
         }
-
-        public override void PostAI(NPC npc) //TODO: make this only trigger one per instance, and have the luckhandler class properly update
-        {
-            Player player = Main.LocalPlayer;
-            if (Vector2.Distance(npc.Center, player.Center) <= 2 && goldCritterList.Contains(npc.type))
-            {
-                proximityAmount -= .02;
-            }
-
-            else if (Vector2.Distance(npc.Center, player.Center) <= 2 && (npc.type == NPCID.LadyBug || npc.type == NPCID.GoldLadyBug))
-            {
-                proximityAmount -= .04;
-                if (npc.type == NPCID.GoldLadyBug)
-                    proximityAmount -= .04;
-            }
-
-            if (Vector2.Distance(npc.Center, player.Center) >= 20 && (goldCritterList.Contains(npc.type) || npc.type == NPCID.LadyBug || npc.type == NPCID.GoldLadyBug) && proximityAmount < 0)
-            {
-                proximityAmount += .02;
-                if (npc.type == NPCID.LadyBug)
-                    proximityAmount += .02;
-                else if (npc.type == NPCID.GoldLadyBug)
-                    proximityAmount += .04;
-            }
-
-            proximityAmount = Utils.Clamp(proximityAmount, 0, double.MaxValue);
-        }
     }
 
     public class updateLength : ModSystem
@@ -79,5 +52,51 @@ namespace MurphysMod.Content.LuckHandlers
             EnemyLuck.length--;
             EnemyLuck.length = Utils.Clamp(EnemyLuck.length, 0, int.MaxValue);
         }
+    }
+
+    public class updateProximityLuck : ModPlayer
+    {
+        public static double proximityAmount;
+        public override void PreUpdate()
+        {
+            {
+                Player player = Main.LocalPlayer;
+
+                if (Tick.globalTick % 300 == 0)
+                {
+                    
+
+                    NPC[] npc = Main.npc;
+
+                    for (int i = 0; i < Main.maxNPCs; i++)
+                    {
+
+                        if (Vector2.Distance(npc[i].Center, player.Center) <= 50 && EnemyLuck.goldCritterList.Contains(npc[i].type))
+                        {
+                            proximityAmount -= .02;
+
+                            Main.NewText(Tick.globalTick);
+                        }
+
+                        else if (Vector2.Distance(npc[i].Center, player.Center) <= 50 && (npc[i].type == NPCID.LadyBug || npc[i].type == NPCID.GoldLadyBug))
+                        {
+                            proximityAmount -= .04;
+                            if (npc[i].type == NPCID.GoldLadyBug)
+                                proximityAmount -= .04;
+                        }
+
+                        if (Vector2.Distance(npc[i].Center, player.Center) >= 50 && (EnemyLuck.goldCritterList.Contains(npc[i].type) || npc[i].type == NPCID.LadyBug || npc[i].type == NPCID.GoldLadyBug) && proximityAmount < 0)
+                        {
+                            proximityAmount += .02;
+                            if (npc[i].type == NPCID.LadyBug)
+                                proximityAmount += .02;
+                            else if (npc[i].type == NPCID.GoldLadyBug)
+                                proximityAmount += .04;
+                        }
+                    }
+                }
+                proximityAmount = Utils.Clamp(proximityAmount, 0, double.MaxValue);
+            }
+        }   //TODO: make this only trigger one per instance, and have the luckhandler class properly update
     }
 }

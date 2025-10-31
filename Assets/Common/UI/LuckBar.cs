@@ -77,8 +77,6 @@ namespace MurphysMod.Common.UI
                 LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
                 double luckVal = luckHandler.luckValue();
 
-                luckVal = Math.Round((Utils.Clamp(luckVal, 0f, 1f)), 2);
-
                 Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
                 hitbox.X += 25;
                 hitbox.Width -= 30;
@@ -90,7 +88,7 @@ namespace MurphysMod.Common.UI
 
                 int steps = (int)((right - left) * luckVal);
 
-                text.SetText("Luck Level: " + (luckVal) * 100 + "%");
+                text.SetText("Luck Level: " + (Math.Round((Utils.Clamp(luckVal, 0f, 1f)), 2)) * 100 + "%");
 
                 finalSteps = Math.Round(Utils.Clamp(MathHelper.Lerp((float)finalSteps, steps, .01f), 0, 108), 2);
 

@@ -18,7 +18,7 @@ namespace MurphysMod.Content.LuckHandlers
         }
         public float luckValue()
         {
-            float luckValue = 0.0f;
+            double luckValue = 0;
 
             if (BookUsed.isPlayerCursed)
             {
@@ -26,133 +26,138 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (!Main.dayTime)
                 {
-                    luckValue += .30f;
+                    luckValue += .30;
                 }
 
                 if (Player.ZoneCorrupt || Player.ZoneCrimson)
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Player.ZoneUndergroundDesert || Player.ZoneJungle || Player.ZoneGraveyard || Player.ZoneDungeon)
                 {
-                    luckValue += .15f;
+                    luckValue += .15;
                 }
 
                 if (Player.ZoneNormalUnderground)
                 {
-                    luckValue += .1f;
+                    luckValue += .1;
                 }
 
                 if (Player.ZoneUnderworldHeight)
                 {
-                    luckValue += .35f;
+                    luckValue += .35;
                 }
 
                 if (Player.ZoneGraveyard)
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Player.ZoneWaterCandle)
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Player.ZoneShadowCandle)
                 {
-                    luckValue += .35f;
+                    luckValue += .35;
+                }
+
+                if (Player.ZonePeaceCandle)
+                {
+                    luckValue -= .2;
                 }
 
                 if (Player.ZoneLihzhardTemple)
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Player.ZoneRain || Player.ZoneSandstorm)
                 {
-                    luckValue += .15f;
+                    luckValue += .15;
                 }
 
                 if (Player.ZoneTowerNebula || Player.ZoneTowerSolar || Player.ZoneTowerVortex || Player.ZoneTowerStardust)
                 {
-                    luckValue += .4f;
+                    luckValue += .4;
                 }
 
                 //good luck biomes
 
                 if (Player.ZoneGemCave || Player.ZoneGlowshroom || Player.ZoneGranite || Player.ZoneMarble)
                 {
-                    luckValue -= .25f;
+                    luckValue -= .25;
                 }
 
                 if (Player.ZoneShimmer || Player.ZoneHallow)
                 {
-                    luckValue -= .1f;
+                    luckValue -= .1;
                 }
 
                 //bad luck events
 
                 if (Main.bloodMoon || (Main.invasionType > 5))
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Main.eclipse)
                 {
-                    luckValue += .35f;
+                    luckValue += .35;
                 }
 
                 if ((Main.invasionType > 0 && Main.invasionType < 4) || Main.invasionType == 5)
                 {
-                    luckValue += .15f;
+                    luckValue += .15;
                 }
 
                 //luck debuffs
 
                 if (Player.HasBuff<Augury>())
                 {
-                    luckValue += .15f;
+                    luckValue += .15;
                 }
 
                 if (Player.HasBuff<BadOmen>())
                 {
-                    luckValue += .25f;
+                    luckValue += .25;
                 }
 
                 if (Player.HasBuff<Portent>())
                 {
-                    luckValue += .5f;
+                    luckValue += .5;
                 }
 
                 if (Player.HasBuff<Sanctified>()) //ensure this is the final check to prevent luckvalue abuse
                 {
-                    if (luckValue >= .25f)
+                    if (luckValue >= .25)
                     {
-                        luckValue -= .25f;
+                        luckValue -= .25;
                     }
                     else
                     {
-                        luckValue = 0f;
+                        luckValue = 0;
                     }
                 }
             }
 
             //ladybug deaths
 
-            luckValue += (float)EnemyLuck.amount;
+            luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
 
             if (EnemyLuck.length == 0)
                 EnemyLuck.amount = 0;
 
-            luckValue -= (float)EnemyLuck.proximityAmount;
+            luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
             Utils.Clamp(luckValue, 0, float.MaxValue);
 
             luckDebuffHandler(luckValue);
-            return luckValue;
+            return (float)luckValue;
         }
 
-        public void luckDebuffHandler(float luckValue)
+        public void luckDebuffHandler(double luckValue)
         {
                 if (luckValue > 1f && !Main.LocalPlayer.unlockedBiomeTorches)
                 {

@@ -85,6 +85,21 @@ Items: {
 		DisplayName: Blessed Water Bucket
 		Tooltip: ""
 	}
+
+	OrdainedNaginata: {
+		DisplayName: Ordained Naginata
+		Tooltip: ""
+	}
+
+	BlessedGlaive: {
+		Tooltip: ""
+		DisplayName: Blessed Glaive
+	}
+
+	CursedGoldFragment: {
+		DisplayName: Cursed Gold Fragment
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -165,6 +180,8 @@ Projectiles: {
 	BoneFragment2.DisplayName: Bone Fragment2
 	BoneChunk.DisplayName: Bone Chunk
 	BoneSplinter.DisplayName: Bone Splinter
+	OrdainedNaginataProjectile.DisplayName: Ordained Naginata Projectile
+	BlessedGlaiveProjectile.DisplayName: Blessed Glaive Projectile
 }
 
 Tiles: {

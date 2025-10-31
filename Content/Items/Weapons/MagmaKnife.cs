@@ -20,7 +20,7 @@ namespace MurphysMod.Content.Items.Weapons
 			Item.width = 28;
 			Item.height = 28;
 
-			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useStyle = ItemUseStyleID.Rapier;
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 
@@ -42,7 +42,7 @@ namespace MurphysMod.Content.Items.Weapons
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-			.AddIngredient(ItemID.ThrowingKnife, 100)
+			.AddIngredient(ItemID.ThrowingKnife, 1)
 			.AddIngredient(ModContent.ItemType<MagmaGem>())
 			.AddTile<Tiles.TorchGodsBrazier>()
 			.AddCondition(new Condition("Favor used", () => Main.LocalPlayer.unlockedBiomeTorches))
