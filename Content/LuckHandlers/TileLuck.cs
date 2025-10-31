@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace MurphysMod.Content.LuckHandlers
 {
-    public class TileLuck : ModTile
+    public class TileLuck : ModSystem
     {
 
         public static float tileLuck;
@@ -18,150 +18,156 @@ namespace MurphysMod.Content.LuckHandlers
         public static int[] BadLuckTiles = { TileID.DemonAltar, TileID.SkullLanterns, TileID.ShadowOrbs };
         public static int[] GoldCreatures = { TileID.GoldBirdCage, TileID.GoldBunnyCage, TileID.GoldButterflyCage, TileID.GoldDragonflyJar, TileID.GoldFrogCage, TileID.GoldGoldfishBowl, TileID.GoldGrasshopperCage, TileID.GoldLadybugCage, TileID.GoldMouseCage, TileID.GoldSeahorseCage, TileID.GoldWaterStriderCage, TileID.GoldWormCage };
 
-        public static int[] NormalTorches = { Terraria.ID.TorchID.Blue, Terraria.ID.TorchID.Green, Terraria.ID.TorchID.Orange, Terraria.ID.TorchID.Pink, Terraria.ID.TorchID.Purple, Terraria.ID.TorchID.Rainbow, Terraria.ID.TorchID.Red, Terraria.ID.TorchID.Torch, Terraria.ID.TorchID.UltraBright, Terraria.ID.TorchID.White, Terraria.ID.TorchID.Yellow };
-        public override void NearbyEffects(int i, int j, bool closer) //Tile proximity ticks upwards slowly, if nothing is close, make it tick downwards
-        {
-            Vector2 playerLoc = Main.LocalPlayer.Center;
-            Vector2 tileLoc = new Vector2(i * 16, j * 16);
-
-            //torch luck
-
-            if (Vector2.Distance(playerLoc, tileLoc) <= 200 && Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.Torches)
-                tileLuck += torchLuck(new Vector2(i * 16, j * 16));
-
-            if (Vector2.Distance(playerLoc, tileLoc) <= 50)
-            {
-
-                #region Good Luck
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.GardenGnome)
-                    tileLuck += incrementAmount;
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.ChineseLanterns)
-                    tileLuck += incrementAmount;
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.Sunflower)
-                    tileLuck -= incrementAmount;
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.Jackolanterns)
-                    tileLuck -= incrementAmount;
-
-                if (GoldCreatures.Contains(Framing.GetTileSafely(i * 16, j * 16).TileType)) //prevents aggressive luck stacking
-                    tileLuck -= incrementAmount;
-
-                #endregion
-
-                #region Bad Luck
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.DemonAltar)
-                    tileLuck -= incrementAmount;
-
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.SkullLanterns)
-                    tileLuck -= incrementAmount;
-
-                if (Framing.GetTileSafely(i * 16, j * 16).TileType == TileID.ShadowOrbs)
-                    tileLuck -= incrementAmount;
-
-                #endregion
-
-                Main.NewText(tileLuck);
-
-            }
-
-
-        }
-        public float torchLuck(Vector2 position)
+        public static int[] NormalTorches = { TorchID.Blue, TorchID.Green, TorchID.Orange, TorchID.Pink, TorchID.Purple, TorchID.Rainbow, TorchID.Red, TorchID.Torch, TorchID.UltraBright, TorchID.White, TorchID.Yellow };
+        public override void PostUpdatePlayers() //Tile proximity ticks upwards slowly, if nothing is close, make it tick downwards
         {
             Player player = Main.LocalPlayer;
-            Tile TorchType = Framing.GetTileSafely(position);
+
+            Point playerLocation = player.Center.ToTileCoordinates();
+
+            for (int x = -10; x <= 10; x++)
+            {
+                for (int y = -10; y <= 10; y++)
+                {
+                    int i = playerLocation.X + x;
+                    int j = playerLocation.Y + y;
+
+                    Tile tile = Framing.GetTileSafely(i, j);
+                    if (!tile.HasTile)
+                        continue;
+
+                    if (tile.TileType == TileID.Torches)
+                        tileLuck += torchLuck(i, j);
+
+                    #region Good Luck
+
+                    if (tile.TileType == TileID.GardenGnome)
+                        tileLuck += incrementAmount;
+
+                    if (tile.TileType == TileID.ChineseLanterns)
+                        tileLuck += incrementAmount;
+
+                    if (tile.TileType == TileID.Sunflower)
+                        tileLuck -= incrementAmount;
+
+                    if (tile.TileType == TileID.Jackolanterns)
+                        tileLuck -= incrementAmount;
+
+                    if (GoldCreatures.Contains(tile.TileType)) //prevents aggressive luck stacking
+                        tileLuck -= incrementAmount;
+
+                    #endregion
+
+                    #region Bad Luck
+
+                    if (tile.TileType == TileID.DemonAltar)
+                        tileLuck -= incrementAmount;
+
+
+                    if (tile.TileType == TileID.SkullLanterns)
+                        tileLuck -= incrementAmount;
+
+                    if (tile.TileType == TileID.ShadowOrbs)
+                        tileLuck -= incrementAmount;
+
+                    #endregion
+
+                    Main.NewText(tileLuck);
+                }
+            }
+        }
+        public float torchLuck(int i, int j)
+        {
+            Player player = Main.LocalPlayer;
+            Tile tile = Framing.GetTileSafely(new Vector2(i, j));
+            int TorchType = tile.TileFrameX / 18;
             float luckAmount = 0f;
-
-            if (player.ZoneBeach)
-            {
-                if (TorchType.TileType != Terraria.ID.TorchID.Coral)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Coral)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneCorrupt)
-            {
-                if (TorchType.TileType != Terraria.ID.TorchID.Corrupt || TorchType.TileType != Terraria.ID.TorchID.Cursed)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Corrupt || TorchType.TileType != Terraria.ID.TorchID.Cursed)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneCrimson)
-            {
-                if (TorchType.TileType != Terraria.ID.TorchID.Crimson || TorchType.TileType != Terraria.ID.TorchID.Ichor)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Crimson || TorchType.TileType != Terraria.ID.TorchID.Ichor)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneDesert)
-            {
-                if (TorchType.TileType != Terraria.ID.TorchID.Desert )
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Desert)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneDungeon)
-            {
-                 if (TorchType.TileType != Terraria.ID.TorchID.Bone)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Bone)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneGlowshroom)
-            {
-                 if (TorchType.TileType != Terraria.ID.TorchID.Mushroom)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Mushroom)
-                    luckAmount = .1f;
-            }
-
-            if (player.ZoneHallow)
-            {
-                 if (TorchType.TileType != Terraria.ID.TorchID.Hallowed)
-                    luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Hallowed)
-                    luckAmount = .1f;
-            }
 
             if (player.ZonePurity)
             {
-                if (!NormalTorches.Contains(TorchType.TileType))
+                if (!NormalTorches.Contains(TorchType))
                     luckAmount = -.1f;
                 else
                     luckAmount = 0f;
             }
 
+            if (player.ZoneBeach)
+            {
+                if (TorchType != TorchID.Coral)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Coral)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneDesert)
+            {
+                if (TorchType != TorchID.Desert)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Desert)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneDungeon)
+            {
+                if (TorchType != TorchID.Bone)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Bone)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneGlowshroom)
+            {
+                if (TorchType != TorchID.Mushroom)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Mushroom)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneHallow)
+            {
+                if (TorchType != TorchID.Hallowed)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Hallowed)
+                    luckAmount = .1f;
+            }
+
             if (player.ZoneShimmer)
             {
-                if (TorchType.TileType != Terraria.ID.TorchID.Shimmer)
+                if (TorchType != TorchID.Shimmer)
                     luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Shimmer)
+                else if (TorchType == TorchID.Shimmer)
                     luckAmount = .1f;
             }
 
             if (player.ZoneSnow)
             {
-                if (TorchType.TileType != Terraria.ID.TorchID.Ice)
+                if (TorchType != TorchID.Ice)
                     luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Ice)
+                else if (TorchType == TorchID.Ice)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneCorrupt)
+            {
+                if (TorchType != TorchID.Corrupt || TorchType != TorchID.Cursed)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Corrupt || TorchType != TorchID.Cursed)
+                    luckAmount = .1f;
+            }
+
+            if (player.ZoneCrimson)
+            {
+                if (TorchType != TorchID.Crimson || TorchType != TorchID.Ichor)
+                    luckAmount = -.1f;
+                else if (TorchType == TorchID.Crimson || TorchType != TorchID.Ichor)
                     luckAmount = .1f;
             }
 
             if (player.ZoneUnderworldHeight)
             {
-                if (TorchType.TileType != Terraria.ID.TorchID.Demon)
+                if (TorchType != TorchID.Demon)
                     luckAmount = -.1f;
-                else if (TorchType.TileType == Terraria.ID.TorchID.Demon)
+                else if (TorchType == TorchID.Demon)
                     luckAmount = .1f;
             }
 
