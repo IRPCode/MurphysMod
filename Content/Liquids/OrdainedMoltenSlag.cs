@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 using ModLiquidLib.ModLoader;
 using ModLiquidLib.Utils.Structs;
 using MurphysMod.Content.Ambience.Dusts;
-using System;
+using Terraria.GameContent.Liquid;
 
 namespace MurphysMod.Content.Liquids
 {
@@ -25,19 +25,24 @@ namespace MurphysMod.Content.Liquids
 
         public override void SetStaticDefaults()
         {
-            VisualViscosity = 0;
-            LiquidFallLength = 30;
-            DefaultOpacity = 0.9f;
+            LiquidRenderer.VISCOSITY_MASK[Type] = 100;
+			LiquidRenderer.WATERFALL_LENGTH[Type] = 30;
+			LiquidRenderer.DEFAULT_OPACITY[Type] = 0f;
+
             SlopeOpacity = 0.9f;
             WaterRippleMultiplier = 100f;
-            SplashDustType = DustID.SpelunkerGlowstickSparkle; 
+            SplashDustType = DustID.SpelunkerGlowstickSparkle;
             SplashSound = sound;
             ChecksForDrowning = false;
-            //PlayersEmitBreathBubbles = false;
 
             FishingPoolSizeMultiplier = 1.5f;
 
             AddMapEntry(new Color(255, 249, 207), CreateMapEntryName()); //change the color too
+        }
+
+        public override void Load()
+        {
+            LiquidRenderer.VISCOSITY_MASK[LiquidID.Honey] = 100;
         }
 
         public override int LiquidMerge(int i, int j, int otherLiquid)
@@ -139,21 +144,21 @@ namespace MurphysMod.Content.Liquids
             SoundEngine.PlaySound(SplashSound, proj.position);
             return false;
         }
-        
+
         public override bool OnItemSplash(Item item, bool isEnter)
-		{
-			for (int i = 0; i < 5; i++)
-			{
-				int dust = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (item.height / 2) - 8f), item.width + 12, 24, SplashDustType);
-				Main.dust[dust].velocity.Y -= 1f;
-				Main.dust[dust].velocity.X *= 2.5f;
-				Main.dust[dust].scale = 1.3f;
-				Main.dust[dust].alpha = 100;
-				Main.dust[dust].noGravity = true;
-			}
-			SoundEngine.PlaySound(SplashSound, item.position);
-			return false;
-		}
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                int dust = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (item.height / 2) - 8f), item.width + 12, 24, SplashDustType);
+                Main.dust[dust].velocity.Y -= 1f;
+                Main.dust[dust].velocity.X *= 2.5f;
+                Main.dust[dust].scale = 1.3f;
+                Main.dust[dust].alpha = 100;
+                Main.dust[dust].noGravity = true;
+            }
+            SoundEngine.PlaySound(SplashSound, item.position);
+            return false;
+        }
 
         #endregion
     }

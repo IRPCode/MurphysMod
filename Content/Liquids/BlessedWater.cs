@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using ModLiquidLib.ModLoader;
 using ModLiquidLib.Utils.Structs;
 using MurphysMod.Content.Ambience.Dusts;
+using Terraria.GameContent.Liquid;
 
 namespace MurphysMod.Content.Liquids
 {
@@ -24,9 +25,10 @@ namespace MurphysMod.Content.Liquids
 
         public override void SetStaticDefaults()
         {
-            VisualViscosity = 50;
-            LiquidFallLength = 45;
-            DefaultOpacity = 0.8f;
+            LiquidRenderer.VISCOSITY_MASK[Type] = 50;
+			LiquidRenderer.WATERFALL_LENGTH[Type] = 45;
+            LiquidRenderer.DEFAULT_OPACITY[Type] = 0.8f;
+            
             SlopeOpacity = 0.8f;
             WaterRippleMultiplier = 2f;
             SplashDustType = ModContent.DustType<BlessedWaterDust>(); 

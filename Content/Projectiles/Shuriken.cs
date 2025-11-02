@@ -29,7 +29,7 @@ namespace MurphysMod.Content.Enemies
         }
 
 #pragma warning disable CS0672 // Member overrides obsolete member
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
 #pragma warning restore CS0672 // Member overrides obsolete member
         {
             SoundEngine.PlaySound(SoundID.Dig, Projectile.position); //fix this to find the real sound needed for arrows hitting the ground

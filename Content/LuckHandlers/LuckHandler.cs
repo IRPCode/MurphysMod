@@ -12,6 +12,8 @@ namespace MurphysMod.Content.LuckHandlers
     public class LuckHandler : ModPlayer //modify this class to balance it with items. Make the highest bad luck level incredibly uncommon (without adding items or new tiles to the mix (maybe something similar to a demon alter? Like a sacrifical alter or something?))
     { //if possible, change the night sky depending on your luck level (I am thinking like aurora borealis becoming more and more red or something like that)
 
+        public static float TileLuck;
+
         public override void PostUpdate()
         {
             luckValue();
@@ -141,63 +143,71 @@ namespace MurphysMod.Content.LuckHandlers
                         luckValue = 0;
                     }
                 }
+
+                //tile luck
+
+                luckValue += TileLuck;
+
+                //ladybug deaths
+
+                luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
+
+                if (EnemyLuck.length == 0)
+                    EnemyLuck.amount = 0;
+
+                luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
+                Utils.Clamp(luckValue, 0, float.MaxValue);
+
+                Main.NewText(TileLuck);
+
+                luckDebuffHandler(luckValue);
             }
 
-            //ladybug deaths
-
-            luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
-
-            if (EnemyLuck.length == 0)
-                EnemyLuck.amount = 0;
-
-            luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
-            Utils.Clamp(luckValue, 0, float.MaxValue);
-
-            luckDebuffHandler(luckValue);
             return (float)luckValue;
+            
         }
 
         public void luckDebuffHandler(double luckValue)
         {
-                if (luckValue > 1f && !Main.LocalPlayer.unlockedBiomeTorches)
-                {
-                    Player.AddBuff(ModContent.BuffType<Doomed>(), int.MaxValue, quiet: false);
-                    Player.ClearBuff(ModContent.BuffType<Blighted>());
-                    Player.ClearBuff(ModContent.BuffType<IllFated>());
-                    Player.ClearBuff(ModContent.BuffType<Jinxed>());
-                }
+            if (luckValue > 1f && !Main.LocalPlayer.unlockedBiomeTorches)
+            {
+                Player.AddBuff(ModContent.BuffType<Doomed>(), int.MaxValue, quiet: false);
+                Player.ClearBuff(ModContent.BuffType<Blighted>());
+                Player.ClearBuff(ModContent.BuffType<IllFated>());
+                Player.ClearBuff(ModContent.BuffType<Jinxed>());
+            }
 
-                else if (luckValue > .75f && !Main.LocalPlayer.unlockedBiomeTorches)
-                {
-                    Player.AddBuff(ModContent.BuffType<Blighted>(), int.MaxValue, quiet: false);
-                    Player.ClearBuff(ModContent.BuffType<Doomed>());
-                    Player.ClearBuff(ModContent.BuffType<IllFated>());
-                    Player.ClearBuff(ModContent.BuffType<Jinxed>());
-                }
+            else if (luckValue > .75f && !Main.LocalPlayer.unlockedBiomeTorches)
+            {
+                Player.AddBuff(ModContent.BuffType<Blighted>(), int.MaxValue, quiet: false);
+                Player.ClearBuff(ModContent.BuffType<Doomed>());
+                Player.ClearBuff(ModContent.BuffType<IllFated>());
+                Player.ClearBuff(ModContent.BuffType<Jinxed>());
+            }
 
-                else if (luckValue > .5f && !Main.LocalPlayer.unlockedBiomeTorches)
-                {
-                    Player.AddBuff(ModContent.BuffType<IllFated>(), int.MaxValue, quiet: false);
-                    Player.ClearBuff(ModContent.BuffType<Doomed>());
-                    Player.ClearBuff(ModContent.BuffType<Blighted>());
-                    Player.ClearBuff(ModContent.BuffType<Jinxed>());
-                }
+            else if (luckValue > .5f && !Main.LocalPlayer.unlockedBiomeTorches)
+            {
+                Player.AddBuff(ModContent.BuffType<IllFated>(), int.MaxValue, quiet: false);
+                Player.ClearBuff(ModContent.BuffType<Doomed>());
+                Player.ClearBuff(ModContent.BuffType<Blighted>());
+                Player.ClearBuff(ModContent.BuffType<Jinxed>());
+            }
 
-                else if (luckValue > .25 && !Main.LocalPlayer.unlockedBiomeTorches)
-                {
-                    Player.AddBuff(ModContent.BuffType<Jinxed>(), int.MaxValue, quiet: false);
-                    Player.ClearBuff(ModContent.BuffType<Doomed>());
-                    Player.ClearBuff(ModContent.BuffType<Blighted>());
-                    Player.ClearBuff(ModContent.BuffType<IllFated>());
-                }
+            else if (luckValue > .25 && !Main.LocalPlayer.unlockedBiomeTorches)
+            {
+                Player.AddBuff(ModContent.BuffType<Jinxed>(), int.MaxValue, quiet: false);
+                Player.ClearBuff(ModContent.BuffType<Doomed>());
+                Player.ClearBuff(ModContent.BuffType<Blighted>());
+                Player.ClearBuff(ModContent.BuffType<IllFated>());
+            }
 
-                else
-                {
-                    Player.ClearBuff(ModContent.BuffType<Doomed>());
-                    Player.ClearBuff(ModContent.BuffType<Blighted>());
-                    Player.ClearBuff(ModContent.BuffType<IllFated>());
-                    Player.ClearBuff(ModContent.BuffType<Jinxed>());
-                }
+            else
+            {
+                Player.ClearBuff(ModContent.BuffType<Doomed>());
+                Player.ClearBuff(ModContent.BuffType<Blighted>());
+                Player.ClearBuff(ModContent.BuffType<IllFated>());
+                Player.ClearBuff(ModContent.BuffType<Jinxed>());
+            }
         }
     }
 }

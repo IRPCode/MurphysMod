@@ -131,7 +131,7 @@ namespace MurphysMod.Content.Enemies
         }
 
 #pragma warning disable CS0672 // Member overrides obsolete member
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
 #pragma warning restore CS0672 // Member overrides obsolete member
         {
             SoundEngine.PlaySound(SoundID.DD2_DarkMageHealImpact, Projectile.position);

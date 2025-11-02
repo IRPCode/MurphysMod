@@ -9,25 +9,25 @@ namespace MurphysMod.Content.LuckHandlers
 {
     public class TileLuck : ModSystem
     {
-
-        public static float tileLuck;
-
-        public static float incrementAmount = .005f;
+        public static double incrementAmount = .005;
+        public static double torchLuckAmount = .01;
 
         public static int[] GoodLuckTiles = { TileID.GardenGnome, TileID.Sunflower, TileID.Jackolanterns, TileID.GoldBirdCage };
         public static int[] BadLuckTiles = { TileID.DemonAltar, TileID.SkullLanterns, TileID.ShadowOrbs };
         public static int[] GoldCreatures = { TileID.GoldBirdCage, TileID.GoldBunnyCage, TileID.GoldButterflyCage, TileID.GoldDragonflyJar, TileID.GoldFrogCage, TileID.GoldGoldfishBowl, TileID.GoldGrasshopperCage, TileID.GoldLadybugCage, TileID.GoldMouseCage, TileID.GoldSeahorseCage, TileID.GoldWaterStriderCage, TileID.GoldWormCage };
 
         public static int[] NormalTorches = { TorchID.Blue, TorchID.Green, TorchID.Orange, TorchID.Pink, TorchID.Purple, TorchID.Rainbow, TorchID.Red, TorchID.Torch, TorchID.UltraBright, TorchID.White, TorchID.Yellow };
-        public override void PostUpdatePlayers() //Tile proximity ticks upwards slowly, if nothing is close, make it tick downwards
+        public override void PostUpdatePlayers() //TODO: Ichor incorrectly subtracts; desert, demon, and bone incorrectly are neutral; and orange, ultrabright, and, rainbow incorrectly adds bad luck 
         {
             Player player = Main.LocalPlayer;
 
+            double tileLuck = 0;
+
             Point playerLocation = player.Center.ToTileCoordinates();
 
-            for (int x = -10; x <= 10; x++)
+            for (int x = -60; x <= 60; x++)
             {
-                for (int y = -10; y <= 10; y++)
+                for (int y = -40; y <= 40; y++)
                 {
                     int i = playerLocation.X + x;
                     int j = playerLocation.Y + y;
@@ -37,7 +37,7 @@ namespace MurphysMod.Content.LuckHandlers
                         continue;
 
                     if (tile.TileType == TileID.Torches)
-                        tileLuck += torchLuck(i, j);
+                        tileLuck += Utils.Clamp(torchLuck(i, j), -.3, .3);
 
                     #region Good Luck
 
@@ -72,104 +72,51 @@ namespace MurphysMod.Content.LuckHandlers
 
                     #endregion
 
-                    Main.NewText(tileLuck);
+                    LuckHandler.TileLuck = Utils.Clamp((float)tileLuck, -.7f, .7f);
                 }
             }
         }
-        public float torchLuck(int i, int j)
+        public double torchLuck(int i, int j)
         {
             Player player = Main.LocalPlayer;
-            Tile tile = Framing.GetTileSafely(new Vector2(i, j));
-            int TorchType = tile.TileFrameX / 18;
-            float luckAmount = 0f;
+            Tile tile = Framing.GetTileSafely(i, j);
+            int TorchType = tile.TileFrameY / 23; //if broken change to float
+            double luckAmount = 0f;
 
             if (player.ZonePurity)
-            {
-                if (!NormalTorches.Contains(TorchType))
-                    luckAmount = -.1f;
-                else
-                    luckAmount = 0f;
-            }
+                luckAmount += NormalTorches.Contains(TorchType) ? 0 : torchLuckAmount;
 
-            if (player.ZoneBeach)
-            {
-                if (TorchType != TorchID.Coral)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Coral)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneBeach)
+                luckAmount += (TorchType == TorchID.Coral) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneDesert)
-            {
-                if (TorchType != TorchID.Desert)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Desert)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneDesert)
+                luckAmount += (TorchType == TorchID.Desert) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneDungeon)
-            {
-                if (TorchType != TorchID.Bone)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Bone)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneDungeon)
+                luckAmount += (TorchType == TorchID.Bone) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneGlowshroom)
-            {
-                if (TorchType != TorchID.Mushroom)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Mushroom)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneGlowshroom)
+                luckAmount += (TorchType == TorchID.Mushroom) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneHallow)
-            {
-                if (TorchType != TorchID.Hallowed)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Hallowed)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneHallow)
+                luckAmount += (TorchType == TorchID.Hallowed) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneShimmer)
-            {
-                if (TorchType != TorchID.Shimmer)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Shimmer)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneShimmer)
+                luckAmount += (TorchType == TorchID.Shimmer) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneSnow)
-            {
-                if (TorchType != TorchID.Ice)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Ice)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneSnow)
+                luckAmount += (TorchType == TorchID.Ice) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneCorrupt)
-            {
-                if (TorchType != TorchID.Corrupt || TorchType != TorchID.Cursed)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Corrupt || TorchType != TorchID.Cursed)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneCorrupt)
+                luckAmount += (TorchType == TorchID.Corrupt || TorchType == TorchID.Cursed) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneCrimson)
-            {
-                if (TorchType != TorchID.Crimson || TorchType != TorchID.Ichor)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Crimson || TorchType != TorchID.Ichor)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneCrimson)
+                luckAmount += (TorchType == TorchID.Crimson || TorchType == TorchID.Ichor) ? -torchLuckAmount : torchLuckAmount;
 
-            if (player.ZoneUnderworldHeight)
-            {
-                if (TorchType != TorchID.Demon)
-                    luckAmount = -.1f;
-                else if (TorchType == TorchID.Demon)
-                    luckAmount = .1f;
-            }
+            else if (player.ZoneUnderworldHeight)
+                luckAmount += (TorchType == TorchID.Demon) ? -torchLuckAmount : torchLuckAmount;
+
+            //Main.NewText(luckAmount);
 
             return luckAmount;
         }
