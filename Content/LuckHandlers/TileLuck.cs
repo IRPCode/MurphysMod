@@ -17,7 +17,7 @@ namespace MurphysMod.Content.LuckHandlers
         public static int[] GoldCreatures = { TileID.GoldBirdCage, TileID.GoldBunnyCage, TileID.GoldButterflyCage, TileID.GoldDragonflyJar, TileID.GoldFrogCage, TileID.GoldGoldfishBowl, TileID.GoldGrasshopperCage, TileID.GoldLadybugCage, TileID.GoldMouseCage, TileID.GoldSeahorseCage, TileID.GoldWaterStriderCage, TileID.GoldWormCage };
 
         public static int[] NormalTorches = { TorchID.Blue, TorchID.Green, TorchID.Orange, TorchID.Pink, TorchID.Purple, TorchID.Rainbow, TorchID.Red, TorchID.Torch, TorchID.UltraBright, TorchID.White, TorchID.Yellow };
-        public override void PostUpdatePlayers() //TODO: Ichor incorrectly subtracts; desert, demon, and bone incorrectly are neutral; and orange, ultrabright, and, rainbow incorrectly adds bad luck 
+        public override void PostUpdatePlayers()
         {
             Player player = Main.LocalPlayer;
 
@@ -42,33 +42,44 @@ namespace MurphysMod.Content.LuckHandlers
                     #region Good Luck
 
                     if (tile.TileType == TileID.GardenGnome)
-                        tileLuck += incrementAmount;
+                        tileLuck -= incrementAmount * 5;
 
                     if (tile.TileType == TileID.ChineseLanterns)
-                        tileLuck += incrementAmount;
+                        tileLuck -= incrementAmount / 2;
 
                     if (tile.TileType == TileID.Sunflower)
-                        tileLuck -= incrementAmount;
+                        tileLuck -= incrementAmount / 2;
 
                     if (tile.TileType == TileID.Jackolanterns)
                         tileLuck -= incrementAmount;
 
                     if (GoldCreatures.Contains(tile.TileType)) //prevents aggressive luck stacking
-                        tileLuck -= incrementAmount;
+                        tileLuck -= incrementAmount * 2;
+
+                    if (tile.TileType == TileID.Heart)
+                        tileLuck -= incrementAmount * 3;
+
+                    if (tile.TileType == TileID.LifeFruit)
+                        tileLuck -= incrementAmount * 4;
 
                     #endregion
 
                     #region Bad Luck
 
                     if (tile.TileType == TileID.DemonAltar)
-                        tileLuck -= incrementAmount;
-
+                        tileLuck += incrementAmount;
 
                     if (tile.TileType == TileID.SkullLanterns)
-                        tileLuck -= incrementAmount;
+                        tileLuck += incrementAmount * 4;
 
                     if (tile.TileType == TileID.ShadowOrbs)
-                        tileLuck -= incrementAmount;
+                        tileLuck += incrementAmount * 2;
+
+                    if (tile.TileType == TileID.EmpressButterflyJar)
+                        tileLuck += incrementAmount * 3;
+
+                    if (tile.TileType == TileID.Demonite || tile.TileType == TileID.Crimtane || tile.TileType == TileID.DemoniteBrick || tile.TileType == TileID.CrimtaneBrick)
+                        tileLuck += incrementAmount / 2;
 
                     #endregion
 
@@ -77,11 +88,14 @@ namespace MurphysMod.Content.LuckHandlers
             }
         }
         public double torchLuck(int i, int j)
+
         {
             Player player = Main.LocalPlayer;
             Tile tile = Framing.GetTileSafely(i, j);
-            int TorchType = tile.TileFrameY / 23; //if broken change to float
+            int TorchType = tile.TileFrameY / 22;
             double luckAmount = 0f;
+
+            Main.NewText(TorchType);
 
             if (player.ZonePurity)
                 luckAmount += NormalTorches.Contains(TorchType) ? 0 : torchLuckAmount;

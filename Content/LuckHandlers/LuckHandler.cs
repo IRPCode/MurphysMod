@@ -28,7 +28,7 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (!Main.dayTime)
                 {
-                    luckValue += .30;
+                    luckValue += .15;
                 }
 
                 if (Player.ZoneCorrupt || Player.ZoneCrimson)
@@ -74,11 +74,6 @@ namespace MurphysMod.Content.LuckHandlers
                 if (Player.ZoneLihzhardTemple)
                 {
                     luckValue += .25;
-                }
-
-                if (Player.ZoneRain || Player.ZoneSandstorm)
-                {
-                    luckValue += .15;
                 }
 
                 if (Player.ZoneTowerNebula || Player.ZoneTowerSolar || Player.ZoneTowerVortex || Player.ZoneTowerStardust)
@@ -148,6 +143,12 @@ namespace MurphysMod.Content.LuckHandlers
 
                 luckValue += TileLuck;
 
+                WeatherLuck weatherLuck = new WeatherLuck();
+
+                luckValue += weatherLuck.getWeatherLuckVal();
+
+                Main.NewText(luckValue);
+
                 //ladybug deaths
 
                 luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
@@ -157,8 +158,6 @@ namespace MurphysMod.Content.LuckHandlers
 
                 luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
                 Utils.Clamp(luckValue, 0, float.MaxValue);
-
-                Main.NewText(TileLuck);
 
                 luckDebuffHandler(luckValue);
             }

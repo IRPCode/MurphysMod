@@ -116,7 +116,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                 //purity
 
-                if (Math.Abs(Main.windSpeedCurrent) >= .25f && Player.position.Y > 0) //TODO: Fix particles spawning underground
+                if (Math.Abs(Main.windSpeedCurrent) >= .25f && Player.position.Y / 16f < Main.worldSurface) //TODO: Fix particles spawning underground
                 
                 {
                     for (int i = 0; i < (int)(5 * (Math.Abs(Main.windSpeedCurrent) + 1)); i++)
