@@ -56,6 +56,9 @@ namespace MurphysMod.Content.LuckHandlers
                     if (GoldCreatures.Contains(tile.TileType)) //prevents aggressive luck stacking
                         tileLuck -= incrementAmount * 2;
 
+                    if (tile.TileType == TileID.PinkFairyJar || tile.TileType == TileID.GreenFairyJar || tile.TileType == TileID.BlueFairyJar)
+                        tileLuck -= incrementAmount * 3;
+
                     if (tile.TileType == TileID.Heart)
                         tileLuck -= incrementAmount * 3;
 
@@ -94,8 +97,6 @@ namespace MurphysMod.Content.LuckHandlers
             Tile tile = Framing.GetTileSafely(i, j);
             int TorchType = tile.TileFrameY / 22;
             double luckAmount = 0f;
-
-            Main.NewText(TorchType);
 
             if (player.ZonePurity)
                 luckAmount += NormalTorches.Contains(TorchType) ? 0 : torchLuckAmount;

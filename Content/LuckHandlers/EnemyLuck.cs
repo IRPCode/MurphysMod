@@ -64,7 +64,6 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Tick.globalTick % 300 == 0)
                 {
-                    
 
                     NPC[] npc = Main.npc;
 

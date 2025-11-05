@@ -11,7 +11,10 @@ public class WeatherLuck : ModSystem
     public double getWeatherLuckVal()
     {
         double WluckVal = 0;
+        double MluckVal = 0;
         Player player = Main.LocalPlayer;
+
+        //General weather
 
         if (player.position.Y / 16f < Main.worldSurface)
         {
@@ -23,18 +26,30 @@ public class WeatherLuck : ModSystem
             {
                 WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent, 2)) * Math.Round((double)Main.maxRaining, 2);
                 if (player.ZoneSnow)
-                    WluckVal += .1f;
+                    WluckVal += .05;
             }
 
             if (player.ZoneSandstorm)
             {
-                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent, 2)) + .1;
+                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent, 2)) + .05;
             }
 
             WluckVal = Math.Round(WluckVal, 2);
         }
 
-        //Time
+        //Moon phases
+
+        if (!Main.dayTime)
+        {
+            if (Main.moonPhase >= 4)
+                MluckVal = 1 - ((Main.moonPhase - 4) * .25);
+            else
+                MluckVal = 1 - (Main.moonPhase * .25);
+        }
+
+        MluckVal = Math.Round(MluckVal * .05, 3);
+
+        WluckVal -= MluckVal;
 
         return WluckVal;
     }

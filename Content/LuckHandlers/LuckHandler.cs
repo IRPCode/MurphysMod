@@ -38,22 +38,17 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Player.ZoneUndergroundDesert || Player.ZoneJungle || Player.ZoneGraveyard || Player.ZoneDungeon)
                 {
-                    luckValue += .15;
-                }
-
-                if (Player.ZoneNormalUnderground)
-                {
                     luckValue += .1;
                 }
 
-                if (Player.ZoneUnderworldHeight)
+                if (Player.ZoneUnderworldHeight) //adds to player height luck
                 {
-                    luckValue += .35;
+                    luckValue += .15;
                 }
 
                 if (Player.ZoneGraveyard)
                 {
-                    luckValue += .25;
+                    luckValue += .15;
                 }
 
                 if (Player.ZoneWaterCandle)
@@ -78,7 +73,7 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Player.ZoneTowerNebula || Player.ZoneTowerSolar || Player.ZoneTowerVortex || Player.ZoneTowerStardust)
                 {
-                    luckValue += .4;
+                    luckValue += .35;
                 }
 
                 //good luck biomes
@@ -97,12 +92,12 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Main.bloodMoon || (Main.invasionType > 5))
                 {
-                    luckValue += .25;
+                    luckValue += .2;
                 }
 
                 if (Main.eclipse)
                 {
-                    luckValue += .35;
+                    luckValue += .25;
                 }
 
                 if ((Main.invasionType > 0 && Main.invasionType < 4) || Main.invasionType == 5)
@@ -114,17 +109,17 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Player.HasBuff<Augury>())
                 {
-                    luckValue += .15;
+                    luckValue += .1;
                 }
 
                 if (Player.HasBuff<BadOmen>())
                 {
-                    luckValue += .25;
+                    luckValue += .2;
                 }
 
                 if (Player.HasBuff<Portent>())
                 {
-                    luckValue += .5;
+                    luckValue += .3;
                 }
 
                 if (Player.HasBuff<Sanctified>()) //ensure this is the final check to prevent luckvalue abuse
@@ -139,15 +134,20 @@ namespace MurphysMod.Content.LuckHandlers
                     }
                 }
 
+                //Height luck
+
+                HeightLuck heightLuck = new HeightLuck();
+            
+                luckValue += heightLuck.getHeightLuckVal();
+
                 //tile luck
 
                 luckValue += TileLuck;
 
+                //weather and moon luck
+
                 WeatherLuck weatherLuck = new WeatherLuck();
-
                 luckValue += weatherLuck.getWeatherLuckVal();
-
-                Main.NewText(luckValue);
 
                 //ladybug deaths
 
@@ -160,6 +160,12 @@ namespace MurphysMod.Content.LuckHandlers
                 Utils.Clamp(luckValue, 0, float.MaxValue);
 
                 luckDebuffHandler(luckValue);
+
+
+                //buff luck (must be calculated last)
+
+                PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
+                luckValue += playerBuffLuck.getBuffLuck();
             }
 
             return (float)luckValue;
