@@ -24,14 +24,14 @@ public class WeatherLuck : ModSystem
             }
             else
             {
-                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent, 2)) * Math.Round((double)Main.maxRaining, 2);
+                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent / 2, 2)) * Math.Round((double)Main.maxRaining / 2, 2);
                 if (player.ZoneSnow)
                     WluckVal += .05;
             }
 
             if (player.ZoneSandstorm)
             {
-                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent, 2)) + .05;
+                WluckVal += Math.Abs(Math.Round((double)Main.windSpeedCurrent / 2, 2)) + .05;
             }
 
             WluckVal = Math.Round(WluckVal, 2);

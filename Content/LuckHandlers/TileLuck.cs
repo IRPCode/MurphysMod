@@ -48,7 +48,7 @@ namespace MurphysMod.Content.LuckHandlers
                         tileLuck -= incrementAmount / 2;
 
                     if (tile.TileType == TileID.Sunflower)
-                        tileLuck -= incrementAmount / 2;
+                        tileLuck -= incrementAmount / 5;
 
                     if (tile.TileType == TileID.Jackolanterns)
                         tileLuck -= incrementAmount;
