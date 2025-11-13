@@ -14,6 +14,7 @@ namespace MurphysMod.Content.LuckHandlers
 
         public static float TileLuck;
 
+
         public override void PostUpdate()
         {
             luckValue();
@@ -137,7 +138,7 @@ namespace MurphysMod.Content.LuckHandlers
                 //Height luck
 
                 HeightLuck heightLuck = new HeightLuck();
-            
+
                 luckValue += heightLuck.getHeightLuckVal();
 
                 //tile luck
@@ -168,8 +169,24 @@ namespace MurphysMod.Content.LuckHandlers
                 luckValue += playerBuffLuck.getBuffLuck();
             }
 
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                int activePlayerCount = 1; //default to 1
+                for (int i = 0; i < Main.maxNetPlayers; i++)
+                {
+                    Player player = Main.player[i];
+
+                    if (player.active)
+                    {
+                        activePlayerCount++;
+                        luckValue += player.GetModPlayer<LuckHandler>().luckValue();
+                    }
+                }
+                luckValue /= activePlayerCount;
+            }
+
             return (float)luckValue;
-            
+
         }
 
         public void luckDebuffHandler(double luckValue)
