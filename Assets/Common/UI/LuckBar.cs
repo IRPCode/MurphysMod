@@ -15,6 +15,7 @@ using System.Numerics;
 using Vector3 = Microsoft.Xna.Framework.Vector3;
 using MurphysMod.Content.Ambience;
 using Microsoft.CodeAnalysis.Emit;
+using Terraria.ID;
 
 namespace MurphysMod.Common.UI
 {
@@ -24,7 +25,7 @@ namespace MurphysMod.Common.UI
         private UIElement area;
         private UIImage barFrame;
         private UIImage barBack;
-        private float timer;
+        private double timer;
         private double finalSteps;
 
         public override void OnInitialize()
@@ -63,8 +64,8 @@ namespace MurphysMod.Common.UI
         public Color colorOsciliator()
         {
             timer++;
-            float lerpAmount = (float)Math.Sin(timer * (Math.PI / (180 * 300)));
-            return Color.Lerp(new Color(47, 163, 255), new Color(254, 121, 2), lerpAmount);
+            double lerpAmount = Math.Sin(timer * (Math.PI / (180 * 300)));
+            return Color.Lerp(new Color(47, 163, 255), new Color(254, 121, 2), (float)lerpAmount);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -89,16 +90,21 @@ namespace MurphysMod.Common.UI
 
                 int steps = (int)((right - left) * luckVal);
 
-                text.SetText("Luck Level: " + ((Utils.Clamp(luckVal, 0f, 1f)) * 100 + "%"));
+                text.SetText("Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
+
+                if(Main.netMode == NetmodeID.MultiplayerClient)
+                {
+                    text.SetText("Average Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
+                }
 
                 finalSteps = Math.Round(Utils.Clamp(MathHelper.Lerp((float)finalSteps, steps, .01f), 0, 108), 2);
 
                 for (int i = 0; i < finalSteps; i += 1)
                 {
-                    float percent = (float)i / (right - left);
+                    double percent = i / (right - left);
 
                     if(finalSteps > 1)
-                        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), percent));
+                        spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), (float)percent));
                 }
             }
         }

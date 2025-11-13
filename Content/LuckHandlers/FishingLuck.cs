@@ -8,15 +8,15 @@ namespace MurphysMod.Content.LuckHandlers
         public override void GetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel)
         {
 
-            float luckVal = Player.GetModPlayer<LuckHandler>().luckValue();
+            double luckVal = Player.GetModPlayer<LuckHandler>().luckValue();
 
-            if(luckVal <= .2f)
+            if(luckVal <= .2)
             {
-                fishingLevel *= (1.1f - luckVal);
+                fishingLevel *= (float)(1.1 - luckVal);
             }
             else
             {
-                fishingLevel *= Utils.Clamp(1f - luckVal, 0f, 1f);
+                fishingLevel *= (float)Utils.Clamp(1 - luckVal, 0f, 1f);
             }
         }
     }

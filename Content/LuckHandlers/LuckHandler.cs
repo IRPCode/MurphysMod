@@ -12,15 +12,51 @@ namespace MurphysMod.Content.LuckHandlers
     public class LuckHandler : ModPlayer //modify this class to balance it with items. Make the highest bad luck level incredibly uncommon (without adding items or new tiles to the mix (maybe something similar to a demon alter? Like a sacrifical alter or something?))
     { //if possible, change the night sky depending on your luck level (I am thinking like aurora borealis becoming more and more red or something like that)
 
-        public static float TileLuck;
-
+        public static double TileLuck;
+        public double multiplayerLuckPacket;
+        public double totalLuck;
 
         public override void PostUpdate()
         {
+
+            if (Main.netMode == NetmodeID.Server)
+                multiplayerHandler();
             luckValue();
         }
-        public float luckValue()
+
+        public void multiplayerHandler()
         {
+            int activePlayerCount = 0;
+            double playerLuck = 0;
+
+            for (int i = 0; i < Main.maxNetPlayers; i++)
+            {
+                Player player = Main.player[i];
+
+                if (player.active)
+                {
+                    activePlayerCount++;
+                    playerLuck += player.GetModPlayer<LuckHandler>().luckValue();
+
+                }
+            }
+            if (activePlayerCount > 0)
+                playerLuck /= activePlayerCount;
+
+            totalLuck = playerLuck;
+
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MessageType.totalLuckPacket);
+            packet.Write(totalLuck);
+            packet.Send();
+        }
+        public double luckValue()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                return Utils.Clamp(multiplayerLuckPacket, 0, double.MaxValue);
+            }
+            
             double luckValue = 0;
 
             if (BookUsed.isPlayerCursed)
@@ -169,24 +205,14 @@ namespace MurphysMod.Content.LuckHandlers
                 luckValue += playerBuffLuck.getBuffLuck();
             }
 
-            if (Main.netMode != NetmodeID.SinglePlayer)
-            {
-                int activePlayerCount = 1; //default to 1
-                for (int i = 0; i < Main.maxNetPlayers; i++)
-                {
-                    Player player = Main.player[i];
 
-                    if (player.active)
-                    {
-                        activePlayerCount++;
-                        luckValue += player.GetModPlayer<LuckHandler>().luckValue();
-                    }
-                }
-                luckValue /= activePlayerCount;
-            }
 
-            return (float)luckValue;
 
+                return luckValue;
+
+                
+            
+                
         }
 
         public void luckDebuffHandler(double luckValue)

@@ -13,8 +13,8 @@ namespace MurphysMod.Content.Enemies
         {
             Player player = Main.LocalPlayer;
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-            float luckVal = luckHandler.luckValue();
-            float rand = Main.rand.Next(0, 101);
+            double luckVal = luckHandler.luckValue();
+            double rand = Main.rand.Next(0, 101);
 
 
             for (int i = 0; i < Main.maxProjectiles; i++)
@@ -30,7 +30,7 @@ namespace MurphysMod.Content.Enemies
                     if (luckVal >= 1f)
                     {
                         projectile.tileCollide = true;
-                        proj.aiStyle = modifyTorchProjectile(luckVal);
+                        proj.aiStyle = modifyTorchProjectile((float)luckVal);
                         proj.velocity *= 1.00025f;
                     }
                     else if (luckVal >= .75f)

@@ -30,7 +30,7 @@ namespace MurphysMod.Content.Enemies
 
                 Player player = Main.LocalPlayer;
                 LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-                float luckVal = luckHandler.luckValue();
+                double luckVal = luckHandler.luckValue();
 
                 if (luckVal >= 1f)
                 {

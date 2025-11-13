@@ -86,7 +86,7 @@ namespace MurphysMod.Content.LuckHandlers
 
                     #endregion
 
-                    LuckHandler.TileLuck = Utils.Clamp((float)tileLuck, -.7f, .7f);
+                    LuckHandler.TileLuck = Utils.Clamp(tileLuck, -.7f, .7f);
                 }
             }
         }

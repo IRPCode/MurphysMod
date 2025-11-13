@@ -86,7 +86,7 @@ namespace MurphysMod.Content.Items.Weapons
 		{
 			Player player = Main.LocalPlayer;
 			LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-			float luckVal = luckHandler.luckValue();
+			double luckVal = luckHandler.luckValue();
 
 			float[] itemStats = [0, 0, 0, 0, 0]; //damage, knockback, useTime, useAnimation, shootSpeed
 

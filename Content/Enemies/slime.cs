@@ -21,7 +21,7 @@ namespace MurphysMod.Content.Enemies
 
                 Player player = Main.LocalPlayer;
                 LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-                float luckVal = luckHandler.luckValue();
+                double luckVal = luckHandler.luckValue();
                 var projectile = ModContent.ProjectileType<SlimeGel>();
                 bool spawnProjectile = false;
                 var knockback = 2f;

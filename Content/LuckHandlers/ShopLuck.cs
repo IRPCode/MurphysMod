@@ -10,7 +10,7 @@ public class ShopLuck : ModPlayer
     {
         if (Player.talkNPC != -1)
         {
-            float luckVal = Utils.Clamp(((float)Player.GetModPlayer<LuckHandler>().luckValue() * .5f) - .1f, -.1f, 1f);
+            double luckVal = Utils.Clamp((Player.GetModPlayer<LuckHandler>().luckValue() * .5f) - .1f, -.1f, 1f);
 
             var currentSettings = Player.currentShoppingSettings;
             currentSettings.PriceAdjustment = 1f + luckVal;

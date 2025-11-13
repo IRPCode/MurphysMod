@@ -27,7 +27,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             Player player = Main.LocalPlayer;
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             Vector2 playerLoc = npc.DirectionTo(player.Center);
-            float luckVal = luckHandler.luckValue();
+            float luckVal = (float)luckHandler.luckValue();
             Vector2 vectorLuck = new Vector2(luckVal, luckVal);
 
             if (npc.aiStyle == 2) //Demon Eye AIs
@@ -76,7 +76,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
         public override void OnHitPlayer(NPC npc, Player player, Player.HurtInfo hurtInfo)
         {
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-            float luckVal = luckHandler.luckValue();
+            float luckVal = (float)luckHandler.luckValue();
 
             if (npc.aiStyle == 6)
             {
@@ -102,7 +102,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
         {
             Player player = Main.LocalPlayer;
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
-            float luckVal = luckHandler.luckValue();
+            float luckVal = (float)luckHandler.luckValue();
             npc.netUpdate = true;
 
             if (npc.aiStyle == 9 && luckVal >= 1f && npc.type != NPCID.VileSpit && npc.type != NPCID.SolarFlare && npc.type != NPCID.VileSpitEaterOfWorlds)
@@ -129,7 +129,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             Player player = Main.LocalPlayer;
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             Vector2 playerLoc = npc.DirectionTo(player.Center);
-            float luckVal = luckHandler.luckValue();
+            float luckVal = (float)luckHandler.luckValue();
             Vector2 vectorLuck = new Vector2(luckVal, luckVal);
 
             if (npc.type == NPCID.WaterSphere || npc.type == NPCID.ChaosBall || npc.type == NPCID.BurningSphere)
