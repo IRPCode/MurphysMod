@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace MurphysMod
@@ -24,16 +25,12 @@ namespace MurphysMod
             if (type == MessageType.totalLuckPacket)
             {
 				float multiplayerLuckPacket = reader.ReadSingle();
-				
-
-				for(int i = 0; i < Main.maxPlayers; i++)
-				{
-					Player player = Main.player[i];
-                    if (player.active)
+					
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
                     {
+                        Player player = Main.LocalPlayer;
 						player.GetModPlayer<Content.LuckHandlers.LuckHandler>().multiplayerLuckPacket = multiplayerLuckPacket;
                     }
-                }
             }
         }
     }

@@ -37,7 +37,6 @@ namespace MurphysMod.Content.LuckHandlers
                 {
                     activePlayerCount++;
                     playerLuck += player.GetModPlayer<LuckHandler>().luckValue();
-
                 }
             }
             if (activePlayerCount > 0)
@@ -52,15 +51,14 @@ namespace MurphysMod.Content.LuckHandlers
         }
         public double luckValue()
         {
-            if (Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                return Utils.Clamp(multiplayerLuckPacket, 0, double.MaxValue);
-            }
-            
             double luckValue = 0;
 
             if (BookUsed.isPlayerCursed)
             {
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                {
+                    return Utils.Clamp(multiplayerLuckPacket, 0, double.MaxValue);
+                }
                 //bad luck biomes
 
                 if (!Main.dayTime)
@@ -204,15 +202,7 @@ namespace MurphysMod.Content.LuckHandlers
                 PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
                 luckValue += playerBuffLuck.getBuffLuck();
             }
-
-
-
-
-                return luckValue;
-
-                
-            
-                
+            return luckValue;
         }
 
         public void luckDebuffHandler(double luckValue)
