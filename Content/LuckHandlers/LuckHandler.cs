@@ -18,10 +18,10 @@ namespace MurphysMod.Content.LuckHandlers
 
         public override void PostUpdate()
         {
-
-            if (Main.netMode == NetmodeID.Server)
-                multiplayerHandler();
-            luckValue();
+            //if (Main.netMode != NetmodeID.SinglePlayer)
+                //multiplayerHandler();
+            //else
+                luckValue();
         }
 
         public void multiplayerHandler()
@@ -36,6 +36,7 @@ namespace MurphysMod.Content.LuckHandlers
                 if (player.active)
                 {
                     activePlayerCount++;
+                    
                     playerLuck += player.GetModPlayer<LuckHandler>().luckValue();
                 }
             }
@@ -43,6 +44,7 @@ namespace MurphysMod.Content.LuckHandlers
                 playerLuck /= activePlayerCount;
 
             totalLuck = playerLuck;
+            multiplayerLuckPacket = playerLuck;
 
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)MessageType.totalLuckPacket);
@@ -53,12 +55,10 @@ namespace MurphysMod.Content.LuckHandlers
         {
             double luckValue = 0;
 
+
             if (BookUsed.isPlayerCursed)
             {
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    return Utils.Clamp(multiplayerLuckPacket, 0, double.MaxValue);
-                }
+
                 //bad luck biomes
 
                 if (!Main.dayTime)

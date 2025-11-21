@@ -90,11 +90,13 @@ namespace MurphysMod.Common.UI
 
                 int steps = (int)((right - left) * luckVal);
 
-                text.SetText("Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
-
                 if(Main.netMode == NetmodeID.MultiplayerClient)
                 {
                     text.SetText("Average Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
+                }
+                else
+                {
+                    text.SetText("Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
                 }
 
                 finalSteps = Math.Round(Utils.Clamp(MathHelper.Lerp((float)finalSteps, steps, .01f), 0, 108), 2);
