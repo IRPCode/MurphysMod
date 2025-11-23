@@ -5,21 +5,16 @@ using Terraria;
 namespace MurphysMod.Content.Liquids
 {
     //An example of the ModLiquidFall class (although pretty empty here, a proper example will be made soon)
-	public class BlessedWaterFall : ModLiquidFall
+	public class AccursedSapFall : ModLiquidFall
 	{
 		public override bool PlayWaterfallSounds()
 		{
-			return true;
+			return false;
 		}
         
 		public override float? Alpha(int x, int y, float Alpha, int maxSteps, int s, Tile tileCache)
         {
-            return .8f;
+            return 1f;
         }
-
-		public override void AddLight(int i, int j)
-		{
-			Lighting.AddLight(i, j, .6f, .88f, .96f);
-		}
 	}
 }

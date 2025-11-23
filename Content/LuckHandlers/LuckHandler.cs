@@ -19,9 +19,9 @@ namespace MurphysMod.Content.LuckHandlers
         public override void PostUpdate()
         {
             //if (Main.netMode != NetmodeID.SinglePlayer)
-                //multiplayerHandler();
+            //multiplayerHandler();
             //else
-                luckValue();
+            luckValue();
         }
 
         public void multiplayerHandler()
@@ -36,7 +36,7 @@ namespace MurphysMod.Content.LuckHandlers
                 if (player.active)
                 {
                     activePlayerCount++;
-                    
+
                     playerLuck += player.GetModPlayer<LuckHandler>().luckValue();
                 }
             }
@@ -169,39 +169,44 @@ namespace MurphysMod.Content.LuckHandlers
                     }
                 }
 
-                //Height luck
+                if (Player.HasBuff(ModContent.BuffType<Oleaginous>()))
+                {
+                    luckValue += .25;
+                }
 
-                HeightLuck heightLuck = new HeightLuck();
+            //Height luck
 
-                luckValue += heightLuck.getHeightLuckVal();
+            HeightLuck heightLuck = new HeightLuck();
 
-                //tile luck
+            luckValue += heightLuck.getHeightLuckVal();
 
-                luckValue += TileLuck;
+            //tile luck
 
-                //weather and moon luck
+            luckValue += TileLuck;
 
-                WeatherLuck weatherLuck = new WeatherLuck();
-                luckValue += weatherLuck.getWeatherLuckVal();
+            //weather and moon luck
 
-                //ladybug deaths
+            WeatherLuck weatherLuck = new WeatherLuck();
+            luckValue += weatherLuck.getWeatherLuckVal();
 
-                luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
+            //ladybug deaths
 
-                if (EnemyLuck.length == 0)
-                    EnemyLuck.amount = 0;
+            luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
 
-                luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
-                Utils.Clamp(luckValue, 0, float.MaxValue);
+            if (EnemyLuck.length == 0)
+                EnemyLuck.amount = 0;
 
-                luckDebuffHandler(luckValue);
+            luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
+            Utils.Clamp(luckValue, 0, float.MaxValue);
+
+            luckDebuffHandler(luckValue);
 
 
-                //buff luck (must be calculated last)
+            //buff luck (must be calculated last)
 
-                PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
-                luckValue += playerBuffLuck.getBuffLuck();
-            }
+            PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
+            luckValue += playerBuffLuck.getBuffLuck();
+        }
             return luckValue;
         }
 

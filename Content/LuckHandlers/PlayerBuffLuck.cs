@@ -33,7 +33,7 @@ namespace MurphysMod.Content.LuckHandlers
                 else
                     BuffLuckVal -= .1;
             }
-
+            
            /* if (Player.HasBuff<Sanctified>())
             {
                 if (BuffLuckVal >= .25)

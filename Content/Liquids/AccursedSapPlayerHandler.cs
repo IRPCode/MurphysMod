@@ -5,11 +5,8 @@ using Terraria.ModLoader;
 using System;
 using MurphysMod.Content.Buffs;
 
-public class BlessedWaterPlayerHandler : ModPlayer
+public class AccursedSapPlayerHandler : ModPlayer
 {
-
-    public bool liquidVelCheck = false;
-    public bool velocityType;
     public override void PostUpdate()
     {
         try
@@ -22,12 +19,12 @@ public class BlessedWaterPlayerHandler : ModPlayer
 
                 Tile playerLoc = Framing.GetTileSafely((int)(x / 16), (int)(y / 16));
 
-                if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type)
+                if (playerLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "AccursedSap").Type)
                 {
-                    Player.AddBuff(ModContent.BuffType<Sanctified>(), 1800);
+                    Player.AddBuff(ModContent.BuffType<Oleaginous>(), 1800);
 
-                    if (Player.HasBuff(ModContent.BuffType<Oleaginous>()))
-                        Player.ClearBuff(ModContent.BuffType<Oleaginous>());
+                    if (Player.HasBuff(ModContent.BuffType<Sanctified>()))
+                        Player.ClearBuff(ModContent.BuffType<Sanctified>());
                 }
 
                 for (int i = 0; i < Main.maxNPCs; i++)
@@ -36,9 +33,9 @@ public class BlessedWaterPlayerHandler : ModPlayer
                     Tile npcLoc = Framing.GetTileSafely((int)npc.position.X / 16, (int)npc.position.Y / 16);
                     if (npc.active)
                     {
-                        if (npcLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type) //prevents boss deaths
+                        if (npcLoc.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "AccursedSap").Type)
                         {
-                            npc.AddBuff(ModContent.BuffType<Sanctified>(), 900);
+                            npc.AddBuff(ModContent.BuffType<Oleaginous>(), 900);
                         }
                     }
                 }
