@@ -159,17 +159,10 @@ namespace MurphysMod.Content.LuckHandlers
 
                 if (Player.HasBuff<Sanctified>()) //ensure this is the final check to prevent luckvalue abuse
                 {
-                    if (luckValue >= .25)
-                    {
-                        luckValue -= .25;
-                    }
-                    else
-                    {
-                        luckValue = 0;
-                    }
+                    luckValue = Utils.Clamp(luckValue - .25, 0f, double.MaxValue);
                 }
 
-                if (Player.HasBuff(ModContent.BuffType<Oleaginous>()))
+                if (Player.HasBuff(ModContent.BuffType<Oleaginous>()) && Main.hardMode)
                 {
                     luckValue += .25;
                 }

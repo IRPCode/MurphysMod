@@ -24,12 +24,12 @@ namespace MurphysMod.Content.Liquids
 
         public override void SetStaticDefaults()
         {
-            LiquidRenderer.VISCOSITY_MASK[Type] = 100;
+            LiquidRenderer.VISCOSITY_MASK[Type] = 250;
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 25;
             LiquidRenderer.DEFAULT_OPACITY[Type] = 1f;
             
             SlopeOpacity = 1f;
-            WaterRippleMultiplier = .5f;
+            WaterRippleMultiplier = .25f;
             SplashDustType = ModContent.DustType<AccursedSapDust>(); 
             SplashSound = sound;
             ChecksForDrowning = true;

@@ -11,7 +11,6 @@ public class AccursedSapPlayerHandler : ModPlayer
     {
         try
         {
-
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ)
             {
                 float x = Player.Center.X;

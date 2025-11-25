@@ -90,14 +90,13 @@ namespace MurphysMod.Common.UI
 
                 int steps = (int)((right - left) * luckVal);
 
-                if(Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    text.SetText("Average Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
-                }
-                else
-                {
-                    text.SetText("Bad Luck Level: " + ((Utils.Clamp(luckVal, 0, 1f)) * 100 + "%"));
-                }
+                String displayLuckAmount = (Utils.Clamp((luckVal), 0f, 1f) * 100).ToString();
+
+                int index = displayLuckAmount.IndexOf(".");
+                if (index >= 0)
+                    displayLuckAmount = displayLuckAmount.Substring(0, index);
+
+                text.SetText("Bad Luck Level: " + displayLuckAmount + "%");
 
                 finalSteps = Math.Round(Utils.Clamp(MathHelper.Lerp((float)finalSteps, steps, .01f), 0, 108), 2);
 
@@ -105,7 +104,7 @@ namespace MurphysMod.Common.UI
                 {
                     double percent = i / (right - left);
 
-                    if(finalSteps > 1)
+                    if (finalSteps > 1)
                         spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(Color.White, colorOsciliator(), (float)percent));
                 }
             }

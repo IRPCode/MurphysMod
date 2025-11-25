@@ -27,6 +27,7 @@ namespace MurphysMod.Content.Buffs
 		{
 			int rand = Main.rand.Next(0,11);
 			player.AddBuff(BuffID.Darkness, 1);
+			player.AddBuff(BuffID.Oiled, 1);
 
 
 			if (rand == 0)

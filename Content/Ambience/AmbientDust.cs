@@ -29,7 +29,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                 #region biome ambience / liquid
 
-                if ((tile.TileType == TileID.Grass || tile.TileType == TileID.Mud || tile.TileType == TileID.HallowedGrass) && !Main.dayTime) //fireflies
+                if ((tile.TileType == TileID.Grass || tile.TileType == TileID.JungleGrass || tile.TileType == TileID.HallowedGrass) && !Main.dayTime) //fireflies
                 {
                     for (int i = 0; i < 5; i++)
                     {

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Terraria.IO;
 using StructureHelper.API;
 using Terraria.DataStructures;
+using System.Numerics;
 
 namespace MurphysMod.Content.Generation
 {
@@ -35,7 +36,40 @@ namespace MurphysMod.Content.Generation
             {
                 tasks.Insert(structureIndex + 1, new PassLegacy("Spawning a home", GenerateHouse));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Something Karl would be interested in.", GenerateMinerShacks));
+                tasks.Insert(structureIndex + 1, new PassLegacy("Disgusting sap fills the jungle", generateAccursedSapGrove));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Filling a forge with Ordained Slag", generateForge));
+            }
+        }
+
+        private void generateAccursedSapGrove(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Filling a forge with Ordained Slag";
+
+            string structure = "Structures/AccursedSapGrove";
+
+            int x = 0;
+            int y = 0;
+
+            y = (int)Main.worldSurface + 75;
+
+            for (int iX = 0; iX < Main.maxTilesX; iX++)
+            {
+                for (int iY = 0; iY < Main.maxTilesY; iY++)
+                {
+                    if (WorldGen.SolidTile(iX, iY) && WorldGen.TileType(iX, iY) == TileID.JungleGrass)
+                    {
+                        if (iX > Main.maxTilesX / 2)
+                            x = iX - (Main.maxTilesX / 17);
+                        else
+                            x = iX + (Main.maxTilesX / 17);
+                        break;
+                    }
+                }
+            }
+
+            if (Generator.IsInBounds(structure, Mod, new Point16(x, y)))
+            {
+                Generator.GenerateStructure(structure, new Point16(x, y), Mod);
             }
         }
 
@@ -67,9 +101,9 @@ namespace MurphysMod.Content.Generation
             }
 
             if (Generator.IsInBounds(structure, Mod, new Point16(x, y)))
-                {
-                    Generator.GenerateStructure(structure, new Point16(x - 266, y - 100), Mod); //substract the structure's height plus some
-                }
+            {
+                Generator.GenerateStructure(structure, new Point16(x - 266, y - 100), Mod); //substract the structure's height plus some
+            }
         }
 
         private void GenerateMinerShacks(GenerationProgress progress, GameConfiguration configuration)
@@ -113,7 +147,7 @@ namespace MurphysMod.Content.Generation
                             continue;
                         }
                     }
-                    if (Generator.IsInBounds(structure, Mod, new Point16(x, y)) && Main.rand.Next(0, 60) == 1 && miningShackShouldSpawn(x, y))
+                    if (Generator.IsInBounds(structure, Mod, new Point16(x, y)) && Main.rand.Next(0, 80) == 1 && miningShackShouldSpawn(x, y))
                     {
                         Generator.GenerateStructure(structure, new Point16(x, y), Mod);
                     }

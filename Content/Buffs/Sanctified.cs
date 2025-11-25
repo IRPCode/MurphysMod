@@ -26,7 +26,7 @@ namespace MurphysMod.Content.Buffs
 		public override void Update(Player player, ref int buffIndex)
 		{
 			int rand = Main.rand.Next(0,11);
-
+			player.AddBuff(BuffID.NightOwl, 1);
 
 			if (rand == 0)
 			{

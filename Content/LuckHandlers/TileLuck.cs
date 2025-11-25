@@ -122,6 +122,9 @@ namespace MurphysMod.Content.LuckHandlers
             else if (player.ZoneSnow)
                 luckAmount += (TorchType == TorchID.Ice) ? -torchLuckAmount : torchLuckAmount;
 
+            else if (player.ZoneJungle)
+                luckAmount += (TorchType == TorchID.Jungle) ? -torchLuckAmount : torchLuckAmount;
+
             else if (player.ZoneCorrupt)
                 luckAmount += (TorchType == TorchID.Corrupt || TorchType == TorchID.Cursed) ? -torchLuckAmount : torchLuckAmount;
 
@@ -130,6 +133,9 @@ namespace MurphysMod.Content.LuckHandlers
 
             else if (player.ZoneUnderworldHeight)
                 luckAmount += (TorchType == TorchID.Demon) ? -torchLuckAmount : torchLuckAmount;
+
+                //TODO: add a setting in the mod where it will subtract the bad luck amount if it is not in the purity biome and is a normal torch
+                //I.E. normal torch types are neutral and will not impact luck
 
             //Main.NewText(luckAmount);
 

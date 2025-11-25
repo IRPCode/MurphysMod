@@ -27,10 +27,10 @@ namespace MurphysMod.Content.Liquids
         {
             LiquidRenderer.VISCOSITY_MASK[Type] = 100;
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 30;
-			LiquidRenderer.DEFAULT_OPACITY[Type] = 0f;
+			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.9f;
 
             SlopeOpacity = 0.9f;
-            WaterRippleMultiplier = 100f;
+            WaterRippleMultiplier = .5f;
             SplashDustType = DustID.SpelunkerGlowstickSparkle;
             SplashSound = sound;
             ChecksForDrowning = false;
@@ -38,11 +38,6 @@ namespace MurphysMod.Content.Liquids
             FishingPoolSizeMultiplier = 1.5f;
 
             AddMapEntry(new Color(255, 249, 207), CreateMapEntryName()); //change the color too
-        }
-
-        public override void Load()
-        {
-            LiquidRenderer.VISCOSITY_MASK[LiquidID.Honey] = 100;
         }
 
         public override int LiquidMerge(int i, int j, int otherLiquid)
