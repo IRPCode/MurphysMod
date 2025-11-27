@@ -1,0 +1,1 @@
+//TODO: make visual changes to boss fights, such as duke fishron becoming more stormy and windy the further the fight goes on. (faster wind phase one to 50% phase one, phase 2 more rain, then make it have enough rain and wind up until the end to be a thunderstorm for phase 3)

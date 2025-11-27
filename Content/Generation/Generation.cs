@@ -56,7 +56,7 @@ namespace MurphysMod.Content.Generation
             {
                 for (int iY = 0; iY < Main.maxTilesY; iY++)
                 {
-                    if (WorldGen.SolidTile(iX, iY) && WorldGen.TileType(iX, iY) == TileID.JungleGrass)
+                    if (WorldGen.SolidTile(iX, iY) && WorldGen.TileType(iX, iY) == TileID.LivingMahoganyLeaves)
                     {
                         if (iX > Main.maxTilesX / 2)
                             x = iX - (Main.maxTilesX / 17);

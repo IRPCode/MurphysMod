@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace MurphysMod.Content.LuckHandlers
 {
-    public class TileLuck : ModSystem
+    public class TileLuck : ModSystem //TODO: there is a torch luck hook now available, set its value in the torchLuck() method
     {
         public static double incrementAmount = .005;
         public static double torchLuckAmount = .01;

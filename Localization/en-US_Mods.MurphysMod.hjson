@@ -105,6 +105,16 @@ Items: {
 		DisplayName: Accursed Sap Bucket
 		Tooltip: ""
 	}
+
+	AetherMoss: {
+		DisplayName: Aether Moss
+		Tooltip: ""
+	}
+
+	AetherGrass: {
+		DisplayName: Aether Grass
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -200,6 +210,10 @@ Tiles: {
 	MagmaStone.MapEntry: Magma Stone
 	MagmaGem.MapEntry: Magma Gem
 	TorchGodsBrazier.MapEntry: Torch Gods Brazier
+	AetherMoss.MapEntry: Aether Moss
+	AetherGrass.MapEntry: Aether Grass
+	AetherGrassBlades.MapEntry: Aether Grass Blades
+	AetherVines.MapEntry: Aether Vines
 }
 
 Liquids: {
@@ -213,5 +227,10 @@ Biomes: {
 	OrdainedForgeBiome: {
 		DisplayName: Ordained Forge Biome
 		TownNPCDialogueName: the Ordained Forge Biome
+	}
+
+	detectTiles: {
+		DisplayName: detect Tiles
+		TownNPCDialogueName: the detect Tiles
 	}
 }
