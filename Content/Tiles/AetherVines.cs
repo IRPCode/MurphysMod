@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,6 +41,18 @@ namespace MurphysMod.Content.Tiles
             AddMapEntry(new Color(209, 194, 255), CreateMapEntryName());
 
             base.SetStaticDefaults();
+        }
+
+        public override void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)
+        {
+            Main.instance.TilesRenderer.AddSpecialPoint(i,j,TileDrawing.TileCounterType.MultiTileVine);
+            dontRotateTopTiles = true;
+        }
+
+        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+           Main.instance.TilesRenderer.CrawlToTopOfVineAndAddSpecialPoint(j, i);
+            return false;
         }
 
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)

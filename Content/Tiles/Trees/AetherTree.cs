@@ -27,6 +27,11 @@ namespace ExampleMod.Content.Tiles
 			SpecialGroupMaximumSaturationValue = 1f
 		};
 
+        public override int CreateDust()
+        {
+            return DustID.ShimmerSpark;
+        }
+
 		public override void SetStaticDefaults() {
 			// Makes Example Tree grow on ExampleBlock
 			GrowsOnTileId = [ModContent.TileType<AetherGrass>()];

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.Localization;
@@ -49,6 +50,12 @@ namespace MurphysMod.Content.Tiles.Trees
             DustType = DustID.ShimmerSpark;
 
             AdjTiles = [TileID.Saplings];
+        }
+
+         //current tmod release has broken tile sway for saplings, this is an attempt to fix it
+        public override void AdjustMultiTileVineParameters(int i, int j, ref float? overrideWindCycle, ref float windPushPowerX, ref float windPushPowerY, ref bool dontRotateTopTiles, ref float totalWindMultiplier, ref Texture2D glowTexture, ref Color glowColor)
+        {
+            dontRotateTopTiles = true;
         }
 
         public override void NumDust(int i, int j, bool fail, ref int num)
