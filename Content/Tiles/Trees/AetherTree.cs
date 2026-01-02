@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
 {
-	public class ExampleTree : ModTree
+	public class AetherTree : ModTree
 	{
 		private Asset<Texture2D> texture;
 		private Asset<Texture2D> branchesTexture;
@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Tiles
 			SpecialGroupMinimumSaturationValue = 0.88f,
 			SpecialGroupMaximumSaturationValue = 1f
 		};
-
         public override int CreateDust()
         {
             return DustID.ShimmerSpark;

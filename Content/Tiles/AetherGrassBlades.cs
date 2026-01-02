@@ -25,6 +25,7 @@ namespace MurphysMod.Content.Tiles
             Main.tileLavaDeath[Type] = true;
             Main.tileWaterDeath[Type] = true;
             Main.tileFrameImportant[Type] = true;
+            Main.tileLighted[Type] = true;
 
             TileID.Sets.ReplaceTileBreakUp[Type] = true;
             TileID.Sets.SwaysInWindBasic[Type] = true;

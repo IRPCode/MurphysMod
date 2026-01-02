@@ -152,7 +152,11 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                     if (Player.ZoneNormalUnderground || Player.ZoneNormalCaverns) //caves
                     {
-                        rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
+                        if(!Player.ZoneShimmer)
+                            rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
+                        else
+                            rand = Main.rand.Next(0, 250 / dustAmountMultiplier);
+
                         if (rand <= 15)
                         {
                             int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<UndergroundDust>(), 0, 0, 100, default, 1f);
@@ -172,6 +176,16 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                             if (tile.LiquidAmount >= 1 && tile.LiquidType == LiquidID.Shimmer && shimmerTileAirCheck.LiquidAmount == 0) //shimmer liquid
                             {
                                 Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.ShimmerSpark, 0, 0, 100, default, 1f);
+                            }
+
+                            //shimmer fireflies
+
+                            rand = Main.rand.Next(0, 120);
+
+                            if (rand == 0 && !tile.HasTile)
+                            {
+                                int dustLocation = Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<AetherflyDust>(), 0, 0, 100, default, 1f);
+                                Dust dust = Main.dust[dustLocation];
                             }
                         }
 

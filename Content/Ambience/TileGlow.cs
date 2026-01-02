@@ -4,8 +4,11 @@
 
 using System;
 using System.Linq;
+using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -16,9 +19,11 @@ namespace MurphysMod.Content.Ambience
     {
         public float intensity;
         public Boolean flag;
+
+        public static int[] treeTypes = {TileID.TreeAsh, (int)TreeTypes.Ash};
         public static int[] acceptedGemTreeSources = { TileID.TreeAmber, TileID.TreeAmethyst, TileID.TreeDiamond, TileID.TreeEmerald, TileID.TreeRuby, TileID.TreeSapphire, TileID.TreeTopaz };
-        public static int[] acceptedGemBunnyCages = {TileID.AmberBunnyCage, TileID.AmethystBunnyCage, TileID.DiamondBunnyCage, TileID.EmeraldBunnyCage, TileID.RubyBunnyCage, TileID.SapphireBunnyCage, TileID.TopazBunnyCage};
-        public static int[] acceptedGemSquirrelCages = {TileID.AmberSquirrelCage, TileID.AmethystSquirrelCage, TileID.DiamondSquirrelCage, TileID.EmeraldSquirrelCage, TileID.RubySquirrelCage, TileID.SapphireSquirrelCage, TileID.TopazSquirrelCage};
+        public static int[] acceptedGemBunnyCages = { TileID.AmberBunnyCage, TileID.AmethystBunnyCage, TileID.DiamondBunnyCage, TileID.EmeraldBunnyCage, TileID.RubyBunnyCage, TileID.SapphireBunnyCage, TileID.TopazBunnyCage };
+        public static int[] acceptedGemSquirrelCages = { TileID.AmberSquirrelCage, TileID.AmethystSquirrelCage, TileID.DiamondSquirrelCage, TileID.EmeraldSquirrelCage, TileID.RubySquirrelCage, TileID.SapphireSquirrelCage, TileID.TopazSquirrelCage };
 
         public static Color[] colors = { Color.Orange, Color.Purple, Color.White, Color.Green, Color.Red, Color.Blue, Color.Yellow };
 
@@ -37,9 +42,9 @@ namespace MurphysMod.Content.Ambience
                             Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R, colors[x].G * intensity, colors[x].B * intensity) / 255f) * .75f * intensity);
 
                         else if (colors[x] == Color.Red)
-                            Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R  * intensity, colors[x].G * intensity, colors[x].B) / 255f) * .75f * intensity);
+                            Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R * intensity, colors[x].G * intensity, colors[x].B) / 255f) * .75f * intensity);
                         else
-                            Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R , colors[x].G * intensity, colors[x].B * intensity) / 255f) * .75f * intensity);
+                            Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R, colors[x].G * intensity, colors[x].B * intensity) / 255f) * .75f * intensity);
 
                         strength();
                     }

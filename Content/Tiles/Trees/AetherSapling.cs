@@ -65,10 +65,10 @@ namespace MurphysMod.Content.Tiles.Trees
 
         public override void RandomUpdate(int i, int j)
         {
-            if (!WorldGen.genRand.NextBool(20))
+            /*if (!WorldGen.genRand.NextBool(20))
             {
                 return;
-            }
+            }*/
 
             Tile tile = Framing.GetTileSafely(i, j);
             bool growSuccess;

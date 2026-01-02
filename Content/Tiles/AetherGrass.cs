@@ -14,7 +14,7 @@ namespace MurphysMod.Content.Tiles
     internal class AetherGrass : ModTile
     {
         public override String Texture => "MurphysMod/Assets/Textures/Tiles/AetherGrass";
-        public static double timer;
+        private double timer;
         public override void SetStaticDefaults()
         {
             TileID.Sets.Ore[Type] = true;
