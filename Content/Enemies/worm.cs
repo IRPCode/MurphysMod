@@ -58,7 +58,7 @@ namespace MurphysMod.Content.Enemies
                            npc.GetSource_FromAI(),
                            npc.Center,
                            playerLocation * 10f,
-                           ModContent.ProjectileType<WormSpit>(),
+                           ModContent.ProjectileType<MudBall>(),
                            50, //for damage balancing
                            knockback,
                            -1);

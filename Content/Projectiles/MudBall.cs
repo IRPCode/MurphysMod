@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace MurphysMod.Content.Enemies
 {
-    public class WormSpit : ModProjectile
+    public class MudBall : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_39";
         public override void SetDefaults() //TODO: Make it so players can break this projectile with tools and weapons, and make it so the texture changes depending on 

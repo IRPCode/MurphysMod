@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using MurphysMod.Content.Enemies;
 using MurphysMod.Content.LuckHandlers;
+using MurphysMod.Content.Tiles;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
@@ -17,43 +19,25 @@ namespace MurphysMod.Content
     public class CaveTremors : ModPlayer
     {
         public static bool TremorActive = false;
-        public static readonly SoundStyle tremorL = new("MurphysMod/Assets/Audio/UndergroundTremorLarge")
-        {
-            Volume = 2f,
-            Pitch = 0f,
-            PitchVariance = 0f
-        };
-
-        public static readonly SoundStyle tremorM = new("MurphysMod/Assets/Audio/UndergroundTremorMedium")
-        {
-            Volume = 2f,
-            Pitch = 0f,
-            PitchVariance = 0f
-        };
-
-        public static readonly SoundStyle tremorS = new("MurphysMod/Assets/Audio/UndergroundTremorSmall")
-        {
-            Volume = 2f,
-            Pitch = 0f,
-            PitchVariance = 0f
-        };
-
         public static int tremorTick;
 
         public static int length;
         public static double intensity;
         public static int tremorType;
 
+        public static SlotId sound;
+
         public static double currentIntensity;
         public static int intensityPeak;
-        public static int[] dusts = { DustID.Dirt, DustID.Stone, DustID.Mud, DustID.Clay, DustID.WoodFurniture, DustID.Corruption, DustID.Crimson, DustID.JungleGrass, DustID.Sand, DustID.Snow, DustID.Ice, DustID.Ash };
-        public static int[] tileTypes = { TileID.Dirt, TileID.Stone, TileID.Mud, TileID.ClayBlock, TileID.WoodBlock, TileID.Ebonstone, TileID.Crimstone, TileID.JungleGrass, TileID.Sand, TileID.SnowBlock, TileID.IceBlock, TileID.Ash };
+        public static int[] dusts = { DustID.Dirt, DustID.Stone, DustID.Mud, DustID.Clay, DustID.WoodFurniture, DustID.Corruption, DustID.Crimson, DustID.JungleGrass, DustID.Sand, DustID.Snow, DustID.Ice, DustID.Ash, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.DungeonBlue, DustID.DungeonPink, DustID.DungeonGreen, DustID.GlowingMushroom, DustID.JungleGrass };
+        public static int[] tileTypes = { TileID.Dirt, TileID.Stone, TileID.Mud, TileID.ClayBlock, TileID.WoodBlock, TileID.Ebonstone, TileID.Crimstone, TileID.JungleGrass, TileID.Sand, TileID.SnowBlock, TileID.IceBlock, TileID.Ash, TileID.CorruptHardenedSand, TileID.CrimsonHardenedSand, TileID.HallowHardenedSand, TileID.CorruptSandstone, TileID.CrimsonSandstone, TileID.HallowHardenedSand, TileID.BlueDungeonBrick, TileID.PinkDungeonBrick, TileID.GreenDungeonBrick, TileID.MushroomGrass, TileID.JungleGrass };
         public override void PostUpdate()
         {
-            TremorActive = true;
-            
 
-            if (Main.LocalPlayer.position.Y / 16 >= Main.rockLayer)
+            if (Main.GameUpdateCount % (60 * 20) == 0)
+                TremorActive = true;
+
+            if (Main.LocalPlayer.position.Y / 16 >= Main.rockLayer && !Player.ZoneUnderworldHeight)
             {
                 if (tremorTick > 60 * 15)
                 {
@@ -70,11 +54,16 @@ namespace MurphysMod.Content
                     {
                         tremorType = Main.rand.Next(1, 4);
                         currentIntensity = 1;
-                        SlotId tremorSound;
+
                         switch (tremorType) //modifies circumstances that transform matrix is modified under
                         {
                             case 1:
-                                tremorSound = SoundEngine.PlaySound(tremorS);
+                                sound = SoundEngine.PlaySound(new SoundStyle("MurphysMod/Assets/Audio/UndergroundTremorSmall")
+                                {
+                                    IsLooped = false,
+                                    Volume = 3f
+                                });
+
                                 intensity = 40;
                                 length = 315;
                                 intensityPeak = 135;
@@ -82,7 +71,12 @@ namespace MurphysMod.Content
                                 break;
 
                             case 2:
-                                tremorSound = SoundEngine.PlaySound(tremorM);
+                                sound = SoundEngine.PlaySound(new SoundStyle("MurphysMod/Assets/Audio/UndergroundTremorMedium")
+                                {
+                                    IsLooped = false,
+                                    Volume = 3f
+                                });
+
                                 intensity = 75;
                                 length = 348;
                                 intensityPeak = 180;
@@ -90,16 +84,18 @@ namespace MurphysMod.Content
                                 break;
 
                             case 3:
-                                tremorSound = SoundEngine.PlaySound(tremorL);
+                                sound = SoundEngine.PlaySound(new SoundStyle("MurphysMod/Assets/Audio/UndergroundTremorLarge")
+                                {
+                                    IsLooped = false,
+                                    Volume = 3f
+                                });
+
                                 intensity = 125;
                                 length = 690;
                                 intensityPeak = 420;
                                 TremorShake.shakeStrength = 2.75f;
                                 break;
                         }
-                        //TODO: figure out how to make the sound stop if the player teleports
-                        //if(Main.LocalPlayer.position.Y / 16 >= Main.rockLayer){}
-                        //tremorSound.Stop();
                     }
 
                     if (CaveTremors.tremorTick < CaveTremors.intensityPeak && intensity >= currentIntensity)
@@ -124,7 +120,7 @@ namespace MurphysMod.Content
                             bool spawnDebris = false;
                             int chance = -1;
                             int projectileType = -1;
-                            int damage = 15; //TODO: balance this, 150 does 1.5k dmg but not to enemies (double check this)
+                            int damage = 50;
 
                             Player player = Main.LocalPlayer;
                             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
@@ -140,48 +136,126 @@ namespace MurphysMod.Content
                                 case 2:
                                     scale = Main.rand.Next(5, 21) / 10;
                                     spawnDebris = true;
-                                    chance = Main.rand.Next(1, 2001 - (int)(luckVal * 1000));
-                                    projectileType = ProjectileID.MiniBoulder;
+                                    chance = Main.rand.Next(1, 2001 - (int)((1 + luckVal) * 100));
 
-                                    //TODO: Make the ceiling drop stalagtites and mini boulders (only large at max bad luck), give player and NPCs slowness during tremor
+                                    if (selectedTile.TileType == TileID.Stone || selectedTile.TileType == TileID.Dirt || selectedTile.TileType == TileID.Ebonstone ||
+                                       selectedTile.TileType == TileID.Crimstone || selectedTile.TileType == TileID.Pearlstone || selectedTile.TileType == ModContent.TileType<AetherGrass>())
+                                        projectileType = ProjectileID.MiniBoulder;
+                                    else if (selectedTile.TileType == TileID.Mud || selectedTile.TileType == TileID.JungleGrass || selectedTile.TileType == TileID.MushroomGrass)
+                                        projectileType = ModContent.ProjectileType<MudBall>();
+                                    else if (selectedTile.TileType == TileID.SnowBlock || selectedTile.TileType == TileID.IceBlock)
+                                        projectileType = ProjectileID.SnowBallFriendly;
+                                    else if (selectedTile.TileType == TileID.HardenedSand || selectedTile.TileType == TileID.Sandstone)
+                                        projectileType = ProjectileID.SandBallFalling;
+                                    else if (selectedTile.TileType == TileID.HallowSandstone || selectedTile.TileType == TileID.HallowHardenedSand)
+                                        projectileType = ProjectileID.PearlSandBallFalling;
+                                    else if (selectedTile.TileType == TileID.CorruptSandstone || selectedTile.TileType == TileID.CorruptHardenedSand)
+                                        projectileType = ProjectileID.EbonsandBallFalling;
+                                    else if (selectedTile.TileType == TileID.CrimsonSandstone || selectedTile.TileType == TileID.CrimsonHardenedSand)
+                                        projectileType = ProjectileID.CrimsandBallFalling;
+                                    else if (selectedTile.TileType == TileID.BlueDungeonBrick)
+                                        projectileType = ProjectileID.BlueDungeonDebris;
+                                    else if (selectedTile.TileType == TileID.PinkDungeonBrick)
+                                        projectileType = ProjectileID.PinkDungeonDebris;
+                                    else if (selectedTile.TileType == TileID.GreenDungeonBrick)
+                                        projectileType = ProjectileID.GreenDungeonDebris;
+
                                     break;
 
                                 case 3:
                                     scale = Main.rand.Next(5, 26) / 10;
                                     spawnDebris = true;
-                                    chance = Main.rand.Next(1, 2501 - (int)(luckVal * 1000));
+                                    chance = Main.rand.Next(1, 2501 - (int)((1 + luckVal) * 100));
 
                                     if (chance <= 20)
-                                        projectileType = ProjectileID.MiniBoulder;
+                                    {
+                                        if (selectedTile.TileType == TileID.Stone || selectedTile.TileType == TileID.Dirt || selectedTile.TileType == TileID.Ebonstone ||
+                                        selectedTile.TileType == TileID.Crimstone || selectedTile.TileType == TileID.Pearlstone || selectedTile.TileType == ModContent.TileType<AetherGrass>())
+                                            projectileType = ProjectileID.MiniBoulder;
+                                        else if (selectedTile.TileType == TileID.Mud || selectedTile.TileType == TileID.JungleGrass || selectedTile.TileType == TileID.MushroomGrass)
+                                            projectileType = ModContent.ProjectileType<MudBall>();
+                                        else if (selectedTile.TileType == TileID.SnowBlock || selectedTile.TileType == TileID.IceBlock)
+                                            projectileType = ProjectileID.SnowBallFriendly;
+                                        else if (selectedTile.TileType == TileID.HardenedSand || selectedTile.TileType == TileID.Sandstone)
+                                            projectileType = ProjectileID.SandBallFalling;
+                                        else if (selectedTile.TileType == TileID.HallowSandstone || selectedTile.TileType == TileID.HallowHardenedSand)
+                                            projectileType = ProjectileID.PearlSandBallFalling;
+                                        else if (selectedTile.TileType == TileID.CorruptSandstone || selectedTile.TileType == TileID.CorruptHardenedSand)
+                                            projectileType = ProjectileID.EbonsandBallFalling;
+                                        else if (selectedTile.TileType == TileID.CrimsonSandstone || selectedTile.TileType == TileID.CrimsonHardenedSand)
+                                            projectileType = ProjectileID.CrimsandBallFalling;
+                                        else if (selectedTile.TileType == TileID.BlueDungeonBrick)
+                                            projectileType = ProjectileID.BlueDungeonDebris;
+                                        else if (selectedTile.TileType == TileID.PinkDungeonBrick)
+                                            projectileType = ProjectileID.PinkDungeonDebris;
+                                        else if (selectedTile.TileType == TileID.GreenDungeonBrick)
+                                            projectileType = ProjectileID.GreenDungeonDebris;
+                                    }
+
 
                                     else if (chance <= 25)
                                     {
-                                        projectileType = ProjectileID.Boulder;
-                                        damage = 20;
+                                        if (selectedTile.TileType == TileID.Stone || selectedTile.TileType == TileID.Dirt || selectedTile.TileType == TileID.Ebonstone ||
+                                        selectedTile.TileType == TileID.Crimstone || selectedTile.TileType == TileID.Pearlstone || selectedTile.TileType == ModContent.TileType<AetherGrass>())
+                                            projectileType = ProjectileID.Boulder;
+
+                                        else if (selectedTile.TileType == TileID.Mud || selectedTile.TileType == TileID.JungleGrass || selectedTile.TileType == TileID.MushroomGrass ||
+                                         selectedTile.TileType == TileID.Granite || selectedTile.TileType == TileID.Marble || selectedTile.TileType == TileID.BlueDungeonBrick ||
+                                         selectedTile.TileType == TileID.PinkDungeonBrick || selectedTile.TileType == TileID.GreenDungeonBrick)
+                                            projectileType = ProjectileID.MiniBoulder;
+
+                                        else if (selectedTile.TileType == TileID.HardenedSand || selectedTile.TileType == TileID.Sandstone ||
+                                        selectedTile.TileType == TileID.CrimsonSandstone || selectedTile.TileType == TileID.CrimsonHardenedSand ||
+                                        selectedTile.TileType == TileID.CorruptSandstone || selectedTile.TileType == TileID.CorruptHardenedSand ||
+                                        selectedTile.TileType == TileID.HallowSandstone || selectedTile.TileType == TileID.HallowHardenedSand ||
+                                        selectedTile.TileType == TileID.SnowBlock || selectedTile.TileType == TileID.IceBlock)
+                                            projectileType = ProjectileID.RollingCactus;
+
+                                        damage = 100;
+
+                                        if (projectileType == ProjectileID.MiniBoulder)
+                                            damage = 75;
+                                        else if (projectileType == ProjectileID.SnowBallFriendly)
+                                            damage = 25;
                                     }
-                                        
-                                    else if (chance == 26 && luckVal >= .75f)
+
+                                    else if (chance == 26 && luckVal >= .15f)
                                     {
-                                        projectileType = ProjectileID.BouncyBoulder;
-                                        damage = 25;
+                                        if (selectedTile.TileType == TileID.Stone || selectedTile.TileType == TileID.Dirt || selectedTile.TileType == TileID.Ebonstone ||
+                                        selectedTile.TileType == TileID.Crimstone || selectedTile.TileType == TileID.Pearlstone || selectedTile.TileType == TileID.HallowSandstone ||
+                                        selectedTile.TileType == TileID.HallowHardenedSand || selectedTile.TileType == TileID.JungleGrass || selectedTile.TileType == TileID.MushroomGrass ||
+                                        selectedTile.TileType == ModContent.TileType<AetherGrass>())
+                                            projectileType = ProjectileID.BouncyBoulder;
+
+                                        if (selectedTile.TileType == TileID.Mud || selectedTile.TileType == TileID.JungleGrass)
+                                            projectileType = ProjectileID.BeeHive;
+
+                                        damage = 75;
                                     }
-                                        
+
                                     break;
                                 default:
                                     Main.NewText("CaveTremors class threw an error.");
-                                break;
+                                    break;
                             }
 
                             Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, dusts[index], 0, 0, 100, default, (float)scale);
 
-                            if (spawnDebris == true && chance <= 26)
+                            Vector2 velocity;
+
+                            if (projectileType == ProjectileID.SnowBallFriendly || projectileType == ModContent.ProjectileType<MudBall>() || projectileType == ModContent.ProjectileType<ToxicJungleSpore>())
+                                velocity = new Vector2(0, 10);
+                            else
+                                velocity = default;
+
+                            if (spawnDebris == true && chance <= 26 && projectileType != -1)
                             {
                                 int projID = Projectile.NewProjectile(
                                 default,
                                 new Vector2(x * 16f, (y + 1) * 16f),
-                                default,
+                                velocity,
                                 projectileType,
-                                (int)(damage * (luckVal + .5f)), //for damage balancing
+                                damage,
                                 default,
                                 -1);
 
@@ -194,7 +268,33 @@ namespace MurphysMod.Content
 
                         }
                     }
+
+                    if (Main.LocalPlayer.position.Y / 16 >= Main.rockLayer && !Player.ZoneUnderworldHeight && CaveTremors.TremorActive == true && (tremorTick <= length))
+                    {
+                        for (int i = 0; i < Main.maxNPCs; i++)
+                        {
+                            NPC npc = Main.npc[i];
+                            if (npc.active && npc.position.Y / 16 >= Main.rockLayer && !(npc.position.Y / 16 >= Main.bottomWorld - 200) && TremorActive)
+                                npc.AddBuff(BuffID.Slow, 1);
+
+                        }
+
+                        for (int i = 0; i < Main.maxPlayers; i++)
+                        {
+                            Player player = Main.player[i];
+                            if (player.active && Main.LocalPlayer.position.Y / 16 >= Main.rockLayer && !Player.ZoneUnderworldHeight && TremorActive)
+                                Player.AddBuff(BuffID.Slow, 1);
+                        }
+                    }
                 }
+            }
+            else
+            {
+                if (SoundEngine.TryGetActiveSound(sound, out var activeSound))
+                {
+                    activeSound.Volume *= .95f;
+                }
+
             }
         }
 
@@ -206,7 +306,9 @@ namespace MurphysMod.Content
 
             public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
             {
-                if (CaveTremors.TremorActive == true && (tremorTick <= length) && Main.LocalPlayer.position.Y / 16 >= Main.rockLayer) //checks just in case if player teleports, only works underground
+                Player player = Main.LocalPlayer;
+
+                if (CaveTremors.TremorActive == true && (tremorTick <= length)) //checks just in case if player teleports, only works underground
                 {
                     float randX = Main.rand.Next((int)-shakeStrength, (int)shakeStrength);
                     float randY = Main.rand.Next((int)-shakeStrength, (int)shakeStrength);
@@ -216,10 +318,18 @@ namespace MurphysMod.Content
                         multiplyStrength *= shakeStrength;
                     }
 
-                    if (CaveTremors.tremorTick < CaveTremors.intensityPeak)
+                    if (CaveTremors.tremorTick < CaveTremors.intensityPeak && Main.LocalPlayer.position.Y / 16 >= Main.rockLayer && !player.ZoneUnderworldHeight)
                         multiplyStrength *= 1.0005f;
+                    else if (Main.LocalPlayer.position.Y / 16 <= Main.rockLayer || player.ZoneUnderworldHeight)
+                        multiplyStrength *= .95f;
                     else
                         multiplyStrength *= .99f;
+
+                    if ((Main.LocalPlayer.position.Y / 16 <= Main.rockLayer || player.ZoneUnderworldHeight) && multiplyStrength <= .01f) //prevents visual bugs with player/background items
+                    {
+                        multiplyStrength = 0f;
+                        CaveTremors.TremorActive = false;
+                    }
 
                     Vector2 displaceScreen = new Vector2(randX, randY) * multiplyStrength;
 
@@ -235,6 +345,9 @@ namespace MurphysMod.Content
                         shakeStrength = 0f;
                         CaveTremors.TremorActive = false;
                     }
+
+                    if (multiplyStrength <= .05f)
+                        CaveTremors.TremorActive = false;
                 }
                 else
                 {
