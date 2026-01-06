@@ -29,8 +29,8 @@ namespace MurphysMod.Content
 
         public static double currentIntensity;
         public static int intensityPeak;
-        public static int[] dusts = { DustID.Dirt, DustID.Stone, DustID.Mud, DustID.Clay, DustID.WoodFurniture, DustID.Corruption, DustID.Crimson, DustID.JungleGrass, DustID.Sand, DustID.Snow, DustID.Ice, DustID.Ash, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.DungeonBlue, DustID.DungeonPink, DustID.DungeonGreen, DustID.GlowingMushroom, DustID.JungleGrass, DustID.Granite, DustID.Marble };
-        public static int[] tileTypes = { TileID.Dirt, TileID.Stone, TileID.Mud, TileID.ClayBlock, TileID.WoodBlock, TileID.Ebonstone, TileID.Crimstone, TileID.JungleGrass, TileID.Sand, TileID.SnowBlock, TileID.IceBlock, TileID.Ash, TileID.CorruptHardenedSand, TileID.CrimsonHardenedSand, TileID.HallowHardenedSand, TileID.CorruptSandstone, TileID.CrimsonSandstone, TileID.HallowHardenedSand, TileID.BlueDungeonBrick, TileID.PinkDungeonBrick, TileID.GreenDungeonBrick, TileID.MushroomGrass, TileID.JungleGrass, TileID.Granite, TileID.Marble };
+        public static int[] dusts = { DustID.Dirt, DustID.Stone, DustID.Mud, DustID.Clay, DustID.WoodFurniture, DustID.Corruption, DustID.Crimson, DustID.JungleGrass, DustID.Sand, DustID.Snow, DustID.Ice, DustID.Ash, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.Corruption, DustID.Crimson, DustID.Pearlsand, DustID.DungeonBlue, DustID.DungeonPink, DustID.DungeonGreen, DustID.GlowingMushroom, DustID.JungleGrass, DustID.Granite, DustID.Marble, DustID.Sand, DustID.Sand }; //duplicate dusts for simplicity of code logic
+        public static int[] tileTypes = { TileID.Dirt, TileID.Stone, TileID.Mud, TileID.ClayBlock, TileID.WoodBlock, TileID.Ebonstone, TileID.Crimstone, TileID.JungleGrass, TileID.Sand, TileID.SnowBlock, TileID.IceBlock, TileID.Ash, TileID.CorruptHardenedSand, TileID.CrimsonHardenedSand, TileID.HallowHardenedSand, TileID.CorruptSandstone, TileID.CrimsonSandstone, TileID.HallowHardenedSand, TileID.BlueDungeonBrick, TileID.PinkDungeonBrick, TileID.GreenDungeonBrick, TileID.MushroomGrass, TileID.JungleGrass, TileID.Granite, TileID.Marble, TileID.HardenedSand, TileID.Sandstone };
         public override void PostUpdate()
         {
             if (Main.LocalPlayer.position.Y / 16 >= Main.worldSurface && !Player.ZoneUnderworldHeight)
@@ -45,7 +45,6 @@ namespace MurphysMod.Content
                     {
                         checkTileDestruction.tileBroken--;
                         checkTileDestruction.tileBroken = Utils.Clamp(checkTileDestruction.tileBroken, 0, int.MaxValue);
-                        Main.NewText(checkTileDestruction.tileBroken);
                     }
 
                     if (checkTileDestruction.tileBroken >= 200)
@@ -54,7 +53,7 @@ namespace MurphysMod.Content
                     }
                 }
 
-                if (tremorTick > 60 * 15)
+                if (tremorTick > 60 * 15) //prevents overlapping values and locks tremors to 15 second blocks
                 {
                     tremorTick = 0;
                     TremorShake.multiplyStrength = .5f;
