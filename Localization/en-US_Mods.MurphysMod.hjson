@@ -203,6 +203,7 @@ Projectiles: {
 	OrdainedNaginataProjectile.DisplayName: Ordained Naginata Projectile
 	BlessedGlaiveProjectile.DisplayName: Blessed Glaive Projectile
 	MudBall.DisplayName: Mud Ball
+	Hailstone.DisplayName: Hailstone
 }
 
 Tiles: {
