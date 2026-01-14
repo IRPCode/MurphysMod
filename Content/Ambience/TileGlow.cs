@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using ExampleMod.Common.Configs;
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,10 +28,14 @@ namespace MurphysMod.Content.Ambience
 
         public static Color[] colors = { Color.Orange, Color.Purple, Color.White, Color.Green, Color.Red, Color.Blue, Color.Yellow };
 
+         public static bool tileGlow = ModContent.GetInstance<ClientSideConfig>().TileGlow;
+
         public override void PostDraw(int i, int j, int type, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
+            if(!ModContent.GetInstance<ClientSideConfig>().TileGlow)
+                return;
 
-            #region gemcorn trees
+                 #region gemcorn trees
 
             if (acceptedGemTreeSources.Contains(type) || acceptedGemBunnyCages.Contains(type) || acceptedGemSquirrelCages.Contains(type))
             {
@@ -52,6 +57,9 @@ namespace MurphysMod.Content.Ambience
             }
 
             #endregion
+            
+
+           
 
         }
 

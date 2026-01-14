@@ -7,6 +7,7 @@ using ModLiquidLib.Utils;
 using System.Linq;
 using MurphysMod.Content.Ambience.Dusts;
 using System;
+using ExampleMod.Common.Configs;
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 {
@@ -21,8 +22,11 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
         public static int[] hallowPlantSources = {TileID.HallowedPlants, TileID.HallowedPlants2, TileID.HallowedVines};
 
         public static int[] junglePlantSources = {TileID.JunglePlants, TileID.JunglePlants2, TileID.JungleVines, TileID.LivingMahoganyLeaves};
+
         public override void PostUpdate()
         {
+            if(!ModContent.GetInstance<ClientSideConfig>().AmbientDustVisuals)
+                return;
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only
             {
                 for (int i = 0; i < 100; i++)

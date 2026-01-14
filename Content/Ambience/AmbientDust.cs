@@ -5,6 +5,7 @@ using Terraria.ID;
 using MurphysMod.Content.Ambience.Dusts;
 using System;
 using ModLiquidLib.ModLoader;
+using ExampleMod.Common.Configs;
 
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
@@ -14,10 +15,12 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
     {
         public static int dustAmountMultiplier = 1; //fix this statement, and then fix the shimmer sparkles (encase spawning particles in loop)
                                                     //TODO: set the dust type with a dust variable, and then a variable at the end if dust != null, then spawn the particle. If it doesn't equal null and bool loop == true, then set it to another if statement
-                                                    //that uses a for loop to spawn more particles, as set by the if statement that sets the particle type 
+                                                    //that uses a for loop to spawn more particles, as set by the if statement that sets the particle type
 
         public override void PostUpdate()
         {
+            if (!ModContent.GetInstance<ClientSideConfig>().AmbientDustVisuals)
+                return;
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only
             {
                 int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60); //adjust these values based off of velocity (xvel = 60 * player.velocity.x, negxvel = xvel * -1)
@@ -152,7 +155,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                     if (Player.ZoneNormalUnderground || Player.ZoneNormalCaverns) //caves
                     {
-                        if(!Player.ZoneShimmer)
+                        if (!Player.ZoneShimmer)
                             rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
                         else
                             rand = Main.rand.Next(0, 250 / dustAmountMultiplier);

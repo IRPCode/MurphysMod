@@ -30,7 +30,6 @@ namespace MurphysMod.Content.Enemies
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; // The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0; // The recording mode
         }
-
         public override void AI()
         {
             Projectile.rotation += Projectile.velocity.X / 10f;

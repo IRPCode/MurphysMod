@@ -236,3 +236,45 @@ Biomes: {
 		TownNPCDialogueName: the detect Tiles
 	}
 }
+
+Configs: {
+	ModConfiguration: {
+		Headers.Visuals: Visuals Header
+		DisplayName: Mod Configuration
+
+		DustVisuals: {
+			Label: Dust Visuals
+			Tooltip: ""
+		}
+
+		TileGlow: {
+			Label: Tile Glow
+			Tooltip: ""
+		}
+
+		NPCGlow: {
+			Label: N P C Glow
+			Tooltip: ""
+		}
+	}
+
+	ClientSideConfig: {
+		DisplayName: Client Side Config
+		Headers.Visuals: Visuals Header
+
+		DustVisuals: {
+			Label: Dust Visuals
+			Tooltip: ""
+		}
+
+		TileGlow: {
+			Label: Tile Glow
+			Tooltip: ""
+		}
+
+		NpcGlow: {
+			Label: Npc Glow
+			Tooltip: ""
+		}
+	}
+}

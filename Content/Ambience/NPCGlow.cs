@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using ExampleMod.Common.Configs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -28,6 +29,8 @@ namespace MurphysMod.Content.Ambience
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (!ModContent.GetInstance<ClientSideConfig>().NpcGlow)
+                return;
 
             #region gemcorn critters
 
@@ -37,19 +40,18 @@ namespace MurphysMod.Content.Ambience
                 {
                     if (npc.type == acceptedRabbitSources[x] || npc.type == acceptedSquirrelSources[x])
                     {
-                         if (colors[x] == Color.Blue)
+                        if (colors[x] == Color.Blue)
                             Lighting.AddLight(new Vector2(npc.position.X + .5f, npc.position.Y + .5f), (new Vector3(colors[x].R, colors[x].G * intensity, colors[x].B * intensity) / 255f) * .2f * intensity);
 
                         else if (colors[x] == Color.Red)
-                            Lighting.AddLight(new Vector2(npc.position.X + .5f, npc.position.Y + .5f), (new Vector3(colors[x].R  * intensity, colors[x].G * intensity, colors[x].B) / 255f) * .2f * intensity);
+                            Lighting.AddLight(new Vector2(npc.position.X + .5f, npc.position.Y + .5f), (new Vector3(colors[x].R * intensity, colors[x].G * intensity, colors[x].B) / 255f) * .2f * intensity);
                         else
-                            Lighting.AddLight(new Vector2(npc.position.X + .5f, npc.position.Y + .5f), (new Vector3(colors[x].R , colors[x].G * intensity, colors[x].B * intensity) / 255f) * .2f * intensity);
+                            Lighting.AddLight(new Vector2(npc.position.X + .5f, npc.position.Y + .5f), (new Vector3(colors[x].R, colors[x].G * intensity, colors[x].B * intensity) / 255f) * .2f * intensity);
 
                         strength();
                     }
                 }
             }
-
             #endregion
 
         }
