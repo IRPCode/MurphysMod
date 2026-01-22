@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using ExampleMod.Common.Configs;
 using Microsoft.Xna.Framework;
 using MurphysMod.Content.Enemies;
 using MurphysMod.Content.LuckHandlers;
@@ -327,7 +328,7 @@ namespace MurphysMod.Content
             public override void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)
             {
                 if (fail)
-                    return;   
+                    return;
                 else if (Main.tileSolid[type])
                 {
                     tileBroken++;
@@ -343,6 +344,9 @@ namespace MurphysMod.Content
 
             public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
             {
+                if (!ModContent.GetInstance<ClientSideConfig>().ScreenShake)
+                    return;
+
                 Player player = Main.LocalPlayer;
 
                 if (CaveTremors.TremorActive == true && (tremorTick <= length)) //checks just in case if player teleports, only works underground

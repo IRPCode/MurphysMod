@@ -7,7 +7,7 @@ namespace ExampleMod.Common.Configs
 	{
 		// ConfigScope.ClientSide should be used for client side, usually visual or audio tweaks.
 		// ConfigScope.ServerSide should be used for basically everything else, including disabling items or changing NPC behaviors
-		public override ConfigScope Mode => ConfigScope.ClientSide;
+		public override ConfigScope Mode => ConfigScope.ClientSide; //TODO: add dust intensity, and add gameplay changes for server side additions (including setting the bad luck level)
 
 		// The things in brackets are known as "Attributes".
 
@@ -21,15 +21,11 @@ namespace ExampleMod.Common.Configs
 		[DefaultValue(true)]
 		public bool TileGlow;
 
+		
+		[DefaultValue(true)]
+		public bool ScreenShake;
+
 		[DefaultValue(true)]
 		public bool NpcGlow;
-
-		/*[ReloadRequired]
-		public bool WeaponWithGrowingDamageToggle;
-
-		[Header("Other")]
-		[DefaultValue(true)]
-		[ReloadRequired]
-		public bool WingSlotLoadoutSupportToggle;*/
 	}
 }

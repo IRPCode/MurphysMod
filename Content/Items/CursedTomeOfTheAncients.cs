@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ExampleMod.Common.Configs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Systems;
@@ -289,6 +290,9 @@ namespace MurphysMod.Content.Items
 			private int sourceProjectile;
 			public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
 			{
+				if (Main.gameMenu || !ModContent.GetInstance<ClientSideConfig>().AmbientDustVisuals || Main.gameMenu)
+					return;
+
 				if (Main.projectile[sourceProjectile].active && Main.projectile[sourceProjectile].type == ModContent.ProjectileType<CursedTomeOfTheAncientsProjectile>() && sourceProjectile >= 0 && sourceProjectile <= Main.maxProjectiles)
 				{
 					float randX = Main.rand.Next((int)-shakeStrength, (int)shakeStrength);
@@ -299,12 +303,6 @@ namespace MurphysMod.Content.Items
 					Vector2 displaceScreen = new Vector2(randX, randY) * multiplyStrength;
 
 					Main.screenPosition += displaceScreen;
-
-					if (Main.gameMenu)
-					{
-						return;
-					}
-
 				}
 				else
 				{

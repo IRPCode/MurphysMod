@@ -204,6 +204,7 @@ Projectiles: {
 	BlessedGlaiveProjectile.DisplayName: Blessed Glaive Projectile
 	MudBall.DisplayName: Mud Ball
 	Hailstone.DisplayName: Hailstone
+	GiantHailstone.DisplayName: Giant Hailstone
 }
 
 Tiles: {
@@ -275,6 +276,16 @@ Configs: {
 		NpcGlow: {
 			Label: Npc Glow
 			Tooltip: ""
+		}
+
+		AmbientDustVisuals: {
+			Label: Ambient Dust Visuals
+			Tooltip: ""
+		}
+
+		ScreenShake: {
+			Tooltip: ""
+			Label: Screen Shake
 		}
 	}
 }
