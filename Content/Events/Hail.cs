@@ -18,8 +18,9 @@ namespace MurphysMod.Content
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckVal = luckHandler.luckValue();
             //rainFlag = true;
+            //Main.raining && Main.maxRain >= .2f && Main.GameUpdateCount % (ulong)(60 * (timeCheck * (1 + (luckVal * 2)))) == 0
 
-            if (Main.raining && Main.maxRain >= .2f && Main.GameUpdateCount % (ulong)(60 * (timeCheck * (1 + (luckVal * 2)))) == 0) //modifies amount of time based on luck
+            if (Main.raining && Main.maxRain >= .2f) //modifies amount of time based on luck
             {
                 if (Main.rand.Next(1, 1) == 1) //20% chance of hail every X number of minutes it rains
                 {
