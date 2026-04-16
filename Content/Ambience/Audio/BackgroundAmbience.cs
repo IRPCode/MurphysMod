@@ -49,6 +49,9 @@ namespace MurphysMod
         //night equation: \frac{\left(\left(\sin\left(\frac{\pi x}{24}\right)\ \left(-1\right)\right)+.8\right)}{.8}\cdot1.5
         public override void PostUpdate()
         {
+            if(Main.gameMenu || Main.LocalPlayer == null)
+                return;
+
             LuckHandler luckHandler = Player.GetModPlayer<LuckHandler>();
             double luckVal = luckHandler.luckValue();
 
@@ -57,8 +60,8 @@ namespace MurphysMod
             float nightVol = (float)Utils.Clamp(((((Math.Sin((Math.PI * time) / 24) * -1) + .8f) / .8) * 1.5f), 0f, 1f) * volume;
             float dayVol = (float)Utils.Clamp((2 * Math.Sin((Math.PI * time) / 24) - 1), 0f, 1f) * volume;
 
-            dayVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(dayVolSmooth, (float)(dayVol - (Utils.Clamp(luckVal, 0f, .8f))), .05f), 0f, 1f);
-            nightVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(nightVolSmooth, (float)(nightVol - (Utils.Clamp(luckVal, 0f, .8f))), .05f), 0f, 1f); //fix the lerped values
+            dayVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(dayVolSmooth, (float)(dayVol - (Utils.Clamp(luckVal, 0f, .5f))), .05f), 0f, 1f);
+            nightVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(nightVolSmooth, (float)(nightVol - (Utils.Clamp(luckVal, 0f, .5f))), .05f), 0f, 1f); //fix the lerped values
 
             /*Main.NewText("Day: " + dayVol);
             Main.NewText("Day smoothed: " + dayVolSmooth);
@@ -79,7 +82,7 @@ namespace MurphysMod
 
             if (SoundEngine.TryGetActiveSound(badLuckRumble, out ActiveSound badLuckSound))
             {
-                badluckVol = MathHelper.Lerp(badluckVol, (float)Utils.Clamp(luckVal - .75, 0f, .25f) * 3f, .05f);
+                badluckVol = MathHelper.Lerp(badluckVol, (float)Utils.Clamp(luckVal - .9, 0f, .1f) * 7.5f, .05f);
                 badLuckSound.Volume = badluckVol;
             }
 
@@ -131,14 +134,14 @@ namespace MurphysMod
             }
 
             if (Main.rand.Next(0, 100) == 0)
-                playRandomSound();
+                playRandomSound(luckVal);
         }
-        public static void playRandomSound()
+        public static void playRandomSound(double luckVal)
         {
             SoundEngine.PlaySound(new SoundStyle(puritySounds[Main.rand.Next(0, puritySounds.Length)])
             {
                 IsLooped = false,
-                Volume = Main.rand.Next(15, 51) / 100,
+                Volume = (Main.rand.Next(15, 51) / 100) * (float)((1 - Utils.Clamp(luckVal, 0f, .5f))),
                 Pitch = Main.rand.Next(0, 11) / 100
             });
         }
