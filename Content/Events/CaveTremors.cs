@@ -344,10 +344,13 @@ namespace MurphysMod.Content
 
             public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
             {
+                if (Main.gameMenu || Main.LocalPlayer == null)
+                    return;
+
                 if (!ModContent.GetInstance<ClientSideConfig>().ScreenShake)
                     return;
 
-                Player player = Main.LocalPlayer;
+                Player player = Main.LocalPlayer;                  
 
                 if (CaveTremors.TremorActive == true && (tremorTick <= length)) //checks just in case if player teleports, only works underground
                 {
@@ -376,10 +379,6 @@ namespace MurphysMod.Content
 
                     Main.screenPosition += displaceScreen;
 
-                    if (Main.gameMenu)
-                    {
-                        return;
-                    }
 
                     if (CaveTremors.tremorTick >= CaveTremors.length)
                     {

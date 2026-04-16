@@ -8,6 +8,8 @@ using Terraria.IO;
 using StructureHelper.API;
 using Terraria.DataStructures;
 using System.Numerics;
+using System.Linq;
+using System;
 
 namespace MurphysMod.Content.Generation
 {
@@ -20,6 +22,8 @@ namespace MurphysMod.Content.Generation
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
+            tasks.RemoveAll(genPass => genPass.Name == "Floating Islands");
+
             int shiniesIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies"));
             if (shiniesIndex != -1)
             {
@@ -38,6 +42,89 @@ namespace MurphysMod.Content.Generation
                 tasks.Insert(structureIndex + 1, new PassLegacy("Something Karl would be interested in.", GenerateMinerShacks));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Disgusting sap fills the jungle", generateAccursedSapGrove));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Filling a forge with Ordained Slag", generateForge));
+                tasks.Insert(structureIndex + 1, new PassLegacy("Ruining your future arenas", generateSkyIslands));
+            }
+
+            int islandIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Islands"));
+
+            if (islandIndex != -1)
+            {
+                tasks.Insert(structureIndex + 1, new PassLegacy("Ruining your future arenas", generateSkyIslands));
+            }
+        }
+
+        public static List<string> SkyIslands = new List<String>{ "Structures/SkyIslands/Islands/IslandBase0", "Structures/SkyIslands/Islands/IslandBase1",
+         "Structures/SkyIslands/Islands/IslandBase2", "Structures/SkyIslands/Islands/IslandBase3", "Structures/SkyIslands/Islands/IslandBase4",
+          "Structures/SkyIslands/Islands/IslandBase5", "Structures/SkyIslands/Islands/IslandBase6", "Structures/SkyIslands/Islands/IslandBase7",
+           "Structures/SkyIslands/Islands/IslandBase8" };
+        public static List<string> SkyBuildings = new List<String> { "Structures/SkyIslands/Buildings/SkyBuilding0", "Structures/SkyIslands/Buildings/SkyBuilding1",
+         "Structures/SkyIslands/Buildings/SkyBuilding2", "Structures/SkyIslands/Buildings/SkyBuilding3", "Structures/SkyIslands/Buildings/SkyBuilding4",
+          "Structures/SkyIslands/Buildings/SkyBuilding5", "Structures/SkyIslands/Buildings/SkyBuilding6", "Structures/SkyIslands/Buildings/SkyBuilding7",
+           "Structures/SkyIslands/Buildings/SkyBuilding8", "Structures/SkyIslands/Buildings/SkyBuilding9" };
+
+        public static List<Vector2> BuildingOffsets = new List<Vector2>{new Vector2(18, -2), new Vector2(24, 4), new Vector2(11, 5), new Vector2(54, -18),
+        new Vector2(43, 9), new Vector2(24, -5), new Vector2(52, -7), new Vector2(30, -4), new Vector2 (0,0)}; //last element is the skylake, only needed for algorithm
+
+        private void generateSkyIslands(GenerationProgress progress, GameConfiguration configuration)
+        {
+            progress.Message = "Adding sky islands to block your arena.";
+
+            int x = 0;
+            int y = 0;
+            int sizeFraction = 1;
+            int min = 0;
+            int max = 0;
+
+
+            y = (int)Main.worldSurface;
+
+            if (Main.maxTilesX >= 2400)
+            {
+                sizeFraction = 7;
+                min = 325;
+                max = 550;
+            }
+            else if (Main.maxTilesX >= 1800)
+            {
+                sizeFraction = 5;
+                min = 225;
+                max = 350;
+            }
+            else
+            {
+                sizeFraction = 4;
+                min = 125;
+                max = 275;
+            }
+
+            int placementIncrement = Main.maxTilesX / (sizeFraction + 1);
+
+            for (int i = 0; i <= sizeFraction; i++)
+            {
+                int selectedIsland = Main.rand.Next(0, SkyIslands.Count);
+                int selectedBuilding = Main.rand.Next(0, SkyBuildings.Count);
+
+                x += placementIncrement;
+                y = (int)Main.worldSurface - Main.rand.Next(min, max + 1);
+
+                if (Generator.IsInBounds(SkyIslands[selectedIsland], Mod, new Point16(x, y)))
+                {
+                    Generator.GenerateStructure(SkyIslands[selectedIsland], new Point16(x, y), Mod);
+                }
+
+                if (SkyIslands[selectedIsland] != "Structures/SkyIslands/Islands/IslandBase8")
+                {
+                    Vector2 offset = BuildingOffsets[selectedIsland];
+                    if (Generator.IsInBounds(SkyBuildings[selectedBuilding], Mod, new Point16(x + (int)offset.X, y - (int)offset.Y)))
+                    {
+                        Generator.GenerateStructure(SkyBuildings[selectedBuilding], new Point16(x + (int)offset.X, y - (int)offset.Y - 1), Mod);
+                    }
+                }
+
+                //after placing island
+                SkyIslands.RemoveAt(selectedIsland);
+                BuildingOffsets.RemoveAt(selectedIsland);
+                SkyBuildings.RemoveAt(selectedBuilding);
             }
         }
 

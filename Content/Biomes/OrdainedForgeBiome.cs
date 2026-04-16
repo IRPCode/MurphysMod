@@ -34,6 +34,21 @@ namespace MurphysMod.Content.Biomes
         }
     }
 
+    public class PreventForgeBuilding : ModPlayer
+    {
+        public override void PostUpdate()
+        {
+            //Player player = Main.LocalPlayer;
+            if (Player.InModBiome<OrdainedForgeBiome>())
+            {
+                Player.noBuilding = true;
+                Player.AddBuff(BuffID.NoBuilding, 1);
+            } else 
+            Player.noBuilding = false;
+                
+        }
+    }
+
     public class spawnRatesForForge : GlobalNPC
     {
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)

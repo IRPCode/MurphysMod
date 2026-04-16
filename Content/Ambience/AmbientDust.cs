@@ -74,7 +74,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                 if (!tile.HasTile)
                 {
-                    if (tile.WallType == 3 || (Player.ZoneCorrupt && Player.position.Y / 16 >= Main.rockLayer)) //corruption
+                    if (tile.WallType == WallID.EbonstoneUnsafe || (Player.ZoneCorrupt && Player.position.Y / 16 >= Main.rockLayer)) //corruption
                     {
                         rand = Main.rand.Next(0, 15 / dustAmountMultiplier);
 
@@ -94,7 +94,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         }
                     }
 
-                    if (tile.WallType == 83 || (Player.ZoneCrimson && Player.position.Y / 16 >= Main.rockLayer)) //crimson
+                    if (tile.WallType == WallID.CrimstoneUnsafe || (Player.ZoneCrimson && Player.position.Y / 16 >= Main.rockLayer)) //crimson
                     {
                         rand = Main.rand.Next(0, 15 / dustAmountMultiplier);
 
@@ -115,7 +115,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         }
                     }
 
-                    if (((tile.WallType > 99 && tile.WallType < 104) || tile.WallType == 28) || (Player.ZoneHallow && Player.position.Y / 16 >= Main.rockLayer)) //Hallow
+                    if (((tile.WallType > WallID.GreenDungeonTileUnsafe && tile.WallType < WallID.GreenDungeonSlab) || tile.WallType == WallID.PearlstoneBrickUnsafe) || (Player.ZoneHallow && Player.position.Y / 16 >= Main.rockLayer)) //Hallow
                     {
                         rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
 
@@ -139,7 +139,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         }
                     }
 
-                    if (Player.ZoneDungeon && ((tile.WallType >= 7 && tile.WallType <= 9) || (tile.WallType >= 94 && tile.WallType <= 99))) //dungeon
+                    if (Player.ZoneDungeon && ((tile.WallType >= WallID.BlueDungeonUnsafe && tile.WallType <= WallID.PinkDungeonUnsafe) || (tile.WallType >= WallID.BlueDungeonSlabUnsafe && tile.WallType <= WallID.GreenDungeonTileUnsafe))) //dungeon
                     {
                         rand = Main.rand.Next(0, 40 / dustAmountMultiplier);
 
@@ -271,7 +271,6 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                         }
                     }
 
-
                     try
                     {
                         for (int i = 0; i < 25; i++)
@@ -281,7 +280,7 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                             tile = Framing.GetTileSafely(x, y);
                             Tile blessedWaterTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
 
-                            if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type && blessedWaterTileAirCheck.LiquidAmount == 0) //shimmer liquid
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "BlessedWater").Type && blessedWaterTileAirCheck.LiquidAmount == 0)
                             {
                                 Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, ModContent.DustType<BlessedWaterDust>(), 0, 0, 100, default, 1f);
                             }
@@ -289,7 +288,27 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                     }
                     catch (Exception)
                     {
-                        Main.NewText("Error parsing ModLiquid GodlyForgeLava from MurphysMod.");
+                        Main.NewText("Error parsing ModLiquid BlessedWater from MurphysMod.");
+                    }
+
+                      try
+                    {
+                        for (int i = 0; i < 100; i++)
+                        {
+                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
+                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                            tile = Framing.GetTileSafely(x, y);
+                            Tile blessedWaterTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
+
+                            if (tile.LiquidAmount >= 1 && tile.LiquidType == ModContent.Find<ModLiquid>("MurphysMod", "EnchantedWater").Type && blessedWaterTileAirCheck.LiquidAmount == 0)
+                            {
+                                Dust.NewDust(new Vector2(x * 16, y * 16), 16, 16, DustID.MagicMirror, 0, 0, 100, default, 1f);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Main.NewText("Error parsing ModLiquid EnchantedWater from MurphysMod.");
                     }
                 }
 

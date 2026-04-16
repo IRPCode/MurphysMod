@@ -115,6 +115,11 @@ Items: {
 		DisplayName: Aether Grass
 		Tooltip: ""
 	}
+
+	EnchantedWaterBucket: {
+		DisplayName: Enchanted Water Bucket
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -224,6 +229,7 @@ Liquids: {
 	OrdainedMoltenSlag.MapEntry: Ordained Molten Slag
 	BlessedWater.MapEntry: Blessed Water
 	AccursedSap.MapEntry: Accursed Sap
+	EnchantedWater.MapEntry: Enchanted Water
 }
 
 Biomes: {

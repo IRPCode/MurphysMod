@@ -21,24 +21,36 @@ namespace MurphysMod.Content.Ambience
         public float intensity;
         public Boolean flag;
 
-        public static int[] treeTypes = {TileID.TreeAsh, (int)TreeTypes.Ash};
+        public static int[] gemTypes = { 0, 1, 2, 3, 4, 5, 6 };
         public static int[] acceptedGemTreeSources = { TileID.TreeAmber, TileID.TreeAmethyst, TileID.TreeDiamond, TileID.TreeEmerald, TileID.TreeRuby, TileID.TreeSapphire, TileID.TreeTopaz };
         public static int[] acceptedGemBunnyCages = { TileID.AmberBunnyCage, TileID.AmethystBunnyCage, TileID.DiamondBunnyCage, TileID.EmeraldBunnyCage, TileID.RubyBunnyCage, TileID.SapphireBunnyCage, TileID.TopazBunnyCage };
         public static int[] acceptedGemSquirrelCages = { TileID.AmberSquirrelCage, TileID.AmethystSquirrelCage, TileID.DiamondSquirrelCage, TileID.EmeraldSquirrelCage, TileID.RubySquirrelCage, TileID.SapphireSquirrelCage, TileID.TopazSquirrelCage };
 
         public static Color[] colors = { Color.Orange, Color.Purple, Color.White, Color.Green, Color.Red, Color.Blue, Color.Yellow };
 
-         public static bool tileGlow = ModContent.GetInstance<ClientSideConfig>().TileGlow;
+        public static bool tileGlow = ModContent.GetInstance<ClientSideConfig>().TileGlow;
 
         public override void PostDraw(int i, int j, int type, Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
         {
-            if(!ModContent.GetInstance<ClientSideConfig>().TileGlow)
+            if (!ModContent.GetInstance<ClientSideConfig>().TileGlow)
                 return;
 
-                 #region gemcorn trees
+            #region gemcorn trees
+            strength();
 
-            if (acceptedGemTreeSources.Contains(type) || acceptedGemBunnyCages.Contains(type) || acceptedGemSquirrelCages.Contains(type))
+
+
+            if (acceptedGemTreeSources.Contains(type) || acceptedGemBunnyCages.Contains(type) || acceptedGemSquirrelCages.Contains(type) || type == TileID.ExposedGems)
             {
+
+                if(type == TileID.ExposedGems)
+                {
+                    //int gemType = type.tileFramingX / 18;
+
+                }
+
+
+
                 for (int x = 0; x < acceptedGemTreeSources.Length; x++)
                 {
                     if (type == acceptedGemTreeSources[x] || type == acceptedGemBunnyCages[x] || type == acceptedGemSquirrelCages[x])
@@ -51,15 +63,13 @@ namespace MurphysMod.Content.Ambience
                         else
                             Lighting.AddLight(new Vector2(i + .5f, j + .5f) * 16f, (new Vector3(colors[x].R, colors[x].G * intensity, colors[x].B * intensity) / 255f) * .75f * intensity);
 
-                        strength();
+
                     }
                 }
             }
 
             #endregion
-            
 
-           
 
         }
 
