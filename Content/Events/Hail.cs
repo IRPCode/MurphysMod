@@ -11,7 +11,7 @@ namespace MurphysMod.Content
     public class Hail : ModPlayer
     {
         public static bool rainFlag;
-        public static int timeCheck = 1800; //number of seconds per check
+        public static int timeCheck = 300; //number of seconds per check
         public override void PostUpdate()
         {
             Player player = Main.LocalPlayer;
@@ -21,12 +21,16 @@ namespace MurphysMod.Content
 
             if (Main.raining && Main.maxRain >= .2f && Main.GameUpdateCount % (ulong)(60 * (timeCheck * (1 + (luckVal * 2)))) == 0) //modifies amount of time based on luck
             {
-                if (Main.rand.Next(1, 1) == 1) //20% chance of hail every X number of minutes it rains
+                if (Main.rand.Next(1, 5) == 1) //20% chance of hail every X number of minutes it rains
                 {
+                    if(rainFlag == false)
+                        Main.NewText("It is hailing!", Color.PaleGreen);
                     rainFlag = true;
                 }
                 else
                 {
+                    if(rainFlag)
+                        Main.NewText("It has stopped hailing...", Color.PaleGreen);
                     rainFlag = false;
                 }
 

@@ -32,7 +32,7 @@ namespace MurphysMod
         public static string chosenSoundNight;
         String[] biomeSounds = {"MurphysMod/Assets/Audio/AmbientSounds/Purity/BackgroundLoops/ForestDay", "MurphysMod/Assets/Audio/AmbientSounds/Purity/BackgroundLoops/ForestNight",
          "MurphysMod/Assets/Audio/AmbientSounds/Jungle/JungleDay", "MurphysMod/Assets/Audio/AmbientSounds/Jungle/JungleNight"};
-
+        public static String[] thunderSounds = { "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder1", "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder2", "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder3", "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder4", "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder5", "MurphysMod/Assets/Audio/AmbientSounds/Rain/Thunder6" };
         public static String[] puritySounds = {"MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound1", "MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound2",
         "MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound3", "MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound4",
         "MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound5", "MurphysMod/Assets/Audio/AmbientSounds/Purity/Birds/BirdSound6",
@@ -49,16 +49,18 @@ namespace MurphysMod
         //night equation: \frac{\left(\left(\sin\left(\frac{\pi x}{24}\right)\ \left(-1\right)\right)+.8\right)}{.8}\cdot1.5
         public override void PostUpdate()
         {
-            if(Main.gameMenu || Main.LocalPlayer == null)
+            if (Main.gameMenu || Main.LocalPlayer == null)
                 return;
 
             LuckHandler luckHandler = Player.GetModPlayer<LuckHandler>();
             double luckVal = luckHandler.luckValue();
 
+            //Main.NewText("Main.rain: " + Main.rain + ", Main.raining: " + Main.raining + ", Main.MaxRain: " + Main.maxRain + ", Main.oldMaxRaining: " + Main.oldMaxRaining);
+
             float time = Utils.GetDayTimeAs24FloatStartingFromMidnight();
             float vol = time;
-            float nightVol = (float)Utils.Clamp(((((Math.Sin((Math.PI * time) / 24) * -1) + .8f) / .8) * 1.5f), 0f, 1f) * volume;
-            float dayVol = (float)Utils.Clamp((2 * Math.Sin((Math.PI * time) / 24) - 1), 0f, 1f) * volume;
+            float nightVol = (float)(Utils.Clamp(((((Math.Sin((Math.PI * time) / 24) * -1) + .8f) / .8) * 1.5f) - (Main.oldMaxRaining * (1 + Main.windSpeedCurrent)), 0f, 1f)) * volume;
+            float dayVol = (float)(Utils.Clamp((2 * Math.Sin((Math.PI * time) / 24) - 1) - (Main.oldMaxRaining * (1 + Main.windSpeedCurrent)), 0f, 1f)) * volume;
 
             dayVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(dayVolSmooth, (float)(dayVol - (Utils.Clamp(luckVal, 0f, .5f))), .05f), 0f, 1f);
             nightVolSmooth = (float)Utils.Clamp(MathHelper.Lerp(nightVolSmooth, (float)(nightVol - (Utils.Clamp(luckVal, 0f, .5f))), .05f), 0f, 1f); //fix the lerped values
@@ -89,14 +91,14 @@ namespace MurphysMod
 
             if (SoundEngine.TryGetActiveSound(wind, out ActiveSound windSound))
             {
-                windSound.Volume = Utils.Clamp(((Math.Abs(Main.windSpeedCurrent) / .8f) * 2f * volume), .2f, .65f);
+                windSound.Volume = Utils.Clamp(((Math.Abs(Main.windSpeedCurrent) / .8f) * 2f * volume), .2f, .9f);
             }
             else if (Player.position.Y > Main.worldSurface)
             {
                 wind = SoundEngine.PlaySound(new SoundStyle("MurphysMod/Assets/Audio/AmbientSounds/backgroundWind")
                 {
                     IsLooped = true,
-                    Volume = Utils.Clamp(((Math.Abs(Main.windSpeedCurrent) / .8f) * 2f * volume), .2f, .65f) //to get a .2 to .6 volume ratio
+                    Volume = Utils.Clamp(((Math.Abs(Main.windSpeedCurrent) / .95f) * 2f * volume), .2f, .7f) //to get a .2 to .7 volume ratio
                 });
             }
 
@@ -133,8 +135,12 @@ namespace MurphysMod
                 initState = 3;
             }
 
-            if (Main.rand.Next(0, 100) == 0)
+            if (Main.rand.Next(0, 100) == 1)
                 playRandomSound(luckVal);
+
+            if (Main.maxRaining >= .6f && Main.rand.Next(0, (int)((100 - ((Main.oldMaxRaining * 10) * (1 + (Main.windSpeedCurrent / .8f)))) * 10)) == 1)
+                rumblingThunder();
+
         }
         public static void playRandomSound(double luckVal)
         {
@@ -143,6 +149,17 @@ namespace MurphysMod
                 IsLooped = false,
                 Volume = (Main.rand.Next(15, 51) / 100) * (float)((1 - Utils.Clamp(luckVal, 0f, .5f))),
                 Pitch = Main.rand.Next(0, 11) / 100
+            });
+        }
+
+        public static void rumblingThunder() //TODO: pan the thunder sounds, add rain noises and other noises
+        {
+            Main.NewText("hit");
+            SoundEngine.PlaySound(new SoundStyle(thunderSounds[Main.rand.Next(0, thunderSounds.Length)])
+            {
+                IsLooped = false,
+                Volume = (float)Main.rand.Next(0, 61) / 100,
+                Pitch = Main.rand.Next(-10, 11) / 100
             });
         }
     }
