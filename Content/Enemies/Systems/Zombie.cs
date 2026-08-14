@@ -2,16 +2,12 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
-using MurphysMod.Content.Buffs;
 using MurphysMod.Content.Projectiles;
 using System;
-using Terraria.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Content.LuckHandlers;
 using System.Linq;
-using System.Numerics;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
-using Terraria.DataStructures;
+using MurphysMod.Systems;
 
 namespace MurphysMod.Content.Enemies
 {
@@ -21,7 +17,7 @@ namespace MurphysMod.Content.Enemies
         public override bool InstancePerEntity => true;
         public int[] acceptedNPCs = { 431, 432, 433, 434, 435, 436, 3, -26, -27, 430, 132, -28, -29, 186, -30, -31, 188, 34, -35, 189, -36, -37, 200, -44, -45, 319, 320, 321, 331, 332, 489,
         NPCID.TheBride, NPCID.TheGroom, NPCID.DoctorBones, NPCID.ZombieMushroom, NPCID.ZombieMushroomHat, NPCID.Eyezor };
-        public int[] slimeZombieNPCs = { 187, -32, -33 }; //431 for frozen zombie
+        public int[] slimeZombieNPCs = { 187, -32, -33 };
 
         public int[] torchZombiesNPCs = { NPCID.TorchZombie, NPCID.ArmedTorchZombie };
 
@@ -29,6 +25,8 @@ namespace MurphysMod.Content.Enemies
 
         public override void PostAI(NPC npc)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
             if (!acceptedNPCs.Contains(npc.type) && !npc.active)
                 return;
             Player target = Main.player[npc.target];
@@ -44,6 +42,9 @@ namespace MurphysMod.Content.Enemies
 
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
             int debuffType = -1;
 
             if (npc.type == NPCID.ArmedZombieEskimo || npc.type == NPCID.ZombieEskimo)
@@ -60,6 +61,10 @@ namespace MurphysMod.Content.Enemies
 
             else if (npc.type == NPCID.MaggotZombie)
                 debuffType = BuffID.Stinky;
+
+            else if (slimeZombieNPCs.Contains(npc.type))
+                debuffType = BuffID.Slimed;
+
             else
                 return;
 
@@ -71,6 +76,9 @@ namespace MurphysMod.Content.Enemies
 
         public override void AI(NPC npc)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
             if (!npc.active)
                 return;
 
@@ -107,6 +115,9 @@ namespace MurphysMod.Content.Enemies
 
         public override void OnKill(NPC npc)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
             Vector2 npcCenter = npc.Center;
             if (!slimeZombieNPCs.Contains(npc.type) && !torchZombiesNPCs.Contains(npc.type) && npc.type != NPCID.ZombieMushroom && npc.type != NPCID.ZombieMushroomHat)
                 return;
@@ -122,10 +133,10 @@ namespace MurphysMod.Content.Enemies
             {
                 int mushiSpore = NPC.NewNPC(npc.GetSource_Death(), (int)(npcCenter.X), (int)((npcCenter.Y + 2)), NPCID.FungiSpore);
 
-                if(mushiSpore > 0)
+                if (mushiSpore > 0)
                 {
                     NPC spore = Main.npc[mushiSpore];
-                    spore.velocity = new Vector2(Main.rand.Next(-1000,1000)/1000,Main.rand.Next(-7000,-6000)/1000);
+                    spore.velocity = new Vector2(Main.rand.Next(-1000, 1000) / 1000, Main.rand.Next(-7000, -6000) / 1000);
                     spore.netUpdate = true;
                 }
 

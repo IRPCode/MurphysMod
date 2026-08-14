@@ -21,12 +21,11 @@ namespace MurphysMod
     {
         public override void Load()
         {
-            FighterAI.Load();
-        }
 
+        }
         public override void Unload()
         {
-            FighterAI.Unload();
+
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
