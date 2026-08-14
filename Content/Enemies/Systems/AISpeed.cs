@@ -35,8 +35,9 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
                 npc.velocity = Vector2.Lerp(npc.velocity, (playerLoc * (vectorLuck + new Vector2(1, 1)) * 2), .01f);
             }
 
-            if (npc.aiStyle == 3 || npc.aiStyle == 19 || npc.aiStyle == 22 || npc.aiStyle == 38 || npc.aiStyle == 39 || npc.aiStyle == 41 || npc.aiStyle == 42 || npc.aiStyle == 49) //fighter AI
+            if (npc.aiStyle == 19 || npc.aiStyle == 22 || npc.aiStyle == 38 || npc.aiStyle == 39 || npc.aiStyle == 41 || npc.aiStyle == 42 || npc.aiStyle == 49) //fighter AI
             {
+                //npc.aiStyle == 3 || 
                 //if (luckVal >= 1f)
                 // {
                 //     luckVal = 1f;
