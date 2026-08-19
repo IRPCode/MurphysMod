@@ -167,39 +167,39 @@ namespace MurphysMod.Content.LuckHandlers
                     luckValue += .25;
                 }
 
-            //Height luck
+                //Height luck
 
-            HeightLuck heightLuck = new HeightLuck();
+                HeightLuck heightLuck = new HeightLuck();
 
-            luckValue += heightLuck.getHeightLuckVal();
+                luckValue += heightLuck.getHeightLuckVal();
 
-            //tile luck
+                //tile luck
 
-            luckValue += TileLuck;
+                luckValue += TileLuck;
 
-            //weather and moon luck
+                //weather and moon luck
 
-            WeatherLuck weatherLuck = new WeatherLuck();
-            luckValue += weatherLuck.getWeatherLuckVal();
+                WeatherLuck weatherLuck = new WeatherLuck();
+                luckValue += weatherLuck.getWeatherLuckVal();
 
-            //ladybug deaths
+                //ladybug deaths
 
-            luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
+                luckValue += Utils.Clamp((float)EnemyLuck.amount, 0, .3);
 
-            if (EnemyLuck.length == 0)
-                EnemyLuck.amount = 0;
+                if (EnemyLuck.length == 0)
+                    EnemyLuck.amount = 0;
 
-            luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
-            Utils.Clamp(luckValue, 0, float.MaxValue);
+                luckValue -= (float)Utils.Clamp(updateProximityLuck.proximityAmount, -.2, .2);
 
-            luckDebuffHandler(luckValue);
+                luckDebuffHandler(luckValue);
 
 
-            //buff luck (must be calculated last)
+                //buff luck (must be calculated last)
 
-            PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
-            luckValue += playerBuffLuck.getBuffLuck();
-        }
+                PlayerBuffLuck playerBuffLuck = new PlayerBuffLuck();
+                luckValue += playerBuffLuck.getBuffLuck();
+            }
+            luckValue = Utils.Clamp(luckValue, 0, float.MaxValue);
             return luckValue;
         }
 

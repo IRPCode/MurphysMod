@@ -33,7 +33,7 @@ namespace MurphysMod.Content.Enemies
             LuckHandler luckHandler = target.GetModPlayer<LuckHandler>();
 
             //npc speed
-            if (!acceptedNPCs.Contains(npc.type))
+            if (!acceptedNPCs.Contains(npc.type) && !torchZombiesNPCs.Contains(npc.type))
                 return;
 
             float mult = 1 * (float)Math.Pow(luckHandler.luckValue() + 1, 1.6);
@@ -153,7 +153,7 @@ namespace MurphysMod.Content.Enemies
                 int projID = Projectile.NewProjectile(
                         npc.GetSource_FromAI(),
                         npc.Center,
-                        new Vector2((float)Main.rand.Next(-5000, 5000) / 1000, (float)Main.rand.Next(-5000, -2000) / 1000),
+                        new Vector2((float)Main.rand.Next(-5000, 5000) / 1000 + npc.velocity.X, (float)Main.rand.Next(-5000, -2000) / 1000),
                         projectile,
                         npc.damage,
                         1f,

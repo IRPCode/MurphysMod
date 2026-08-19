@@ -120,6 +120,11 @@ Items: {
 		DisplayName: Enchanted Water Bucket
 		Tooltip: ""
 	}
+
+	TheBigDart: {
+		Tooltip: ""
+		DisplayName: The Big Dart
+	}
 }
 
 Buffs: {
@@ -241,6 +246,11 @@ Biomes: {
 	detectTiles: {
 		DisplayName: detect Tiles
 		TownNPCDialogueName: the detect Tiles
+	}
+
+	Drippy: {
+		TownNPCDialogueName: the Drippy
+		DisplayName: Drippy
 	}
 }
 

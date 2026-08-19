@@ -11,7 +11,7 @@ using MurphysMod.Content.LuckHandlers;
 
 namespace MurphysMod.Content.Enemies
 {
-    public class wormNPC : GlobalNPC
+    public class wormNPC : GlobalNPC //TODO: this class likely breaks EoW
     {
 
         public override void AI(NPC npc)
