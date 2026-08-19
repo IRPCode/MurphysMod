@@ -125,6 +125,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: The Big Dart
 	}
+
+	TheOrdainedDart: {
+		Tooltip: ""
+		DisplayName: The Ordained Dart
+	}
 }
 
 Buffs: {
