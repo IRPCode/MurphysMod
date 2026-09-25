@@ -30,7 +30,7 @@ namespace MurphysMod.Content.NPCs
                     chat = "Ough my head hurts... Uh I mean *glorp glorp*";
             }
 
-              if (npc.type == NPCID.Guide)
+              if (npc.type == NPCID.TravellingMerchant)
             {
                 string[] newQuotes = {"God, I have the fit ON.", "The merchant cannot handle my style.", "Woah there buddy, I don't have that in my stock right now.",
                 "Please tell me you aren't broke right now.", "Oh yeah, I can set up a payment plan for you.", "Do you want to see my watch?", "I am really bad at keeping track of time.",

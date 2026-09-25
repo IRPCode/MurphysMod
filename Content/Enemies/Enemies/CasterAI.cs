@@ -11,6 +11,7 @@ using MurphysMod.Systems;
 using Terraria.DataStructures;
 using MurphysMod.Content.Buffs;
 using Terraria.GameContent.Events;
+using Terraria.Audio;
 
 namespace MurphysMod.Content.Enemies
 {
@@ -114,9 +115,29 @@ namespace MurphysMod.Content.Enemies
                     target.ClearBuff(BuffID.Blackout);
                 }
             }
+
+            if (projectile.type == ProjectileID.RuneBlast)
+                projectile.Kill();
         }
 
-        public override void AI(Projectile projectile)
+        public override void OnKill(Projectile projectile, int timeLeft)
+        {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
+            if (projectile.type == ProjectileID.RuneBlast)
+            {
+                for (int i = 0; i < 15; i++)
+                {
+                    Dust.NewDust(projectile.Center, default, default, DustID.RuneWizard, Main.rand.Next(-1001, 1001) / 250, Main.rand.Next(-1001, 1001) / 250);
+                }
+                SoundEngine.PlaySound(SoundID.Item110);
+            }
+
+        }
+
+
+        public override void PostAI(Projectile projectile)
         {
             if (!BookUsed.isPlayerCursed)
                 return;
@@ -135,22 +156,65 @@ namespace MurphysMod.Content.Enemies
 
             else if (projectile.type == ProjectileID.RuneBlast)
             {
-            uint x = Main.GameUpdateCount;
-            
-            projectile.velocity *= (float)(1.01 - (luckValue / 100));
-            Vector2 playerLoc1 = projectile.DirectionTo(target.Center) / (float)((2 - luckValue));
-            Vector2 vectorLuck1 = new Vector2((float)luckValue, (float)luckValue);
-            playerLoc1.Normalize();
-            playerLoc1 *= (float)((1 + luckValue) * 1.25);
+                uint x = Main.GameUpdateCount;
 
-            Vector2 oldVel = projectile.velocity;
-            projectile.velocity = oldVel + (playerLoc1 / 20);
+                projectile.velocity *= (float)(1.01 - (luckValue / 100));
 
-            //projectile.velocity.X += (float)Math.Sin(x * 5);
-            //projectile.velocity.Y += (float)Math.Cos(x * 5);
+                Vector2 playerLoc1 = projectile.DirectionTo(target.Center) / (float)((2.2 - luckValue));
 
-            projectile.velocity.X = (float)Math.Clamp(projectile.velocity.X, -15, 15);
-            projectile.velocity.Y = (float)Math.Clamp(projectile.velocity.Y, -15, 15);
+
+                Vector2 vectorLuck1 = new Vector2((float)luckValue, (float)luckValue);
+                playerLoc1.Normalize();
+                playerLoc1 *= (float)((1 + luckValue) * 1.25);
+
+
+                Vector2 oldVel = projectile.velocity;
+
+                int mod = Main.rand.Next(0, (int)(30.5 * (1 + luckValue)));
+
+                if (x % 121 - mod == 0)
+                {
+                    projectile.velocity = oldVel + (playerLoc1 * (float)(1 + luckValue));
+                    SoundEngine.PlaySound(SoundID.Item114);
+                }
+                else
+                    projectile.velocity = oldVel;
+
+                projectile.velocity.X += (float)Math.Sin(x * 2);
+                projectile.velocity.Y += (float)Math.Cos(x * 2);
+
+                projectile.velocity.X = (float)Math.Clamp(projectile.velocity.X, -15, 15);
+                projectile.velocity.Y = (float)Math.Clamp(projectile.velocity.Y, -15, 15);
+
+                Rectangle hitbox = projectile.Hitbox;
+
+                for (int i = 0; i < Main.maxProjectiles; i++)
+                {
+                    Projectile p = Main.projectile[i];
+                    if (!p.active || p.type == projectile.type || p.hostile || p.damage < 1)
+                        continue;
+                    if (p.Hitbox.Intersects(hitbox))
+                    {
+                        projectile.Kill();
+                    }
+                }
+            }
+        }
+    }
+    
+    public class killRuneBlast : GlobalItem
+    {
+        public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
+        {
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile p = Main.projectile[i];
+
+                if (p.type != ProjectileID.RuneBlast)
+                    return;
+
+                if (hitbox.Intersects(p.Hitbox))
+                    p.Kill();
             }
         }
     }
