@@ -22,7 +22,7 @@ namespace MurphysMod.Content.LuckHandlers
             //multiplayerHandler();
             //else
             luckValue();
-        }
+        } 
 
         public void multiplayerHandler()
         {

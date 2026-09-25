@@ -11,7 +11,7 @@ using System.Numerics;
 using System.Linq;
 using System;
 
-namespace MurphysMod.Content.Generation
+namespace MurphysMod.Content.Generation //TODO: sky islands don't generate for whatever reason and breaks terrain gen
 {
     public class Generation : ModSystem //531 -- 265
     {
@@ -22,7 +22,15 @@ namespace MurphysMod.Content.Generation
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
-            tasks.RemoveAll(genPass => genPass.Name == "Floating Islands");
+
+
+            int terrainIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Terrain"));
+            if (terrainIndex != -1)
+            {
+                tasks.Insert(terrainIndex + 1, new PassLegacy("Creating a big ol' hill.", GenerateMountain));
+                tasks.Insert(terrainIndex + 1, new PassLegacy("Creating... The Pit.", GeneratePit));
+            }
+                
 
             int shiniesIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Shinies"));
             if (shiniesIndex != -1)
@@ -34,16 +42,23 @@ namespace MurphysMod.Content.Generation
                 //tasks.Insert(shiniesIndex + 1, new PassLegacy("Trimming Moss", killMoss));
             }
 
+            int houseIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Lihzahrd Altars")); //is Lizhard Altars to prevent issues with sky islands
+
+            if(houseIndex != -1)
+                tasks.Insert(houseIndex + 1, new PassLegacy("Spawning a home", GenerateHouse));
+
             int structureIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Micro Biomes"));
 
             if (structureIndex != -1)
             {
-                tasks.Insert(structureIndex + 1, new PassLegacy("Spawning a home", GenerateHouse));
+                
                 tasks.Insert(structureIndex + 1, new PassLegacy("Something Karl would be interested in.", GenerateMinerShacks));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Disgusting sap fills the jungle", generateAccursedSapGrove));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Filling a forge with Ordained Slag", generateForge));
                 tasks.Insert(structureIndex + 1, new PassLegacy("Ruining your future arenas", generateSkyIslands));
             }
+
+            tasks.RemoveAll(genPass => genPass.Name == "Floating Islands");
 
             int islandIndex = tasks.FindIndex(GenPass => GenPass.Name.Equals("Floating Islands"));
 
@@ -56,7 +71,7 @@ namespace MurphysMod.Content.Generation
         public static List<string> SkyIslands = new List<String>{ "Structures/SkyIslands/Islands/IslandBase0", "Structures/SkyIslands/Islands/IslandBase1",
          "Structures/SkyIslands/Islands/IslandBase2", "Structures/SkyIslands/Islands/IslandBase3", "Structures/SkyIslands/Islands/IslandBase4",
           "Structures/SkyIslands/Islands/IslandBase5", "Structures/SkyIslands/Islands/IslandBase6", "Structures/SkyIslands/Islands/IslandBase7",
-           "Structures/SkyIslands/Islands/IslandBase8" };
+           "Structures/SkyIslands/Islands/IslandBase8"};
         public static List<string> SkyBuildings = new List<String> { "Structures/SkyIslands/Buildings/SkyBuilding0", "Structures/SkyIslands/Buildings/SkyBuilding1",
          "Structures/SkyIslands/Buildings/SkyBuilding2", "Structures/SkyIslands/Buildings/SkyBuilding3", "Structures/SkyIslands/Buildings/SkyBuilding4",
           "Structures/SkyIslands/Buildings/SkyBuilding5", "Structures/SkyIslands/Buildings/SkyBuilding6", "Structures/SkyIslands/Buildings/SkyBuilding7",
@@ -101,7 +116,7 @@ namespace MurphysMod.Content.Generation
 
             for (int i = 0; i <= sizeFraction; i++)
             {
-                int selectedIsland = Main.rand.Next(0, SkyIslands.Count);
+                int selectedIsland = Main.rand.Next(0, SkyIslands.Count - 1);
                 int selectedBuilding = Main.rand.Next(0, SkyBuildings.Count);
 
                 x += placementIncrement;
@@ -128,9 +143,34 @@ namespace MurphysMod.Content.Generation
             }
         }
 
+        private void GeneratePit(GenerationProgress progress, GameConfiguration configuration) 
+        {
+            progress.Message = "Creating a big ol' pit.";
+
+            int x = (Main.maxTilesX / 2) + (Main.maxTilesX / 3);
+            int y = (int)Main.worldSurface - 25;
+
+            for (int i = (int)Main.worldSurface - 300; i < (int)Main.worldSurface + 200; i++) //REMINDER: The structure's coordinates is from top down. 
+            {                                                                                 //Make sure you account for this when the structure generates.
+                if (WorldGen.SolidTile(x, i))
+                {
+                    y = i;
+                    break;
+                }
+            }
+
+            string structure = "Structures/ThePit";
+
+            if (Generator.IsInBounds(structure, Mod, new Point16(x, y)))
+            {
+                Generator.GenerateStructure(structure, new Point16(x, y - 25), Mod); //Structure already is placed from top corner
+            }
+
+        }
+
         private void generateAccursedSapGrove(GenerationProgress progress, GameConfiguration configuration)
         {
-            progress.Message = "Filling a forge with Ordained Slag";
+            progress.Message = "Filling a forge with disgusting sap";
 
             string structure = "Structures/AccursedSapGrove";
 
@@ -143,12 +183,12 @@ namespace MurphysMod.Content.Generation
             {
                 for (int iY = 0; iY < Main.maxTilesY; iY++)
                 {
-                    if (WorldGen.SolidTile(iX, iY) && WorldGen.TileType(iX, iY) == TileID.LivingMahoganyLeaves)
+                    if (WorldGen.SolidTile(iX, iY) && WorldGen.TileType(iX, iY) == TileID.LihzahrdBrick)
                     {
                         if (iX > Main.maxTilesX / 2)
-                            x = iX - (Main.maxTilesX / 17);
+                            x = iX - (Main.maxTilesX / 15);
                         else
-                            x = iX + (Main.maxTilesX / 17);
+                            x = iX + (Main.maxTilesX / 15);
                         break;
                     }
                 }
@@ -261,6 +301,31 @@ namespace MurphysMod.Content.Generation
                 }
             }
             return true;
+        }
+
+        private void GenerateMountain(GenerationProgress progress, GameConfiguration configuration) //find something on github that isn't garbage
+        {
+            progress.Message = "Creating a big ol' hill.";
+
+            int x = (Main.maxTilesX / 2) - (Main.maxTilesX / 3);
+            int y = (int)Main.worldSurface - 25;
+
+            for (int i = (int)Main.worldSurface - 300; i < (int)Main.worldSurface + 200; i++) //REMINDER: The structure's coordinates is from top down. 
+            {                                                                                 //Make sure you account for this when the structure generates.
+                if (WorldGen.SolidTile(x, i))
+                {
+                    y = i;
+                    break;
+                }
+            }
+
+            string structure = "Structures/MountainLarge";
+
+            if (Generator.IsInBounds(structure, Mod, new Point16(x, y)))
+            {
+                Generator.GenerateStructure(structure, new Point16(x, y - 205 + 65), Mod); //substract the structure's height plus some
+            }
+
         }
 
         private void GenerateHouse(GenerationProgress progress, GameConfiguration configuration) //find something on github that isn't garbage

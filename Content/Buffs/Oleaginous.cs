@@ -20,7 +20,7 @@ namespace MurphysMod.Content.Buffs
 
 		public override void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 		{
-			tip = "You feel disgusting and unlucky.";
+			tip = "You feel disgusting.";
 		}
 
 		public override void Update(Player player, ref int buffIndex)

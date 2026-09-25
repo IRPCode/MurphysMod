@@ -30,7 +30,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             float luckVal = (float)luckHandler.luckValue();
             Vector2 vectorLuck = new Vector2(luckVal, luckVal);
 
-            if (npc.aiStyle == 19 || npc.aiStyle == 22 || npc.aiStyle == 38 || npc.aiStyle == 39 || npc.aiStyle == 41 || npc.aiStyle == 42 || npc.aiStyle == 49) //fighter AI
+            /*if (npc.aiStyle == 19 || npc.aiStyle == 22 || npc.aiStyle == 38 || npc.aiStyle == 39 || npc.aiStyle == 41 || npc.aiStyle == 42 || npc.aiStyle == 49) //fighter AI
             {
                 //npc.aiStyle == 3 || 
                 //if (luckVal >= 1f)
@@ -67,6 +67,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             //for type 11/12 (dungeon guardian / skeletron), this is in a seperate file for more advanced tweaks.
             //check maneater file for ai13
             //all bosses and minibosses need changes
+            */
         }
 
         public override void OnHitPlayer(NPC npc, Player player, Player.HurtInfo hurtInfo)
