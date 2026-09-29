@@ -12,7 +12,7 @@ using MurphysMod.Systems;
 namespace MurphysMod.Content.Enemies
 {
     //When 1.4.5 gets to tmodloader, add code for the moss zombie here
-    public class DemonEye : GlobalNPC
+    /*public class DemonEye : GlobalNPC
     {
         public override bool InstancePerEntity => true;
         public int[] acceptedNPCs = { 2, -43, 190, -38, 191, -39, 192, -40, 193, -41, 194, -42, 317, 318, 133 };
@@ -33,5 +33,5 @@ namespace MurphysMod.Content.Enemies
             if (npc.type == NPCID.WanderingEye && npc.life < npc.lifeMax / 2 && luckHandler.luckValue() >= .5)
                 npc.noTileCollide = true;
         }
-    }
+    }*/
 }

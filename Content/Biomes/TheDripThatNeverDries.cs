@@ -12,7 +12,7 @@ namespace MurphysMod.Content.Biomes
     {
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Audio/Music/TheDripThatNeverDries");
 
-        public override SceneEffectPriority Priority => SceneEffectPriority.Event;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeMedium;
 
         public override bool IsBiomeActive(Player player)
         {

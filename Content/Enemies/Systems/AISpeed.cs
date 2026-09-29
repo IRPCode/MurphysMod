@@ -1,4 +1,4 @@
-using Terraria;
+/*using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using MurphysMod.Content.Buffs;
@@ -67,7 +67,7 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             //for type 11/12 (dungeon guardian / skeletron), this is in a seperate file for more advanced tweaks.
             //check maneater file for ai13
             //all bosses and minibosses need changes
-            */
+            
         }
 
         public override void OnHitPlayer(NPC npc, Player player, Player.HurtInfo hurtInfo)
@@ -190,4 +190,4 @@ namespace MurphysMod.Content //this class needs to be fixed to work in multiplay
             }
         }
     }
-}
+}*/

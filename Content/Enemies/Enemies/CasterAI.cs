@@ -23,6 +23,10 @@ namespace MurphysMod.Content.Enemies
         NPCID.FireImp, NPCID.GoblinSorcerer, NPCID.Tim, NPCID.DesertBeast};
         public int[] acceptedNPCProj = { };
         public Vector2 savedVel;
+        public short dust;
+
+        public int i;
+        public int val = 1;
 
         public static int baseDefense = -1;
 
@@ -33,12 +37,81 @@ namespace MurphysMod.Content.Enemies
             if (!acceptedNPCs.Contains(npc.type) && !npc.active)
                 return;
 
-            Player target = Main.player[npc.target];
-            LuckHandler luckHandler = target.GetModPlayer<LuckHandler>();
+            Player player = Main.player[npc.target];
+            LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckValue = luckHandler.luckValue();
+            Vector2 playerLoc = npc.DirectionTo(player.Center);
+            playerLoc.Normalize();
+
+            Vector2 vectorLuck = new Vector2((float)luckValue, (float)luckValue);
+
+            if (npc.type == NPCID.WaterSphere)
+            {
+                npc.velocity.X = MathHelper.Lerp(npc.velocity.X, npc.velocity.X + playerLoc.X, (float)luckValue / 6f);
+                npc.velocity.Y = MathHelper.Lerp(npc.velocity.Y, npc.velocity.Y + playerLoc.Y, (float)luckValue / 6f);
+                npc.velocity = Vector2.Clamp(npc.velocity, new Vector2(-3 * (float)(1 + luckValue), -3 * (float)(1 + luckValue)), new Vector2(3 * (float)(1 + luckValue), 3 * (float)(1 + luckValue)));
+                dust = DustID.DungeonWater;
+            }
+
+            if (npc.type == NPCID.BurningSphere)
+            {
+                float mult = 1 + (float)(luckValue / 100);
+                //npc.velocity = playerLoc * mult;
+                npc.velocity *= mult;
+                npc.velocity = Vector2.Clamp(npc.velocity, new Vector2(-5, -5), new Vector2(5, 5));
+                dust = DustID.Torch;
+            }
+
+            if (npc.type == NPCID.ChaosBall)
+            {
+                float mult = 1 - (float)(luckValue / 200);
+                npc.velocity *= mult;
+
+                if(Math.Abs(npc.velocity.X) < .2f && Math.Abs(npc.velocity.Y) < .2f)
+                {
+                    if(i % 2 == 0)
+                    {
+                        val *= -1;
+                    }
+                        
+                    npc.velocity.X *= Math.Clamp((200 * (float)Math.Exp(1 + luckValue) * val), -5 * (float)Math.Exp(1 + luckValue), 5 * (float)Math.Exp(1 + luckValue));
+                    npc.velocity.Y *= Math.Clamp((200 * (float)Math.Exp(1 + luckValue) * val), -5 * (float)Math.Exp(1 + luckValue), 5 * (float)Math.Exp(1 + luckValue));
+                    i++;
+                }
+                dust = DustID.Shadowflame;
+            }
+
+            NPCParentTracker npcT = npc.GetGlobalNPC<NPCParentTracker>();
+            if (npcT.npcParent != null && !npcT.npcParent.active)
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    Dust.NewDust(npc.Center, default, default, dust, Main.rand.Next(-1001, 1001) / 250, Main.rand.Next(-1001, 1001) / 250);
+                }
+                SoundEngine.PlaySound(SoundID.NPCHit3);
+                npc.active = false;
+            }
+
+        }
+
+        public override void OnSpawn(NPC npc, IEntitySource source)
+        {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
+            Player player = Main.player[npc.target];
+            LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
+            double luckValue = luckHandler.luckValue();
+
+            if (npc.type == NPCID.BurningSphere)
+            {
+                Vector2 playerLoc = npc.DirectionTo(player.Center);
+                playerLoc.Normalize();
+                npc.velocity = playerLoc * (float)Math.Exp(1 + luckValue);
+            }
         }
     }
-    public class CasterProjectiles : GlobalProjectile //TODO: remove extra ticks for necromancer's proj.
+    public class CasterProjectiles : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
         public override void OnSpawn(Projectile projectile, IEntitySource source)
@@ -201,7 +274,7 @@ namespace MurphysMod.Content.Enemies
             }
         }
     }
-    
+
     public class killRuneBlast : GlobalItem
     {
         public override void UseItemHitbox(Item item, Player player, ref Rectangle hitbox, ref bool noHitbox)
@@ -212,7 +285,6 @@ namespace MurphysMod.Content.Enemies
 
                 if (p.type != ProjectileID.RuneBlast)
                     return;
-
                 if (hitbox.Intersects(p.Hitbox))
                     p.Kill();
             }
