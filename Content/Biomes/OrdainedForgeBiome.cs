@@ -12,8 +12,7 @@ namespace MurphysMod.Content.Biomes
         public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.GetInstance<ForgeBackgroundStyle>(); //TODO: Make this work underground
         //public override ModBackgroundStyle ModBackgroundStyle => ModContent.GetInstance<ForgeBackgroundStyle>(); ----- ?????
 
-        public override int Music => MusicID.OtherworldlyUnderground;
-        //change Music to MusicLoader.GetMusicSlot(Mod, "Assets/Music/SongName");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Audio/Music/Ordainment");
 
         public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
 

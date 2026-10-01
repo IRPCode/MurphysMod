@@ -19,8 +19,6 @@ namespace MurphysMod.Content.Enemies
     public class CasterAI : GlobalNPC
     {
         public override bool InstancePerEntity => true;
-        public int[] acceptedNPCs = { NPCID.DarkCaster, NPCID.DiabolistRed, NPCID.DiabolistWhite, NPCID.Necromancer, NPCID.NecromancerArmored, NPCID.RaggedCaster, NPCID.RaggedCasterOpenCoat,
-        NPCID.FireImp, NPCID.GoblinSorcerer, NPCID.Tim, NPCID.DesertBeast};
         public int[] acceptedNPCProj = { };
         public Vector2 savedVel;
         public short dust;
@@ -34,7 +32,7 @@ namespace MurphysMod.Content.Enemies
         {
             if (!BookUsed.isPlayerCursed)
                 return;
-            if (!acceptedNPCs.Contains(npc.type) && !npc.active)
+            if (!npc.active)
                 return;
 
             Player player = Main.player[npc.target];
@@ -42,8 +40,7 @@ namespace MurphysMod.Content.Enemies
             double luckValue = luckHandler.luckValue();
             Vector2 playerLoc = npc.DirectionTo(player.Center);
             playerLoc.Normalize();
-
-            Vector2 vectorLuck = new Vector2((float)luckValue, (float)luckValue);
+            bool force = false;
 
             if (npc.type == NPCID.WaterSphere)
             {
@@ -56,9 +53,63 @@ namespace MurphysMod.Content.Enemies
             if (npc.type == NPCID.BurningSphere)
             {
                 float mult = 1 + (float)(luckValue / 100);
-                //npc.velocity = playerLoc * mult;
                 npc.velocity *= mult;
-                npc.velocity = Vector2.Clamp(npc.velocity, new Vector2(-5, -5), new Vector2(5, 5));
+                if (Math.Abs(npc.velocity.X) >= 25f || Math.Abs(npc.velocity.Y) >= 25f)
+                    force = true;
+                else
+                    force = false;
+                dust = DustID.Torch;
+            }
+
+            if (npc.type == NPCID.Tim)
+            {
+                if (Main.time % 30 == 0 && luckValue >= .75)
+                {
+                    int projID = Projectile.NewProjectile(
+                             npc.GetSource_FromAI(),
+                             npc.Center,
+                             new Vector2((Main.rand.Next(-1000, 1000) / (int)(500 / (1 + luckValue))), (Main.rand.Next(-1000, 1000) / (int)(500 / (1 + luckValue)))),
+                             ProjectileID.ShadowFlame,
+                             35, //for damage balancing
+                             1f,
+                             -1);
+
+                    Projectile proj = Main.projectile[projID];
+                    proj.hostile = true;
+                    proj.friendly = false;
+                    proj.tileCollide = false;
+                    proj.netUpdate = true;
+                }
+            }
+
+            if (npc.type == NPCID.ChaosBallTim)
+            {
+                if (luckValue >= .5)
+                {
+                    int projID = Projectile.NewProjectile(
+                                  npc.GetSource_FromAI(),
+                                  npc.Center,
+                                  npc.velocity,
+                                  ProjectileID.Shadowflames,
+                                  20, //for damage balancing
+                                  1f,
+                                  -1);
+
+                    Projectile proj = Main.projectile[projID];
+                    proj.hostile = true;
+                    proj.tileCollide = false;
+                    proj.netUpdate = true;
+                    npc.active = false;
+                }
+                else if (luckValue > .25)
+                {
+                    float mult = 1 + (float)(luckValue / 100);
+                    npc.velocity *= mult;
+                    if (Math.Abs(npc.velocity.X) >= 25f || Math.Abs(npc.velocity.Y) >= 25f)
+                        force = true;
+                    else
+                        force = false;
+                }
                 dust = DustID.Torch;
             }
 
@@ -67,22 +118,26 @@ namespace MurphysMod.Content.Enemies
                 float mult = 1 - (float)(luckValue / 200);
                 npc.velocity *= mult;
 
-                if(Math.Abs(npc.velocity.X) < .2f && Math.Abs(npc.velocity.Y) < .2f)
+                if (Math.Abs(npc.velocity.X) < .2f && Math.Abs(npc.velocity.Y) < .2f)
                 {
-                    if(i % 2 == 0)
+                    if (i % 2 == 0)
                     {
                         val *= -1;
                     }
-                        
+
                     npc.velocity.X *= Math.Clamp((200 * (float)Math.Exp(1 + luckValue) * val), -5 * (float)Math.Exp(1 + luckValue), 5 * (float)Math.Exp(1 + luckValue));
                     npc.velocity.Y *= Math.Clamp((200 * (float)Math.Exp(1 + luckValue) * val), -5 * (float)Math.Exp(1 + luckValue), 5 * (float)Math.Exp(1 + luckValue));
                     i++;
                 }
                 dust = DustID.Shadowflame;
             }
+            killNPC(npc, force);
+        }
 
+        public void killNPC(NPC npc, bool force)
+        {
             NPCParentTracker npcT = npc.GetGlobalNPC<NPCParentTracker>();
-            if (npcT.npcParent != null && !npcT.npcParent.active)
+            if ((npcT.npcParent != null && !npcT.npcParent.active) || force)
             {
                 for (int i = 0; i < 30; i++)
                 {
@@ -91,7 +146,6 @@ namespace MurphysMod.Content.Enemies
                 SoundEngine.PlaySound(SoundID.NPCHit3);
                 npc.active = false;
             }
-
         }
 
         public override void OnSpawn(NPC npc, IEntitySource source)

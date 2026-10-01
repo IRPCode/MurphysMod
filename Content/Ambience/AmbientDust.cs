@@ -13,18 +13,25 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
     public class AmbientDust : ModPlayer
     {
-        public static int dustAmountMultiplier = 1; //fix this statement, and then fix the shimmer sparkles (encase spawning particles in loop)
+        public static int dustAmountMultiplier = 3; //fix this statement, and then fix the shimmer sparkles (encase spawning particles in loop)
                                                     //TODO: set the dust type with a dust variable, and then a variable at the end if dust != null, then spawn the particle. If it doesn't equal null and bool loop == true, then set it to another if statement
                                                     //that uses a for loop to spawn more particles, as set by the if statement that sets the particle type
+        public static int dustDistance = 2;
 
         public override void PostUpdate()
+        {
+            for(int i = 0; i < dustAmountMultiplier + 1; i++)
+                dustEngine();
+        }
+
+        public void dustEngine()
         {
             if (!ModContent.GetInstance<ClientSideConfig>().AmbientDustVisuals)
                 return;
             if (Main.myPlayer == Player.whoAmI && !Main.dedServ) //local only
             {
-                int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60); //adjust these values based off of velocity (xvel = 60 * player.velocity.x, negxvel = xvel * -1)
-                int y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36); //also adjust this based off of screen size
+                int x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance); //adjust these values based off of velocity (xvel = 60 * player.velocity.x, negxvel = xvel * -1)
+                int y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance); //also adjust this based off of screen size
 
                 int rand;
 
@@ -36,8 +43,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                        y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                        x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance);
+                        y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance);
                         if (Player.ZoneForest || Player.ZoneJungle || Player.ZoneHallow)
                         {
                             if (Player.ZoneHallow)
@@ -171,8 +178,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                     {
                         for (int i = 0; i < 100; i++)
                         {
-                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance);
+                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance);
                             tile = Framing.GetTileSafely(x, y);
                             Tile shimmerTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
 
@@ -197,8 +204,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 
                     for (int i = 0; i < 3; i++)
                     {
-                        x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                        y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                        x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance);
+                        y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance);
                         tile = Framing.GetTileSafely(x, y);
 
                         if (tile.LiquidAmount >= 1 && tile.LiquidType == LiquidID.Lava) //lava embers
@@ -275,8 +282,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                     {
                         for (int i = 0; i < 25; i++)
                         {
-                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance);
+                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance);
                             tile = Framing.GetTileSafely(x, y);
                             Tile blessedWaterTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
 
@@ -295,8 +302,8 @@ namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
                     {
                         for (int i = 0; i < 100; i++)
                         {
-                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60, 60);
-                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36, 36);
+                            x = (int)(Player.Center.X / 16) + Main.rand.Next(-60 * dustDistance, 60 * dustDistance);
+                            y = (int)(Player.Center.Y / 16) + Main.rand.Next(-36 * dustDistance, 36 * dustDistance);
                             tile = Framing.GetTileSafely(x, y);
                             Tile blessedWaterTileAirCheck = Framing.GetTileSafely(x, y - 1); //checks for air
 

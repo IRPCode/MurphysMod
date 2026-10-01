@@ -11,8 +11,8 @@ namespace MurphysMod.Content.LuckHandlers
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
             double luckVal = player.GetModPlayer<LuckHandler>().luckValue();
-            spawnRate *= (int)(1 - (luckVal / 5));
-            maxSpawns *= (int)(1 + (luckVal / 5));
+            spawnRate *= (int)(1 - (luckVal / 10));
+            maxSpawns *= (int)(1 + (luckVal / 10));
         }
 
     }
