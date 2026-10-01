@@ -1,4 +1,5 @@
 using System;
+using MurphysMod.Systems;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -6,6 +7,8 @@ public class WeatherLuck : ModSystem
 {
     public override void PostUpdateEverything()
     {
+        if (!BookUsed.isPlayerCursed)
+            return;
         getWeatherLuckVal();
     }
     public double getWeatherLuckVal()

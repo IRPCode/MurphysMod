@@ -1,5 +1,6 @@
 using System;
 using MurphysMod.Content.LuckHandlers;
+using MurphysMod.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -8,6 +9,8 @@ public class ShopLuck : ModPlayer
 {
     public override void PreUpdate()
     {
+        if (!BookUsed.isPlayerCursed)
+            return;
         if (Player.talkNPC != -1)
         {
             double luckVal = Utils.Clamp((Player.GetModPlayer<LuckHandler>().luckValue() * .5f) - .1f, -.1f, 1f);

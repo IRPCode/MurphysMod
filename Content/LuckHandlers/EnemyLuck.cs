@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using MurphysMod.Content.Ambience;
+using MurphysMod.Systems;
 using Steamworks;
 using Terraria;
 using Terraria.ID;
@@ -18,6 +19,8 @@ namespace MurphysMod.Content.LuckHandlers
         NPCID.GoldWorm, NPCID.SquirrelGold};
         public override void OnKill(NPC npc)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
 
             if (length == 0)
             {
@@ -49,6 +52,8 @@ namespace MurphysMod.Content.LuckHandlers
     {
         public override void PostUpdateEverything()
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
             EnemyLuck.length--;
             EnemyLuck.length = Utils.Clamp(EnemyLuck.length, 0, int.MaxValue);
         }
@@ -59,6 +64,8 @@ namespace MurphysMod.Content.LuckHandlers
         public static double proximityAmount;
         public override void PreUpdate()
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
             {
                 Player player = Main.LocalPlayer;
 

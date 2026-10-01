@@ -11,7 +11,7 @@ using MurphysMod.Content.LuckHandlers;
 
 namespace MurphysMod.Content.Enemies
 {
-    public class slimeNPC : GlobalNPC
+    public class slimeNPC : GlobalNPC //TODO: For whatever reason, balloon slimes die when the balloon pops
     {
         public override void OnKill(NPC npc)
         {

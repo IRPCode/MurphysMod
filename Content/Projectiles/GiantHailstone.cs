@@ -18,8 +18,8 @@ namespace MurphysMod.Content.Enemies
         public override void SetDefaults() //TODO: Make it so players can break this projectile with tools and weapons, and make it so the texture changes depending on 
         //what is spawning the projectile (remember, bone serpents and wyverns also use this AI type.)
         {
-            Projectile.width = 12;
-            Projectile.height = 12;
+            Projectile.width = 24;
+            Projectile.height = 24;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = true;
@@ -65,20 +65,19 @@ namespace MurphysMod.Content.Enemies
             if (!hitGround)
             {
                 SoundEngine.PlaySound(SoundID.Item50, Projectile.Center); //fix this to find the real sound needed for arrows hitting the ground
-                 SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
-                Projectile.velocity.Y /= 3;
+                SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode, Projectile.Center);
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Ice, Projectile.velocity.X * .2f, Projectile.velocity.Y * .2f, 100, default, 1f);
                 }
             }
             hitGround = true;
 
-            Projectile.velocity = Vector2.Zero;
+            //Projectile.velocity = Vector2.Zero;
 
             if(Vector2.Distance(Projectile.Center, player.Center) <= 15 * 16) //15 tiles
-                ShakeScreen.StartShake(2, 20, 3f / (Vector2.Distance(Projectile.Center, player.Center) / 20));// TODO: make this falloff less aggressive
+                ShakeScreen.StartShake(2, 20, MathHelper.Clamp(8f * MathHelper.Clamp(1f - Vector2.Distance(Projectile.Center, player.Center) / 160f, 0f, 1f), 0f, 2f));// TODO: make this falloff less aggressive
             return false;
         }
 

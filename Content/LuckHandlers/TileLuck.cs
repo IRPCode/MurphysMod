@@ -1,6 +1,7 @@
 //TODO: Add a handler that will add luck based buffs depending on what tiles you're close to, such as the hanging brazierusing Terraria;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using MurphysMod.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -19,6 +20,8 @@ namespace MurphysMod.Content.LuckHandlers
         public static int[] NormalTorches = { TorchID.Blue, TorchID.Green, TorchID.Orange, TorchID.Pink, TorchID.Purple, TorchID.Rainbow, TorchID.Red, TorchID.Torch, TorchID.UltraBright, TorchID.White, TorchID.Yellow };
         public override void PostUpdatePlayers()
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
             Player player = Main.LocalPlayer;
 
             double tileLuck = 0;
@@ -134,8 +137,8 @@ namespace MurphysMod.Content.LuckHandlers
             else if (player.ZoneUnderworldHeight)
                 luckAmount += (TorchType == TorchID.Demon) ? -torchLuckAmount : torchLuckAmount;
 
-                //TODO: add a setting in the mod where it will subtract the bad luck amount if it is not in the purity biome and is a normal torch
-                //I.E. normal torch types are neutral and will not impact luck
+            //TODO: add a setting in the mod where it will subtract the bad luck amount if it is not in the purity biome and is a normal torch
+            //I.E. normal torch types are neutral and will not impact luck
 
             //Main.NewText(luckAmount);
 

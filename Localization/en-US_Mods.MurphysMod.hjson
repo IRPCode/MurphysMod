@@ -130,6 +130,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: The Ordained Dart
 	}
+
+	TheFool: {
+		Tooltip: ""
+		DisplayName: The Fool
+	}
 }
 
 Buffs: {

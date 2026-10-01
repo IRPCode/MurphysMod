@@ -16,6 +16,10 @@ using Terraria.Audio;
 namespace MurphysMod.Content.Enemies
 {
     //Impacts projectiles and caster DR
+
+    public class x : ModSystem
+    {
+    }
     public class CasterAI : GlobalNPC
     {
         public override bool InstancePerEntity => true;
@@ -28,6 +32,8 @@ namespace MurphysMod.Content.Enemies
 
         public static int baseDefense = -1;
 
+        public int spawns;
+        public int max;
         public override void PostAI(NPC npc)
         {
             if (!BookUsed.isPlayerCursed)
@@ -324,6 +330,17 @@ namespace MurphysMod.Content.Enemies
                     {
                         projectile.Kill();
                     }
+                }
+
+                projectileParentTracker projT = projectile.GetGlobalProjectile<projectileParentTracker>();
+                if ((projT.projectileParent != null && !projT.projectileParent.active))
+                {
+                    for (int i = 0; i < 30; i++)
+                    {
+                        Dust.NewDust(projectile.Center, default, default, DustID.RuneWizard, Main.rand.Next(-1001, 1001) / 250, Main.rand.Next(-1001, 1001) / 250);
+                    }
+                    SoundEngine.PlaySound(SoundID.NPCHit3);
+                    projectile.active = false;
                 }
             }
         }

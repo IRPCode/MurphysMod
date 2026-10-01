@@ -49,14 +49,14 @@ namespace MurphysMod.Content
 
 
                 int massiveHailChance = 10 - Utils.Clamp((int)((Main.maxRaining * 5) * Utils.Clamp((1 + luckVal), 1, 2)), 0, 9);
-                int hailRand = Main.rand.Next(1, 101 * massiveHailChance);
+                int hailRand = Main.rand.Next(1, 76 * massiveHailChance);
 
                 float x = player.position.X / 16f + (Main.rand.NextFloat((-200f * (1f + windspeed)), (200f * (1f + windspeed))));
                 float y = player.position.Y / 16f + -75;
 
                 Vector2 velocity = new Vector2((Main.windSpeedCurrent * 20), Main.rand.Next(60, 101) / 10);
 
-                if (hailRand == 100)
+                if (hailRand == 50)
                 {
                     projectileType = ModContent.ProjectileType<GiantHailstone>();
                     velocity = new Vector2((Main.windSpeedCurrent * 10), Main.rand.Next(60, 101) / 3);

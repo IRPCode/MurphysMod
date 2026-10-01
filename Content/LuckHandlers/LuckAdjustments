@@ -10,9 +10,20 @@ namespace MurphysMod.Content.LuckHandlers
     {
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
             double luckVal = player.GetModPlayer<LuckHandler>().luckValue();
-            spawnRate *= (int)(1 - (luckVal / 10));
-            maxSpawns *= (int)(1 + (luckVal / 10));
+            spawnRate = (int)spawnRate / (1 + (luckVal / 10));
+        }
+
+       public override void SetDefaults(NPC npc)
+        {
+            if (!BookUsed.isPlayerCursed)
+                return;
+            double luckVal = player.GetModPlayer<LuckHandler>().luckValue();
+            npc.baseDefense = npc.baseDefense * (1 + (luckVal / 4));
+            npc.damage = npc.damage * (1 + (luckVal / 5));
+            npc.value = npc.value * (1 + luckVal / 3);
         }
 
     }
