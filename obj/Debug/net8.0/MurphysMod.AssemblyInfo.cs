@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MurphysMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5ef86525e30f649a1650c800f4f31461932a592")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7cd3959bfccbbb98e160b445f96132a9bb39263b")]
 [assembly: System.Reflection.AssemblyProductAttribute("MurphysMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MurphysMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

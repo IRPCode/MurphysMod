@@ -132,8 +132,18 @@ Items: {
 	}
 
 	TheFool: {
-		Tooltip: ""
+		Tooltip: A jester, a joker, and a fool. All in one.
 		DisplayName: The Fool
+	}
+
+	NoMoney: {
+		Tooltip: He is no squid, and he certainly is not handsome.
+		DisplayName: No Money
+	}
+
+	NoLegendary: {
+		DisplayName: No Legendary
+		Tooltip: ""
 	}
 }
 
@@ -225,6 +235,7 @@ Projectiles: {
 	MudBall.DisplayName: Mud Ball
 	Hailstone.DisplayName: Hailstone
 	GiantHailstone.DisplayName: Giant Hailstone
+	CaveBomb.DisplayName: Cave Bomb
 }
 
 Tiles: {

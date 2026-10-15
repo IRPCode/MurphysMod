@@ -8,15 +8,91 @@ using System;
 using Terraria.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MurphysMod.Content.LuckHandlers;
+using MurphysMod.Systems;
 
 namespace MurphysMod.Content.Enemies
 {
     public class slimeNPC : GlobalNPC //TODO: For whatever reason, balloon slimes die when the balloon pops
     {
+        public override bool InstancePerEntity => true;
+        public float lungeVal;
+        public float jumpVal;
+
+        public bool jumpCheck;
+
+        public int[] jumpVals = [0,0,0,0];
+
+        public int[] regSlimes = [NPCID.GreenSlime, NPCID.BlueSlime, NPCID.RedSlime, NPCID.PurpleSlime, NPCID.BlackSlime, NPCID.IceSlime, NPCID.SandSlime,
+        NPCID.JungleSlime, NPCID.LavaSlime, NPCID.Pinky, NPCID.GoldenSlime, NPCID.ShimmerSlime, NPCID.DungeonSlime, NPCID.UmbrellaSlime, NPCID.BunnySlimed,
+        NPCID.SlimeRibbonRed, NPCID.SlimeRibbonGreen, NPCID.SlimeRibbonWhite, NPCID.SlimeRibbonYellow];
+        public override void PostAI(NPC npc)
+        {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
+            if (npc.aiStyle != NPCAIStyleID.Slime && !npc.active)
+                return;
+
+                Main.NewText(npc.ai[0]);
+
+            Player player = Main.LocalPlayer;
+            LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
+
+            float distX = Math.Abs(npc.Center.X - player.Center.X);
+            float distY = player.Center.Y - npc.Center.Y;
+
+            if (npc.life < npc.lifeMax && distX >= 0 * (1f + luckHandler.luckValue()) * 16 && distX <= 15 * (1f + luckHandler.luckValue()) * 16 && Math.Abs(distY) < 5 * 16 && Math.Abs(distY) >= 0)
+                lungeVal = 1.5f * (float)(1f + luckHandler.luckValue());
+            else
+                lungeVal = 1f;
+
+            if (npc.life < npc.lifeMax && distY < -15 * 16 && luckHandler.luckValue() >= .5)
+                jumpVal = 1.5f;
+            else
+                jumpVal = 1f;
+
+            if (npc.ai[0] == 0 && jumpCheck) //wait, then short
+            {
+                npc.velocity.X *= (float)(1 + (luckHandler.luckValue() / 3)) * (lungeVal * 1.25f);
+                jumpCheck = false;
+            }
+            else if (npc.ai[0] == -200 && jumpCheck) //high
+            {
+                npc.velocity.Y *= (float)((1 + (luckHandler.luckValue() / 4)) * jumpVal);
+                jumpCheck = false;
+            }
+            else if (npc.ai[0] == -1120 && jumpCheck) //short
+            {
+                npc.velocity.X *= (float)(1 + (luckHandler.luckValue() / 4)) * (lungeVal * .9f);
+                jumpCheck = false;
+            }
+            else if (npc.ai[0] == -2120 && jumpCheck) //short
+            {
+                npc.velocity.X *= (float)(1 + (luckHandler.luckValue() / 3)) * (lungeVal * .85f);
+                jumpCheck = false;
+            }
+            else if (npc.ai[0] != 0 && npc.ai[0] != -200 && npc.ai[0] != -1120 && npc.ai[0] != -2120)
+            {
+                jumpCheck = true;
+            }
+
+            if ((npc.ai[0] >= -200) && npc.life < npc.lifeMax && distY > 0 && luckHandler.luckValue() >= .5)
+            {
+                Point point = new Point((int)npc.Center.X / 16, (int)npc.Bottom.Y / 16);
+                Tile tile = Framing.GetTileSafely(point.X, point.Y + 1);
+                if (tile.HasTile && TileID.Sets.Platforms[tile.TileType])
+                    npc.noTileCollide = true;
+                else
+                    npc.noTileCollide = false;
+            }
+            else
+                npc.noTileCollide = false;
+        }
+
         public override void OnKill(NPC npc)
         {
 
-            if (npc.aiStyle == 1)
+            if (npc.aiStyle == NPCAIStyleID.Slime)
             {
 
                 Player player = Main.LocalPlayer;
@@ -127,7 +203,7 @@ namespace MurphysMod.Content.Enemies
                         npc.Center,
                         new Vector2(Main.rand.Next(-10, 10), Main.rand.Next(-yVel, 0)),
                         projectile,
-                        (Convert.ToInt32(npc.damage * damageModifier)), //for damage balancing
+                        Convert.ToInt32(npc.damage * damageModifier), //for damage balancing
                         knockback,
                         -1);
 

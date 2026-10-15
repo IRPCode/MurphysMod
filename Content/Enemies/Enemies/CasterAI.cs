@@ -16,10 +16,6 @@ using Terraria.Audio;
 namespace MurphysMod.Content.Enemies
 {
     //Impacts projectiles and caster DR
-
-    public class x : ModSystem
-    {
-    }
     public class CasterAI : GlobalNPC
     {
         public override bool InstancePerEntity => true;

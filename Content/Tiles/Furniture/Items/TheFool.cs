@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,5 +18,10 @@ namespace MurphysMod.Content.Items.Placeable.Furniture
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 1);
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            tooltips.Add(new TooltipLine(Mod, "Tooltip Line", "A jester, a joker, and a fool. All in one."));
+        }
 	}
 }

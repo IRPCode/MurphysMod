@@ -16,7 +16,7 @@ namespace MurphysMod.Content.Enemies
 
         public override void AI(NPC npc)
         {
-            if (npc.aiStyle == 6)
+            if (npc.aiStyle == NPCAIStyleID.Worm)
             {
                 NPC head = Main.npc[npc.realLife];
 

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using MurphysMod.Content.Enemies;
 using MurphysMod.Content.LuckHandlers;
 using MurphysMod.Content.Tiles;
+using MurphysMod.Systems;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
@@ -34,6 +35,9 @@ namespace MurphysMod.Content
         public static int[] tileTypes = { TileID.Dirt, TileID.Stone, TileID.Mud, TileID.ClayBlock, TileID.WoodBlock, TileID.Ebonstone, TileID.Crimstone, TileID.JungleGrass, TileID.Sand, TileID.SnowBlock, TileID.IceBlock, TileID.Ash, TileID.CorruptHardenedSand, TileID.CrimsonHardenedSand, TileID.HallowHardenedSand, TileID.CorruptSandstone, TileID.CrimsonSandstone, TileID.HallowHardenedSand, TileID.BlueDungeonBrick, TileID.PinkDungeonBrick, TileID.GreenDungeonBrick, TileID.MushroomGrass, TileID.JungleGrass, TileID.Granite, TileID.Marble, TileID.HardenedSand, TileID.Sandstone };
         public override void PostUpdate()
         {
+            if (!BookUsed.isPlayerCursed)
+                return;
+
             if (Main.LocalPlayer.position.Y / 16 >= Main.worldSurface && !Player.ZoneUnderworldHeight)
             {
                 Player player = Main.LocalPlayer;
@@ -48,7 +52,7 @@ namespace MurphysMod.Content
                         checkTileDestruction.tileBroken = Utils.Clamp(checkTileDestruction.tileBroken, 0, int.MaxValue);
                     }
 
-                    if (checkTileDestruction.tileBroken >= 200)
+                    if (checkTileDestruction.tileBroken >= 300)
                     {
                         TremorActive = true;
                     }
@@ -350,7 +354,7 @@ namespace MurphysMod.Content
                 if (!ModContent.GetInstance<ClientSideConfig>().ScreenShake)
                     return;
 
-                Player player = Main.LocalPlayer;                  
+                Player player = Main.LocalPlayer;
 
                 if (CaveTremors.TremorActive == true && (tremorTick <= length)) //checks just in case if player teleports, only works underground
                 {
