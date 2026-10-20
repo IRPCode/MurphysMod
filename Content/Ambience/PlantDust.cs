@@ -7,7 +7,7 @@ using ModLiquidLib.Utils;
 using System.Linq;
 using MurphysMod.Content.Ambience.Dusts;
 using System;
-using ExampleMod.Common.Configs;
+using MurphysMod.Content.Configs;
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles
 {

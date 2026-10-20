@@ -5,7 +5,7 @@ using Terraria.ID;
 using MurphysMod.Content.Ambience.Dusts;
 using System;
 using ModLiquidLib.ModLoader;
-using ExampleMod.Common.Configs;
+using MurphysMod.Content.Configs;
 
 
 namespace MurphysMod //Add a check for the TorchGodLava to add custom particles

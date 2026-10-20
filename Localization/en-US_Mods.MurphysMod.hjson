@@ -236,6 +236,7 @@ Projectiles: {
 	Hailstone.DisplayName: Hailstone
 	GiantHailstone.DisplayName: Giant Hailstone
 	CaveBomb.DisplayName: Cave Bomb
+	RabidSpit.DisplayName: Rabid Spit
 }
 
 Tiles: {
@@ -298,7 +299,11 @@ Configs: {
 
 	ClientSideConfig: {
 		DisplayName: Client Side Config
-		Headers.Visuals: Visuals Header
+
+		Headers: {
+			Visuals: Visuals
+			Gameplay: Gameplay
+		}
 
 		DustVisuals: {
 			Label: Dust Visuals
@@ -307,22 +312,31 @@ Configs: {
 
 		TileGlow: {
 			Label: Tile Glow
-			Tooltip: ""
+			Tooltip: Some tiles glow, like Gemcorn trees
 		}
 
 		NpcGlow: {
 			Label: Npc Glow
-			Tooltip: ""
+			Tooltip: Some NPCs glow, like gem critters
 		}
 
 		AmbientDustVisuals: {
 			Label: Ambient Dust Visuals
-			Tooltip: ""
+			Tooltip: Dust particles spawn in the world
 		}
 
 		ScreenShake: {
-			Tooltip: ""
+			Tooltip: Screenshake effect for items and events
 			Label: Screen Shake
+		}
+
+		UnfairSlimes: {
+			Label: Unfair Slimes
+			Tooltip:
+				'''
+				Slimes spawn projectiles on death
+				[c/e62727:WARNING:] This feature is actually horrible, proceed with caution
+				'''
 		}
 	}
 }

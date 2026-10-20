@@ -19,7 +19,7 @@ namespace MurphysMod.Content.Enemies
             {
                 if (npc.target != -1 && npc.damage > 0)
                 {
-                    Player player = Main.LocalPlayer;
+                    Player player = Main.player[npc.target];
                     LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
                     double luckVal = luckHandler.luckValue();
                     var knockback = 2f;

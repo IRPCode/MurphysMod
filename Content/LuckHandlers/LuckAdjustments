@@ -13,7 +13,7 @@ namespace MurphysMod.Content.LuckHandlers
             if (!BookUsed.isPlayerCursed)
                 return;
             double luckVal = player.GetModPlayer<LuckHandler>().luckValue();
-            spawnRate = (int)spawnRate / (1 + (luckVal / 10));
+            spawnRate = (int)spawnRate / (1 + (luckVal / 25));
         }
 
        public override void SetDefaults(NPC npc)
@@ -24,7 +24,7 @@ namespace MurphysMod.Content.LuckHandlers
             npc.baseDefense = npc.baseDefense * (1 + (luckVal / 4));
             npc.damage = npc.damage * (1 + (luckVal / 5));
             npc.value = npc.value * (1 + luckVal / 3);
-        }
+        } 
 
     }
 }

@@ -20,7 +20,7 @@ namespace MurphysMod.Content.Enemies
             {
                 NPC head = Main.npc[npc.realLife];
 
-                Player player = Main.LocalPlayer;
+                Player player = Main.player[npc.target];
                 LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
                 double luckVal = luckHandler.luckValue();
                 var knockback = 2f;

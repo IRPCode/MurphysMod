@@ -136,12 +136,14 @@ namespace MurphysMod.Content.Enemies
 
         public override void PostAI(NPC npc)
         {
-            if (!BookUsed.isPlayerCursed && skeletonIDS.Contains(npc.type))
+            if (!BookUsed.isPlayerCursed)
                 return;
             if (!npc.active)
                 return;
+            if(!skeletonIDS.Contains(npc.type))
+                return;
 
-            Player player = Main.LocalPlayer;
+            Player player = Main.player[npc.target];
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
 
             if (npc.velocity.Y == 0f)
@@ -149,11 +151,11 @@ namespace MurphysMod.Content.Enemies
 
             if (npc.velocity.Y == -7.7f && jumpCheck)
             {
-                npc.velocity.Y *= (float)(1 + (luckHandler.luckValue() / 2));
+                npc.velocity.Y *= (float)(1 + (luckHandler.luckValue() / 3));
                 jumpCheck = false;
             }
 
-            float mult = 1 * (float)Math.Pow(luckHandler.luckValue() + 1, 1.6);
+            float mult = 1 * (float)Math.Pow(luckHandler.luckValue() + 1, 1.4);
             if (npc.ai[1] == 0 && !projectileSkeletons.Contains(npc.type))
                 npc.velocity.X = MathHelper.Lerp(npc.oldVelocity.X, npc.direction * mult, .025f);
         }
@@ -164,7 +166,7 @@ namespace MurphysMod.Content.Enemies
             if (!npc.active)
                 return;
 
-            Player player = Main.LocalPlayer;
+            Player player = Main.player[npc.target];
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
 
             if (npc.type == NPCID.UndeadMiner && luckHandler.luckValue() >= .25)

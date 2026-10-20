@@ -4,7 +4,7 @@
 
 using System;
 using System.Linq;
-using ExampleMod.Common.Configs;
+using MurphysMod.Content.Configs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;

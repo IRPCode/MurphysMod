@@ -33,20 +33,18 @@ namespace MurphysMod.Content.Enemies
             if (npc.aiStyle != NPCAIStyleID.Slime && !npc.active)
                 return;
 
-                Main.NewText(npc.ai[0]);
-
-            Player player = Main.LocalPlayer;
+            Player player = Main.player[npc.target];
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
 
             float distX = Math.Abs(npc.Center.X - player.Center.X);
             float distY = player.Center.Y - npc.Center.Y;
 
-            if (npc.life < npc.lifeMax && distX >= 0 * (1f + luckHandler.luckValue()) * 16 && distX <= 15 * (1f + luckHandler.luckValue()) * 16 && Math.Abs(distY) < 5 * 16 && Math.Abs(distY) >= 0)
+            if (luckHandler.luckValue() >= .5 && npc.life < npc.lifeMax && distX >= 0 * (1f + luckHandler.luckValue()) * 16 && distX <= 15 * (1f + luckHandler.luckValue()) * 16 && Math.Abs(distY) < 5 * 16 && Math.Abs(distY) >= 0)
                 lungeVal = 1.5f * (float)(1f + luckHandler.luckValue());
             else
                 lungeVal = 1f;
 
-            if (npc.life < npc.lifeMax && distY < -15 * 16 && luckHandler.luckValue() >= .5)
+            if (npc.life < npc.lifeMax && distY < -10 * 16 && luckHandler.luckValue() >= .5)
                 jumpVal = 1.5f;
             else
                 jumpVal = 1f;
@@ -76,7 +74,7 @@ namespace MurphysMod.Content.Enemies
                 jumpCheck = true;
             }
 
-            if ((npc.ai[0] >= -200) && npc.life < npc.lifeMax && distY > 0 && luckHandler.luckValue() >= .5)
+            if ((npc.ai[0] >= -200) && npc.life < npc.lifeMax && distY > 0 && luckHandler.luckValue() >= .25)
             {
                 Point point = new Point((int)npc.Center.X / 16, (int)npc.Bottom.Y / 16);
                 Tile tile = Framing.GetTileSafely(point.X, point.Y + 1);
@@ -94,8 +92,7 @@ namespace MurphysMod.Content.Enemies
 
             if (npc.aiStyle == NPCAIStyleID.Slime)
             {
-
-                Player player = Main.LocalPlayer;
+                Player player = Main.player[npc.target];
                 LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
                 double luckVal = luckHandler.luckValue();
                 var projectile = ModContent.ProjectileType<SlimeGel>();

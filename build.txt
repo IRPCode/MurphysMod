@@ -1,4 +1,4 @@
 displayName = Murphy's Mod
-author = Two Fools :)
-version = 0.1
+author = The Grand Fool
+version = 0.9
 modReferences = StructureHelper, Luminance, ModLiquidLib

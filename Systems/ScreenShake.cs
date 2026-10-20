@@ -1,4 +1,4 @@
-using ExampleMod.Common.Configs;
+using MurphysMod.Content.Configs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Graphics;

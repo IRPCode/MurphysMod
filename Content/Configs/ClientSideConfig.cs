@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
-namespace ExampleMod.Common.Configs
+namespace MurphysMod.Content.Configs
 {
 	public class ClientSideConfig : ModConfig
 	{
@@ -27,5 +27,14 @@ namespace ExampleMod.Common.Configs
 
 		[DefaultValue(true)]
 		public bool NpcGlow;
+
+		[Header("Gameplay")]
+		
+		[DefaultValue(false)]
+
+		[Label("Unfair Slimes")]
+		public bool UnfairSlimes;
+		
+		
 	}
 }
