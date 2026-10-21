@@ -48,24 +48,20 @@ namespace MurphysMod.Content.Enemies
             {
                 if (player.wet)
                 {
-                    speed = (float)(1 + luckValue) * 2;
-                    mod = .6f;
+                    speed = 3f * (float)(1 + luckValue) * 2;
+                    mod = .3f;
                 }
                 else
                 {
-                    speed = 1.1f;
-                    if (Math.Abs(distX) >= 3f * 16)
-                        mod = .5f;
-                    else
-                        mod = 1f;
+                    speed = 3f;
+                    mod = .05f;
                 }
 
-                if (distX <= 30 * 16 && Collision.CanHitLine(player.position, player.width, player.height, npc.position, npc.width, npc.height))
-                    npc.velocity.X = MathHelper.Lerp(npc.velocity.X, Math.Abs(npc.velocity.X) * speed * direction.X, mod);
+                if (distX <= 30 * 16 && Collision.CanHitLine(player.position, player.width, player.height, npc.position, npc.width, npc.height) && npc.wet)
+                    npc.velocity.X = MathHelper.Lerp(npc.velocity.X, (npc.velocity.X + playerLoc.X * speed) * (float)luckValue, mod);
 
-                if (distX >= -.05f && distX <= .05f)
+                if (distX >= -.01f && distX <= .01f)
                     npc.velocity.X = 0f;
-
             }
 
             if (luckValue >= .5)
@@ -109,6 +105,14 @@ namespace MurphysMod.Content.Enemies
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
             Player player = Main.player[npc.target];
+
+             if (!BookUsed.isPlayerCursed)
+                return;
+            if (!npc.active && !player.active)
+                return;
+            if (npc.aiStyle != NPCAIStyleID.Piranha && !npc.friendly)
+                return;
+
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckValue = luckHandler.luckValue();
             if (luckValue >= .75)
@@ -120,6 +124,13 @@ namespace MurphysMod.Content.Enemies
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Player player = Main.player[npc.target];
+             if (!BookUsed.isPlayerCursed)
+                return true;
+            if (!npc.active && !player.active)
+                return true;
+            if (npc.aiStyle != NPCAIStyleID.Piranha && !npc.friendly)
+                return true;
+
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckValue = luckHandler.luckValue();
 
@@ -136,6 +147,14 @@ namespace MurphysMod.Content.Enemies
         public override bool PreAI(NPC npc)
         {
             Player player = Main.player[npc.target];
+             if (!BookUsed.isPlayerCursed)
+                return true;
+            if (!npc.active && !player.active)
+                return true;
+            if (npc.aiStyle != NPCAIStyleID.Piranha && !npc.friendly)
+                return true;
+
+            
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckValue = luckHandler.luckValue();
 

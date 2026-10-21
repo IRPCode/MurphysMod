@@ -20,7 +20,7 @@ namespace MurphysMod.Content.Enemies
 
         public bool jumpCheck;
 
-        public int[] jumpVals = [0,0,0,0];
+        public int[] jumpVals = [0, 0, 0, 0];
 
         public int[] regSlimes = [NPCID.GreenSlime, NPCID.BlueSlime, NPCID.RedSlime, NPCID.PurpleSlime, NPCID.BlackSlime, NPCID.IceSlime, NPCID.SandSlime,
         NPCID.JungleSlime, NPCID.LavaSlime, NPCID.Pinky, NPCID.GoldenSlime, NPCID.ShimmerSlime, NPCID.DungeonSlime, NPCID.UmbrellaSlime, NPCID.BunnySlimed,

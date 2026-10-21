@@ -237,6 +237,7 @@ Projectiles: {
 	GiantHailstone.DisplayName: Giant Hailstone
 	CaveBomb.DisplayName: Cave Bomb
 	RabidSpit.DisplayName: Rabid Spit
+	SalamanderSpit.DisplayName: Salamander Spit
 }
 
 Tiles: {
