@@ -16,7 +16,7 @@ using Terraria.Audio;
 namespace MurphysMod.Content.Enemies
 {
     //Impacts projectiles and caster DR
-    public class CasterAI : GlobalNPC
+    public class CasterAI : GlobalNPC //TODO: Fix NPC projectiles from hitting tiles
     {
         public override bool InstancePerEntity => true;
         public int[] acceptedNPCProj = { };
@@ -50,6 +50,7 @@ namespace MurphysMod.Content.Enemies
                 npc.velocity.Y = MathHelper.Lerp(npc.velocity.Y, npc.velocity.Y + playerLoc.Y, (float)luckValue / 6f);
                 npc.velocity = Vector2.Clamp(npc.velocity, new Vector2(-3 * (float)(1 + luckValue), -3 * (float)(1 + luckValue)), new Vector2(3 * (float)(1 + luckValue), 3 * (float)(1 + luckValue)));
                 dust = DustID.DungeonWater;
+                npc.noTileCollide = true;
             }
 
             if (npc.type == NPCID.BurningSphere)
@@ -61,6 +62,7 @@ namespace MurphysMod.Content.Enemies
                 else
                     force = false;
                 dust = DustID.Torch;
+                npc.noTileCollide = true;
             }
 
             if (npc.type == NPCID.Tim)
@@ -102,6 +104,7 @@ namespace MurphysMod.Content.Enemies
                     proj.tileCollide = false;
                     proj.netUpdate = true;
                     npc.active = false;
+                    npc.noTileCollide = true;
                 }
                 else if (luckValue > .25)
                 {
@@ -112,6 +115,7 @@ namespace MurphysMod.Content.Enemies
                     else
                         force = false;
                 }
+                npc.noTileCollide = true;
                 dust = DustID.Torch;
             }
 
@@ -132,6 +136,7 @@ namespace MurphysMod.Content.Enemies
                     i++;
                 }
                 dust = DustID.Shadowflame;
+                npc.noTileCollide = true;
             }
             killNPC(npc, force);
         }

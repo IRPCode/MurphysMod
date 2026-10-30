@@ -73,10 +73,15 @@ namespace MurphysMod.Content.Enemies
         public Color currentCol;
         public override Color? GetAlpha(NPC npc, Color drawColor)
         {
+            if (!BookUsed.isPlayerCursed)
+                return drawColor;
+            Player player = Main.player[npc.target];
+            if (!npc.active && !player.active)
+                return drawColor;
             if (!Salamander.Contains(npc.type))
                 return null;
 
-            Player player = Main.player[npc.target];
+
             LuckHandler luckHandler = player.GetModPlayer<LuckHandler>();
             double luckValue = luckHandler.luckValue();
 
@@ -94,8 +99,6 @@ namespace MurphysMod.Content.Enemies
             }
             else
                 return drawColor;
-
-
         }
     }
 }
